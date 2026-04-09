@@ -6,6 +6,15 @@ use Tuzz\Laboratorio21\ColaboradorPorComision;
 use Tuzz\Laboratorio21\ColaboradorPorHora;
 use Tuzz\Laboratorio21\ColaboradorPorTiempoCompleto;
 
+// Grupo 5
+// Jonathan Quinto
+// Alexander Castroverde
+// Abdias Ruedas
+// Nadesh Valdes
+// Whitney Ault
+//
+// https://github.com/1ault/ds7_php_grupo_5/tree/main/laboratorio_2_1 
+//
 
 $empleados = [
     new ColaboradorPorComision("jaz", "zaj", "1", 100, 5),
