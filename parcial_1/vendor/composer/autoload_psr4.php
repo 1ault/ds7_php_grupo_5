@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Tuzz\\Laboratorio21\\' => array($baseDir . '/src'),
+    'Root\\Program\\' => array($baseDir . '/src'),
 );
