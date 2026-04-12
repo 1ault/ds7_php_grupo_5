@@ -1,28 +1,66 @@
-export const assets = {
-    load: {
-        async fondo({ gameData, name })
-        {
-            const response = await fetch("/api/load_fondo.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8"
-                },
-                body: JSON.stringify(name)
-            });
+import { Mundo } from "./Mundo.js";
+import { GameObject } from "./GameObject.js";
 
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
+export class game {
+    constructor({ canvas }) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext("2d");
+        this.running = false;
 
-            const data = await response.json();
+        // Canvas responsive
+        this._resize();
+        window.addEventListener("resize", () => this._resize());
 
-            const image = new Image();
+        // Escena inicial
+        this.mundo = new Mundo({
+            fondoSrc: "main",
+            personajes: [
+                new GameObject({
+                    x: 100,
+                    y: 300,
+                    src: "/assets/img/kangre.webp"
+                })
+            ]
+        });
+    }
 
-            image.onload = () => {
-                gameData.context.drawImage(image, 0, 0);
-            }
+    _resize() {
+        // Mantiene relación 16:9 dentro de la ventana
+        const ratio = 16 / 9;
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
 
-            image.src = data.sprite;
+        let w = winW;
+        let h = winW / ratio;
+
+        if (h > winH) {
+            h = winH;
+            w = winH * ratio;
         }
-  }
-};
+
+        this.canvas.width = Math.floor(w);
+        this.canvas.height = Math.floor(h);
+    }
+
+    start() {
+        this.running = true;
+        this._loop();
+    }
+
+    stop() {
+        this.running = false;
+    }
+
+    _loop() {
+        if (!this.running) return;
+
+        // Limpiar
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Update + Draw
+        this.mundo.update();
+        this.mundo.draw(this.ctx, this.canvas.width, this.canvas.height);
+
+        requestAnimationFrame(() => this._loop());
+    }
+}

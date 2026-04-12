@@ -1,22 +1,13 @@
+import { Sprite } from "./Sprite.js";
 
-
-
-export
-class 
-GameObject 
-{
-    constructor(config)
-    {
-        this.x = config.x || 0;
-        this.y = config.y || 0;
-        this.sprite = new Sprite(
-            {
-                gameObject: this,
-                src: config.src || ""
-            }
-        )
-    
+export class GameObject {
+    constructor({ x = 0, y = 0, src = "" }) {
+        this.x = x;
+        this.y = y;
+        this.sprite = new Sprite({ src });
     }
 
-
+    draw(ctx) {
+        this.sprite.draw(ctx, this.x, this.y);
+    }
 }

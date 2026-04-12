@@ -1,51 +1,56 @@
 import { GameObject } from "./GameObject.js";
 
-export class Mundo
-{
-  constructor(config) {
-    this.element = config.element;
-    this.canvas  = this.element.querySelector(".game-canvas");
-    this.ctx     = this.canvas.getContext("2d");
-  }
+export class Mundo {
+    constructor({ fondoSrc, personajes = [] }) {
+        this.fondoSprite = null;
+        this.personajes = personajes;
+        this.loaded = false;
 
-  run() {
+        // Carga el fondo desde la API PHP
+        this._cargarFondo(fondoSrc);
+    }
 
+    async _cargarFondo(fondoSrc) {
+        try {
+            const res = await fetch("/api/load_fondo.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: fondoSrc })
+            });
 
-    const image = new Image();
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-    image.onload = () => {
-      this.ctx.drawImage(image, 0, 0);
-    };
+            const data = await res.json();
 
-    image.src = '/assets/img/fondo.webp';
-    console.log(image);
+            const img = new Image();
+            img.onload = () => {
+                this.fondoImg = img;
+                this.loaded = true;
+            };
+            img.src = data.sprite;
 
-
-
-    const personaje = new GameObject
-    (
-        {
-            positionX: 250,
-            positionY: 300,
-            src: '/assets/img/kangre.webp'
+        } catch (err) {
+            console.error("Error cargando fondo:", err);
         }
-    );
-    personaje.sprite.draw(this.ctx);
+    }
 
+    update() {
+        // Aquí irá lógica de movimiento, colisiones, etc.
+    }
 
-    const playerImage = new Image();
+    draw(ctx, canvasWidth, canvasHeight) {
+        // Fondo
+        if (this.fondoImg) {
+            ctx.drawImage(this.fondoImg, 0, 0, canvasWidth, canvasHeight);
+        } else {
+            // Placeholder mientras carga
+            ctx.fillStyle = "#1a1a2e";
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+        }
 
-    playerImage.onload = () => {
-      this.ctx.drawImage
-        (
-            playerImage, 
-            playerPositionX, 
-            playerPositionY
-        );
-    };
-    playerImage.src = ;
-    console.log(playerImage);
-
-
-  }
+        // Personajes
+        for (const personaje of this.personajes) {
+            personaje.draw(ctx);
+        }
+    }
 }
