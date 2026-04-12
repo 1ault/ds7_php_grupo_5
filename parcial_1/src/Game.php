@@ -26,7 +26,7 @@ class Game
     static public function getFondoMain(): Fondo
     {
         http_response_code(HttpStatus::OK->value);
-        $fondo = new Fondo('main', '/assets/img/fondo.webp');
+        $fondo = new Fondo('main', 'assets/img/fondo.webp');
         echo json_encode($fondo);
         exit; 
     }

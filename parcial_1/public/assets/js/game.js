@@ -18,7 +18,7 @@ export class game {
                 new GameObject({
                     x: 100,
                     y: 300,
-                    src: "/assets/img/kangre.webp"
+                    src: "assets/img/kangre.webp"
                 })
             ]
         });
