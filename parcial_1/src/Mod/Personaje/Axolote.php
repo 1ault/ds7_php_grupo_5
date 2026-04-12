@@ -8,5 +8,13 @@ use Root\Program\Mod\Personaje;
 class Axolote
 extends Personaje
 {
-
+    
+    public function __construct
+    () 
+    {
+        $this->nombre = "jojo";
+        $this->sprite = "/assets/img/jojo.webp";
+        $this->position_x = 200;
+        $this->position_y = 200;
+    }
 }

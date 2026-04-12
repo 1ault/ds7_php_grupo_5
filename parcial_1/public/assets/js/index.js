@@ -11,6 +11,7 @@ const gameData = {
 };
 
 game.assets.load.fondo({ gameData: gameData, name: "main" });
+game.assets.load.personaje({ gameData: gameData, name: "kangre" });
 
-
-game.assets.load.personaje({ gameData: gameData, name: "main" });
+// game.assets.load.personaje({ gameData: gameData, name: "champi" });
+//game.assets.load.personaje({ gameData: gameData, name: "jojo" });

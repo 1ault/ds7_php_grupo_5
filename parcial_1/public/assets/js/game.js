@@ -15,7 +15,6 @@ export const assets = {
             }
 
             const data = await response.json();
-
             const image = new Image();
 
             image.onload = () => {
@@ -31,21 +30,34 @@ export const assets = {
                 headers: {
                     "Content-Type": "application/json; charset=utf-8"
                 },
-                body: JSON.stringify(name)
+                body: JSON.stringify({
+                    "name": name
+                })
             });
 
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
+            let data;
+
+            try {
+                data = await response.json();
+            } catch (e) {
+                console.error(e);
+                throw new Error(`Error: invalid json response`);
             }
 
-            const data = await response.json();
+            if (!response.ok || data.error) {
+                throw new Error(`Error: ${data.error}`);
+            }
+
 
             const image = new Image();
-
             image.onload = () => {
-                gameData.context.drawImage(image, 0, 0);
+                gameData.context.drawImage
+                (
+                    image, 
+                    data.position_x, 
+                    data.position_y
+                );
             }
-
             image.src = data.sprite;
         }
   }

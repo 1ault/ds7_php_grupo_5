@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace Root\Program;
 
 use Root\Program\Mod\Fondo;
+use Root\Program\Mod\Personaje\Axolote;
+use Root\Program\Mod\Personaje\Cangrejo;
+use Root\Program\Mod\Personaje\Hongo;
 
 enum HttpStatus: int {
     case OK = 200;
@@ -26,8 +29,17 @@ class Game
     static public function getFondoMain(): Fondo
     {
         http_response_code(HttpStatus::OK->value);
-        $fondo = new Fondo('main', '/assets/img/fondo.webp');
-        echo json_encode($fondo);
+        $data = new Fondo('main', '/assets/img/fondo.webp');
+        echo json_encode($data);
+        exit; 
+    }
+
+    static public function getPersonajeKangre(): Personaje
+    {
+        
+        http_response_code(HttpStatus::OK->value);
+        $data = new Cangrejo();
+        echo json_encode($data);
         exit; 
     }
 

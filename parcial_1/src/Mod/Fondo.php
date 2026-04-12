@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Root\Program\Mod;
 
-
 use JsonSerializable;
 
 class Fondo implements JsonSerializable

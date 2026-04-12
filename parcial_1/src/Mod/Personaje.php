@@ -3,48 +3,39 @@ declare(strict_types=1);
 
 namespace Root\Program\Mod;
 
-abstract class Personaje
+use JsonSerializable;
+
+abstract
+class Personaje
+implements JsonSerializable
 {
     private string $nombre;
-    private string $image;
-
-    private float $vida;
-    private float $tiempo;
-
-    private float $mana;
-    private float $energia;
-
-    private float $suerte;
-    private float $velocidad;
-    private float $resistencia;
-
-    private array $inventario
-
-    private float $experiencia;
-    private array $habilidades;
-
-    private array $profesiones;
+    private string $sprite;
+    private int $position_x;
+    private int $position_y;
 
     public function __construct
-        (string $nombre) 
+        (
+            string $nombre, 
+            string $sprite, 
+            int $position_x,
+            int $position_y
+        ) 
     {
         $this->nombre = $nombre;
+        $this->sprite = $sprite;
+        $this->position_x = $position_x;
+        $this->position_y = $position_y;
     }
 
-    public function add_habilidad
-        (Habilidad $habilidad): void
-    {
 
-    }
-
-    public function sub_vida
-        (float $vida_sub): void
+    public function jsonSerialize(): mixed
     {
-        $this->vida -= $vida_sub;
-    }
-
-    public function get_nombre(): string
-    {
-        return $this->nombre;
+        return [
+            'nombre' => $this->nombre, 
+            'sprite' => $this->sprite, 
+            'position_x' => $this->position_x, 
+            'position_y' => $this->position_y, 
+        ];
     }
 }
