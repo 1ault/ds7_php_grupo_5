@@ -11,3 +11,6 @@ const gameData = {
 };
 
 game.assets.load.fondo({ gameData: gameData, name: "main" });
+
+
+game.assets.load.personaje({ gameData: gameData, name: "main" });
