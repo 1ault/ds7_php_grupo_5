@@ -1,27 +1,13 @@
-class Mundo {
-  constructor(config) {
-    this.element = config.element;
-    this.canvas  = this.element.querySelector(".game-canvas");
-    this.ctx     = this.canvas.getContext("2d");
-  }
+import * as game from "./game.js";
 
-  run() {
-    const image = new Image();
+const container = document.querySelector(".game-container");
+const canvas = document.querySelector(".game-canvas");
+const context = canvas.getContext("2d");
 
-    image.onload = () => {
-      this.ctx.drawImage(image, 0, 0);
-    };
+const gameData = {
+  container,
+  canvas,
+  context,
+};
 
-    image.src = '/assets/img/screen/1.png';
-    console.log(image);
-  }
-}
-
-(function () {
-    const mundo = new Mundo({
-        element: document.querySelector(".game-container")
-    });
-
-    mundo.run();
-})();
-
+game.assets.load.fondo({ gameData: gameData, name: "main" });

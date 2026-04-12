@@ -22,7 +22,9 @@ class ComposerStaticInitb6ce55b3a9f9e4868dd46bc244834c84
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Root\\Program\\Game' => __DIR__ . '/../..' . '/src/Game.php',
         'Root\\Program\\Mod\\Data' => __DIR__ . '/../..' . '/src/Mod/Data.php',
+        'Root\\Program\\Mod\\Fondo' => __DIR__ . '/../..' . '/src/Mod/Fondo.php',
         'Root\\Program\\Mod\\Habilidad' => __DIR__ . '/../..' . '/src/Mod/Habilidad.php',
         'Root\\Program\\Mod\\Inventario' => __DIR__ . '/../..' . '/src/Mod/Inventario.php',
         'Root\\Program\\Mod\\Item' => __DIR__ . '/../..' . '/src/Mod/Item.php',

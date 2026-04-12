@@ -5,9 +5,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Root\Program\Mod\Data;
 
-// read input
-$game_data_value_json = file_get_contents("php://input");
-
 function response($data, $status = 200) 
 {
     http_response_code($status);
@@ -77,4 +74,3 @@ if ($result === false) {
 }
 
 response(["ok" => true]);
-// save properly (overwrite or log correctly)

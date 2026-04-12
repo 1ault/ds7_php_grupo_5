@@ -17,6 +17,8 @@ C:\xampp\htdocs\
 http://localhost:80
 http://localhost/
 http://localhost/public/index.php
+
+load cache = ctrl + shift + r
 ```
 ### FreeBSD
 

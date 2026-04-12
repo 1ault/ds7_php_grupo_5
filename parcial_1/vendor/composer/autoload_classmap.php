@@ -7,7 +7,9 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'Root\\Program\\Game' => $baseDir . '/src/Game.php',
     'Root\\Program\\Mod\\Data' => $baseDir . '/src/Mod/Data.php',
+    'Root\\Program\\Mod\\Fondo' => $baseDir . '/src/Mod/Fondo.php',
     'Root\\Program\\Mod\\Habilidad' => $baseDir . '/src/Mod/Habilidad.php',
     'Root\\Program\\Mod\\Inventario' => $baseDir . '/src/Mod/Inventario.php',
     'Root\\Program\\Mod\\Item' => $baseDir . '/src/Mod/Item.php',
