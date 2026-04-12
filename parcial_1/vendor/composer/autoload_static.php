@@ -26,13 +26,13 @@ class ComposerStaticInitb6ce55b3a9f9e4868dd46bc244834c84
         'Root\\Program\\Mod\\Data' => __DIR__ . '/../..' . '/src/Mod/Data.php',
         'Root\\Program\\Mod\\Fondo' => __DIR__ . '/../..' . '/src/Mod/Fondo.php',
         'Root\\Program\\Mod\\Habilidad' => __DIR__ . '/../..' . '/src/Mod/Habilidad.php',
+        'Root\\Program\\Mod\\Habilidad\\CorteLimpio' => __DIR__ . '/../..' . '/src/Mod/Habilidad/CorteLimpio.php',
         'Root\\Program\\Mod\\Inventario' => __DIR__ . '/../..' . '/src/Mod/Inventario.php',
         'Root\\Program\\Mod\\Item' => __DIR__ . '/../..' . '/src/Mod/Item.php',
-        'Root\\Program\\Mod\\Mundo' => __DIR__ . '/../..' . '/src/Mod/Mundo.php',
         'Root\\Program\\Mod\\Personaje' => __DIR__ . '/../..' . '/src/Mod/Personaje.php',
-        'Root\\Program\\Mod\\Personaje\\Axolote' => __DIR__ . '/../..' . '/src/Mod/Personaje/Axolote.php',
-        'Root\\Program\\Mod\\Personaje\\Cangrejo' => __DIR__ . '/../..' . '/src/Mod/Personaje/Cangrejo.php',
-        'Root\\Program\\Mod\\Personaje\\Hongo' => __DIR__ . '/../..' . '/src/Mod/Personaje/Hongo.php',
+        'Root\\Program\\Mod\\Personaje\\Mod\\Axolote' => __DIR__ . '/../..' . '/src/Mod/Personaje/Mod/Axolote.php',
+        'Root\\Program\\Mod\\Personaje\\Mod\\Cangrejo' => __DIR__ . '/../..' . '/src/Mod/Personaje/Mod/Cangrejo.php',
+        'Root\\Program\\Mod\\Personaje\\Mod\\Hongo' => __DIR__ . '/../..' . '/src/Mod/Personaje/Mod/Hongo.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

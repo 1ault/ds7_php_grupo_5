@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Root\Program;
 
 use Root\Program\Mod\Fondo;
-use Root\Program\Mod\Personaje\Axolote;
-use Root\Program\Mod\Personaje\Cangrejo;
-use Root\Program\Mod\Personaje\Hongo;
+use Root\Program\Mod\Personaje\Mod\Axolote;
+use Root\Program\Mod\Personaje\Mod\Cangrejo;
+use Root\Program\Mod\Personaje\Mod\Hongo;
 
 enum HttpStatus: int {
     case OK = 200;

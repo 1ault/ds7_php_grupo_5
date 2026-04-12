@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Root\Program\Mod\Personaje;
+namespace Root\Program\Mod\Personaje\Mod;
 
 use Root\Program\Mod\Personaje;
+use Root\Program\Mod\Habilidad;
+use Root\Program\Mod\Habilidad\CorteLimpio;
 
 class Cangrejo
 extends Personaje
@@ -16,5 +18,10 @@ extends Personaje
         $position_y = 200;
 
         parent::__construct($nombre, $sprite, $position_x, $position_y);
+
+        $this->setVida(150);
+        $this->setMana(80);
+
+        $this->addHabilidad(new CorteLimpio());
     }
 }

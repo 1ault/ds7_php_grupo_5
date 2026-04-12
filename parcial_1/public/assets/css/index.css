@@ -12,9 +12,6 @@ body {
 }
 
 .game-container {
-    width: 1280;
-    height: 720;
-
     margin-left: 0;
     margin-right: auto;
     margin-top: 20px;
