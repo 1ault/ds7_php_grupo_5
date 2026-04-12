@@ -3,7 +3,8 @@ all:
 	@echo "Diagram: make debug <input>=<dir>"
 
 own:
-	su tuzz -c "chown -R tuzz:tuzz $(PWD)"
+	su tuzz -c "chown -R tuzz:tuzz $(PWD) && git push origin main"
+	
 
 debug:
 	cd ./$(input) && su tuzz -c 'cd $(PWD) && composer dump-autoload -o'
