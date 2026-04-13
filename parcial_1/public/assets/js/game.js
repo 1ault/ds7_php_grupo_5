@@ -1,23 +1,48 @@
+
+
+
 export const signal = {
-    async buttonSignal({ signal })
+    async buttonSignal({ gameStatus, signal })
     {
+        const response = await fetch("/api/input_signal.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            body: JSON.stringify({ gameStatus, signal })
+        });
 
-        if ( signal === "ataque")
-        {
+        let data;
 
-            const response = await fetch("/api/input_ataque.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8"
-                },
-                body: JSON.stringify(name)
-            });
-
+        try {
+            data = await response.json();
+        } catch (e) {
+            console.error(e);
+            throw new Error(`Error: invalid json response`);
         }
+
+        if (!response.ok || data.error) {
+            throw new Error(`Error: ${data.error}`);
+        }
+
+        return data;
     },
 };
 
 export const data = {
+    async update({ gameStatus, gameStatusUpdate })
+    {
+        
+        gameStatusUpdate.canvas.container = gameStatus.canvas.container;
+        gameStatusUpdate.canvas.canvas = gameStatus.canvas.canvas;
+        gameStatusUpdate.canvas.context = gameStatus.canvas.context;
+
+        gameStatusUpdate.assets.fondo.main = await assets.load.fondo({ name: "main" });
+        gameStatusUpdate.assets.personaje.kangre = await assets.load.personaje({ name: "kangre" });
+        gameStatusUpdate.assets.enemigo.champi = await assets.load.enemigo({ name: "champi" });
+
+        return gameStatusUpdate;
+    },
     state: {
        async save ({ gameStatus }) 
         {

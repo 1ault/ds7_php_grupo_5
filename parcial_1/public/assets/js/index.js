@@ -16,7 +16,7 @@ let gameStatus = {
         "enemigo": {},
     },
     "input": {
-        "gui": false,
+        "gui": true,
     },
     "gui": [],
 };
@@ -54,7 +54,7 @@ async function gameInit()
         const guiDialog = {
             type: "dialog",
             id: "dialog",
-            text: "Hello\nWelcome to the game!",
+            text: "...",
             position_x: 0 - 2,
             position_y: 0 - 2,
             width: 330, 
@@ -200,7 +200,7 @@ function gameLoop()
 }
 
 
-canvas.addEventListener("mousedown", (event) => {
+canvas.addEventListener("mousedown", async (event) => {
     const rect = canvas.getBoundingClientRect();
 
     const mouse_position_x = event.clientX - rect.left;
@@ -208,24 +208,38 @@ canvas.addEventListener("mousedown", (event) => {
     console.log(mouse_position_y);
     console.log(mouse_position_x);
 
-    gameStatus.gui.forEach(btn => {
 
-        if (gameStatus.input.gui) { return; }
-        
 
-        if (
-            mouse_position_x >= btn.position_x &&
-            mouse_position_x <= btn.position_x + btn.width &&
-            mouse_position_y >= btn.position_y &&
-            mouse_position_y <= btn.position_y + btn.height
-        ) {
 
-            gameStatus.input.gui = true;
-            console.log("click", btn.action);
+    if (gameStatus.input.gui == false) { 
+        console.log("User no input"); 
+        return;
+    }
 
-            game.signal.buttonSignal({
-                signal: btn.action
-            });
+    for (const btn of gameStatus.gui) 
+    {
+        console.log(btn.type);
+        if (btn.type === "button_text")
+        {
+            if (
+                mouse_position_x >= btn.position_x &&
+                mouse_position_x <= btn.position_x + btn.width &&
+                mouse_position_y >= btn.position_y &&
+                mouse_position_y <= btn.position_y + btn.height
+            ) {
+                gameStatus.input.gui = false;
+                console.log("click:", btn.action);
+
+                const gameStatusUpdate = await game.signal.buttonSignal({
+                    gameStatus,
+                    signal: btn.action
+                });
+
+                gameStatus = await game.data.update({ gameStatus: gameStatus, gameStatusUpdate: gameStatusUpdate });
+                break;
+            }
         }
-    });
+    }
+
+
 });
