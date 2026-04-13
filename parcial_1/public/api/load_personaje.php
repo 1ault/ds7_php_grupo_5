@@ -11,8 +11,6 @@ $raw = file_get_contents("php://input");
 
 Game::getPersonajeKangre();
 
-
-
 if ($raw === false || $raw === '') {
     Game::response(["error" => "empty request"], 400);
 }

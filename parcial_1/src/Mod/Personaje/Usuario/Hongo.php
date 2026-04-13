@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Root\Program\Mod\Personaje\Mod;
+namespace Root\Program\Mod\Personaje\Usuario;
 
 use Root\Program\Mod\Personaje;
 

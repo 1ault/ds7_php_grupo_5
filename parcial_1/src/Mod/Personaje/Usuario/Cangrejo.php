@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Root\Program\Mod\Personaje\Mod;
+namespace Root\Program\Mod\Personaje\Usuario;
 
 use Root\Program\Mod\Personaje;
 use Root\Program\Mod\Habilidad;
@@ -14,8 +14,8 @@ extends Personaje
     {
         $nombre = "kangre";
         $sprite = "/assets/img/kangre.webp";
-        $position_x = 200;
-        $position_y = 200;
+        $position_x = 340;
+        $position_y = 340;
 
         parent::__construct($nombre, $sprite, $position_x, $position_y);
 
