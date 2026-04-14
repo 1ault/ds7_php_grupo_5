@@ -12,6 +12,7 @@ return array(
     'Root\\Program\\Mod\\Fondo' => $baseDir . '/src/Mod/Fondo.php',
     'Root\\Program\\Mod\\Habilidad' => $baseDir . '/src/Mod/Habilidad.php',
     'Root\\Program\\Mod\\Habilidad\\CorteLimpio' => $baseDir . '/src/Mod/Habilidad/CorteLimpio.php',
+    'Root\\Program\\Mod\\Habilidad\\PinzaAplastante' => $baseDir . '/src/Mod/Habilidad/PinzaAplastante.php',
     'Root\\Program\\Mod\\Item' => $baseDir . '/src/Mod/Item.php',
     'Root\\Program\\Mod\\Personaje' => $baseDir . '/src/Mod/Personaje.php',
     'Root\\Program\\Mod\\Personaje\\Enemigo\\Axolote' => $baseDir . '/src/Mod/Personaje/Enemigo/Axolote.php',
@@ -20,4 +21,5 @@ return array(
     'Root\\Program\\Mod\\Personaje\\Usuario\\Axolote' => $baseDir . '/src/Mod/Personaje/Usuario/Axolote.php',
     'Root\\Program\\Mod\\Personaje\\Usuario\\Cangrejo' => $baseDir . '/src/Mod/Personaje/Usuario/Cangrejo.php',
     'Root\\Program\\Mod\\Personaje\\Usuario\\Hongo' => $baseDir . '/src/Mod/Personaje/Usuario/Hongo.php',
+    'Root\\Program\\Mod\\Type\\Vector2DInt' => $baseDir . '/src/Mod/Type/Vector2DInt.php',
 );

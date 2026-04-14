@@ -1,9 +1,8 @@
-
-
-
 export const signal = {
     async buttonSignal({ gameStatus, signal })
     {
+        console.log("------------------");
+        console.log(signal);
         const response = await fetch("/api/input_signal.php", {
             method: "POST",
             headers: {
@@ -22,7 +21,7 @@ export const signal = {
         }
 
         if (!response.ok || data.error) {
-            throw new Error(`Error: ${data.error}`);
+            throw new Error(`${data.error}`);
         }
 
         return data;
@@ -72,25 +71,24 @@ export const data = {
         },
         async load()
         {
-
             const response = await fetch("/api/get_game.php?game_state=state", {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json; charset=utf-8"
-                },
             });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
 
             let data;
 
             try {
                 data = await response.json();
             } catch (e) {
-                console.error(e);
-                throw new Error(`Error: invalid json response`);
+                throw new Error(`json response error: ${e.message}`);
             }
 
-            if (!response.ok || data.error) {
-                throw new Error(`Error: ${data.error}`);
+            if (data.error) {
+                throw new Error(`api error: ${data.error}`);
             }
 
             return data;
@@ -321,8 +319,11 @@ export const assets = {
             try {
                 data = await response.json();
             } catch (e) {
+                console.log(`>`);
+                console.log(`Not load personaje: ${name}`);
                 console.error(e);
                 throw new Error(`Error: invalid json response`);
+                console.log(`<`);
             }
 
             if (!response.ok || data.error) {

@@ -28,66 +28,201 @@ class Game
         exit;
     }
 
-
-
-    static public function signalAtaqueGameState()
+    static public function signalGameStateHabilidad()
     {
-        
-
+    
         $file = __DIR__ . "/../storage/game_state.json";
 
         $json = file_get_contents($file);
-
         if ($json === false) {
             Game::response(["error" => "not load storage"], HttpStatus::NOT_FOUND);
             exit;
         }
 
         $data = json_decode($json, true);
-
         if (!is_array($data)) {
             Game::response(["error" => "not load storage"], HttpStatus::NOT_FOUND);
             exit;
         }
 
-
         $personaje = $data['assets']['personaje']['kangre'];
+        $personaje_vida = $personaje['vida'];
+        $personaje_mana = $personaje['mana'];
+        $personaje_habilidad_dano = $personaje['habilidades'][1]["dano_base"];
+        $personaje_habilidad_nombre = $personaje['habilidades'][1]["nombre"];
+        $personaje_habilidad_coste = $personaje['habilidades'][1]['coste'];
 
-        $data['assets']['enemigo']['champi']['vida'] -=
-            $personaje['habilidades'][0]["dano_base"];
-
-        $enemigo_vida = $data['assets']['enemigo']['champi']['vida'];
-        // $personajeClass = new UsuarioKangre();
-        //$personajeClass->setVida($personaje['vida']);
-        //$personajeClass->setMana($personaje['mana']);
+        $text = "";
         
-        $data['gui'][0]['text'] = sprintf("[Usuario]: Ataco\n[Enemigo]: -5 vida\n[Enemigo][vida] = %d", $enemigo_vida);
-        // $data['gui'][0]['text'] = sprintf("[Usuario]: Ataco\n[Enemigo]: -5 vida\n[Enemigo][vida] = ");
-        //$data['gui'][0]['text'] = sprintf("[Usuario]");
+
+        if ($personaje_vida < 0)
+        { 
+            $text .= sprintf("- (info): Kangre esta muerto. Vida restante: %d\n", $personaje_vida);
+            $data['gui'][0]['text'] = $text;
+            self::response
+            (
+                $data,
+                HttpStatus::OK->value
+            );
+        }
+
+        if (($personaje_mana - $personaje_habilidad_coste) < 0)
+        { 
+            $text .= sprintf("- (info): No tienes suficiente mana. Mana restante: %d", $personaje_mana); 
+            $data['gui'][0]['text'] = $text;
+            self::response
+            (
+                $data,
+                HttpStatus::OK->value
+            );
+        }
+        $data['assets']['personaje']['kangre']['mana'] -= $personaje_habilidad_coste;
+
+        $text .= sprintf("- (Kangre): Uso %s\n", $personaje_habilidad_nombre);
+
+        if (rand(0, 1) === 1) {
+            $personaje_habilidad_dano *= 2;
+            $text .= sprintf("- (Kangre): Acerto daño critico: %d\n", $personaje_habilidad_dano);
+        } else {
+            $text .= sprintf("- (Kangre): Acerto daño normal: %d\n", $personaje_habilidad_dano);
+        }
+
+        $enemigo_vida = $data['assets']['enemigo']['champi']['vida'] -= $personaje_habilidad_dano;
+
+        $text .= sprintf("- (info): Kangre si tiene mana. Mana restante: %d\n", $personaje_mana);
+        $text .= sprintf("- (info): Kangre no esta muerto. Vida restante: %d\n", $personaje_vida);
+
+        $text .= sprintf("- (Kangre): Tiene %d de vida\n", $personaje_vida);
+        $text .= sprintf("- (Enemigo): Recibio %s de daño. Vida restante: %d\n", $personaje_habilidad_dano, $enemigo_vida);
+
+        if ($enemigo_vida <= 0)
+        { 
+            $text .= sprintf("- (info): Enemigo ha sido derrotado\n");
+        }
+        if ($enemigo_vida <= -10)
+        { 
+            $text .= sprintf("- (info): Enemigo ha sido derrotado dejalo descansar en paz\n");
+        }
+
+        $data['gui'][0]['text'] = $text;
          
-
-
-
-
-
         file_put_contents(
             __DIR__ . "/../storage/game_state.json",
             json_encode($data, JSON_PRETTY_PRINT)
         );
 
-        http_response_code(HttpStatus::OK->value);
-        echo json_encode($data);
-        exit;
+        self::response
+        (
+            $data,
+            HttpStatus::OK->value
+        ); 
+    }
+
+    static public function signalGameStateAtacar()
+    {
+        
+        $text = "";
+        $file = __DIR__ . "/../storage/game_state.json";
+
+        $json = file_get_contents($file);
+        if ($json === false) {
+            Game::response(["error" => "not load storage"], HttpStatus::NOT_FOUND);
+            exit;
+        }
+
+        $data = json_decode($json, true);
+        if (!is_array($data)) {
+            Game::response(["error" => "not load storage"], HttpStatus::NOT_FOUND);
+            exit;
+        }
+
+        $personaje = $data['assets']['personaje']['kangre'];
+        $personaje_vida = $personaje['vida'];
+        $personaje_habilidad_dano = $personaje['habilidades'][0]["dano_base"];
+        $personaje_habilidad_nombre = $personaje['habilidades'][0]["nombre"];
+        
+        $text = "";
+
+        if ($personaje_vida < 0)
+        { 
+            $text .= sprintf("- (info): Kangre esta muerto. Vida restante: %d\n", $personaje_vida);
+            $data['gui'][0]['text'] = $text;
+            self::response
+            (
+                $data,
+                HttpStatus::OK->value
+            );
+        }
+
+        $text .= sprintf("- (Kangre): Uso %s\n", $personaje_habilidad_nombre);
+
+        if (rand(0, 1) === 1) {
+            $personaje_habilidad_dano *= 2;
+            $text .= sprintf("- (Kangre): Acerto daño critico: %d\n", $personaje_habilidad_dano);
+        } else {
+            $text .= sprintf("- (Kangre): Acerto daño normal: %d\n", $personaje_habilidad_dano);
+        }
+
+        $enemigo_vida = $data['assets']['enemigo']['champi']['vida'] -= $personaje_habilidad_dano;
+
+        $text .= sprintf("- (info): Kangre no esta muerto. Vida restante: %d\n", $personaje_vida);
+
+        $text .= sprintf("- (Kangre): Tiene %d de vida\n", $personaje_vida);
+        $text .= sprintf("- (Enemigo): Recibio %s de daño. Vida restante: %d\n", $personaje_habilidad_dano, $enemigo_vida);
+
+        if ($enemigo_vida <= 0)
+        { 
+            $text .= sprintf("- (info): Enemigo ha sido derrotado\n");
+        }
+        if ($enemigo_vida <= -10)
+        { 
+            $text .= sprintf("- (info): Enemigo ha sido derrotado dejalo descansar en paz\n");
+        }
+
+
+        $data['gui'][0]['text'] = $text;
+         
+        file_put_contents(
+            __DIR__ . "/../storage/game_state.json",
+            json_encode($data, JSON_PRETTY_PRINT)
+        );
+
+        self::response
+        (
+            $data,
+            HttpStatus::OK->value
+        );
     }
 
     static public function loadGameState()
     {
-        http_response_code(HttpStatus::OK->value);
-        $json = file_get_contents( 
-            __DIR__ . "/../storage/game_state.json",
-        );
-        echo $json;
-        exit;
+        $path = __DIR__ . "/../storage/game_state.json";
+        if (!is_readable($path)) {
+            self::response(
+                ['error' => 'file not found or not readable'],
+                HttpStatus::NOT_FOUND->value
+            );
+        }
+
+        $json = file_get_contents($path);
+        if ($json === false) {
+            self::response
+            (
+                ['error' => 'cannot read file'],
+                HttpStatus::INTERNAL_SERVER_ERROR->value
+            );
+        }
+
+        $data = json_decode($json, true);
+        if ($data === null && json_last_error() !== JSON_ERROR_NONE) {
+            self::response
+                (
+                    ['error' => 'invalid json'], 
+                    HttpStatus::INTERNAL_SERVER_ERROR->value
+                ); 
+        }
+
+        self::response($data);
     }
 
     static public function saveGameState($game_state)

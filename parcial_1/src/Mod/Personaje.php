@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace Root\Program\Mod;
 
 use Root\Program\Mod\Habilidad;
+use Root\Program\Mod\Item;
+use Root\Program\Mod\Type\Vector2DInt;
+
 use JsonSerializable;
 
 abstract
@@ -14,6 +17,7 @@ implements JsonSerializable
     private string $sprite;
     private int $position_x;
     private int $position_y;
+    private Vector2DInt $vector_2d_int;
 
     private int $vida;
     private int $mana;
@@ -40,6 +44,12 @@ implements JsonSerializable
         $this->habilidades = [];
         $this->inventario = [];
         $this->estados = [];
+    }
+
+
+    public function addItem(Item $item)
+    {
+        array_push($this->inventario, $item);
     }
 
     public function addHabilidad(Habilidad $habilidad)

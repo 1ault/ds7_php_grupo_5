@@ -6,6 +6,7 @@ namespace Root\Program\Mod\Personaje\Usuario;
 use Root\Program\Mod\Personaje;
 use Root\Program\Mod\Habilidad;
 use Root\Program\Mod\Habilidad\CorteLimpio;
+use Root\Program\Mod\Habilidad\PinzaAplastante;
 
 class Cangrejo
 extends Personaje
@@ -23,5 +24,6 @@ extends Personaje
         $this->setMana(80);
 
         $this->addHabilidad(new CorteLimpio());
+        $this->addHabilidad(new PinzaAplastante());
     }
 }
