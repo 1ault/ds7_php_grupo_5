@@ -14,6 +14,16 @@ export function irA(idPantalla) {
     document.getElementById(idPantalla).classList.remove('oculto');
 }
 
+//portada
+const btnJugar = document.getElementById("btn-jugar");
+const portada = document.getElementById("portada");
+const pantallaSeleccion = document.getElementById("pantalla-seleccion");
+
+btnJugar.addEventListener("click", () => {
+    portada.classList.add("oculto"); // oculta portada
+    pantallaSeleccion.classList.remove("oculto"); // muestra juego
+});
+
 // Pantalla 1: Selección
 const canvasSeleccion = document.getElementById('canvas-seleccion');
 new Seleccion({

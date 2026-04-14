@@ -12,6 +12,46 @@ body {
     font-family: sans-serif;
     color: #fff;
 }
+.portada{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    padding: 0 50px;
+
+    background: radial-gradient(circle at center, #1a1a2e, #0f0f1a);
+    color: white;
+}
+
+.canvas-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.integrantes{
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+
+#titulo{
+    font-size: 56px;
+    color: white;
+    font-family: 'Courier New', monospace;
+}
+
+#subtitulo{
+    font-size: 44px;
+    color: white;
+    font-family: 'Courier New', monospace;
+}
+
+#titulo, #subtitulo{
+    margin: 0;
+}
+
 
 .oculto {
     display: none !important;

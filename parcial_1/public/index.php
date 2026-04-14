@@ -4,13 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Esta línea arregla todas las rutas de golpe -->
-    <base href="/Parcial1/parcial_1/public/">
+    <base href="/Parcial1/ds7_php_grupo_5/parcial_1/public/">
     <title>Juego</title>
     <link rel="stylesheet" href="assets/css/index.css">
 </head>
 <body>
 
-    <div class="pantalla" id="pantalla-seleccion">
+    <!-- PORTADA -->
+    <div class="portada" id="portada">
+        <div class="contenido-portada">
+            <h1 id="titulo">PARCIAL 1</h1>
+            <h1 id="subtitulo">PHP</h1>
+
+            <div class="integrantes">
+                <h3>Integrantes:</h3>
+                <ul id="nombres">    
+                    <li>Jonathan Quinto | 8-1007-1971</li>
+                    <li>Whitney Ault | 8-984-1977</li>
+                    <li>Abdias Rueda | 8-1011-2210</li>
+                    <li>Nadesh Valdes | 4-779-2117</li>
+                    <li>Alexander Castroverde | 8-1017-805</li>
+                </ul>
+            </div>
+        </div>
+        <button class="btn" id="btn-jugar">Jugar</button>
+        <div class="canvas-container">
+            <img src="assets/img/tres.webp" alt="">
+        </div>
+    </div>
+
+    <div class="pantalla oculto" id="pantalla-seleccion">
         <div class="seleccion-stats" id="stats-panel">
             <h2 id="stats-nombre">Elige un personaje</h2>
             <ul id="stats-lista">
