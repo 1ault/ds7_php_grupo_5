@@ -63,7 +63,7 @@ const combate = new Combate({
                 </div>`;
         } else {
             // Siguiente ronda — volver a tienda
-            irA('pantalla-tienda');
+            irA('canvas-seleccion');
             tienda.init();
         }
     }

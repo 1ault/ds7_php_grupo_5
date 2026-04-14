@@ -344,4 +344,48 @@ body {
     display: block;
     image-rendering: pixelated;
 }
+/* ── Idle: flotación suave ── */
+@keyframes idle-float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-8px); }
+}
+
+/* ── Atacar: se lanza hacia el enemigo ── */
+@keyframes atacar-jugador {
+    0%   { transform: translateY(0px) translateX(0px); }
+    40%  { transform: translateY(-4px) translateX(80px); }
+    60%  { transform: translateY(-4px) translateX(80px); }
+    100% { transform: translateY(0px) translateX(0px); }
+}
+
+@keyframes atacar-enemigo {
+    0%   { transform: translateY(0px) translateX(0px); }
+    40%  { transform: translateY(-4px) translateX(-80px); }
+    60%  { transform: translateY(-4px) translateX(-80px); }
+    100% { transform: translateY(0px) translateX(0px); }
+}
+
+/* ── Recibir daño: shake + flash rojo ── */
+@keyframes recibir-dano {
+    0%         { transform: translateX(0);    filter: brightness(1); }
+    15%        { transform: translateX(-10px); filter: brightness(2) sepia(1) saturate(5) hue-rotate(-30deg); }
+    30%        { transform: translateX(10px);  filter: brightness(1); }
+    45%        { transform: translateX(-8px);  filter: brightness(2) sepia(1) saturate(5) hue-rotate(-30deg); }
+    60%        { transform: translateX(8px);   filter: brightness(1); }
+    75%        { transform: translateX(-4px);  filter: brightness(1); }
+    100%       { transform: translateX(0);    filter: brightness(1); }
+}
+
+/* ── Morir: caída ── */
+@keyframes morir {
+    0%   { transform: rotate(0deg)   translateY(0);    opacity: 1; }
+    100% { transform: rotate(90deg)  translateY(30px); opacity: 0.3; }
+}
+
+/* Clases que se aplican/quitan con JS */
+.anim-idle    { animation: idle-float 2.5s ease-in-out infinite; }
+.anim-atacar-jugador  { animation: atacar-jugador 0.5s ease-in-out forwards; }
+.anim-atacar-enemigo  { animation: atacar-enemigo 0.5s ease-in-out forwards; }
+.anim-dano    { animation: recibir-dano 0.5s ease-in-out forwards; }
+.anim-morir   { animation: morir 0.8s ease-in forwards; }
 

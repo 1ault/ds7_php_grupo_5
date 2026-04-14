@@ -7,7 +7,9 @@ use Root\Program\Game;
 
 $raw = file_get_contents("php://input");
 
-Game::getFondoMain();
+$result = Game::getFondoMain(); 
+Game::response(['sprite' => $result]);
+
 
 
 
