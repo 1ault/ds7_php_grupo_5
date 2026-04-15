@@ -90,7 +90,7 @@
         <div class="combate-acciones">
             <button class="btn btn-habilidad" id="btn-habilidad-normal">🗡️ Habilidad Normal</button>
             <button class="btn btn-habilidad" id="btn-habilidad-especial">✨ Habilidad Especial</button>
-            <button class="btn btn-habilidad" id="btn-pocion">❤️ Usar Poción</button>
+            <div id="contenedor-pociones"></div>
         </div>
 
     </div>

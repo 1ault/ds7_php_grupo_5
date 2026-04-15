@@ -1,7 +1,7 @@
 const PERSONAJES = [
     {
         nombre: 'Hongo',
-        src:    'assets/img/champi.webp',  // era hongo.webp
+        src:    'assets/img/champi.webp',  
         x:      80,
         stats: {
             Vida:      100,
@@ -14,7 +14,7 @@ const PERSONAJES = [
     },
     {
         nombre: 'Cangrejo',
-        src:    'assets/img/kangre.webp',  // ✅ este ya estaba bien
+        src:    'assets/img/kangre.webp',  
         x:      300,
         stats: {
             Vida:      120,
@@ -27,7 +27,7 @@ const PERSONAJES = [
     },
     {
         nombre: 'Axolote',
-        src:    'assets/img/jojo.webp',   // era axolote.webp
+        src:    'assets/img/jojo.webp',   
         x:      520,
         stats: {
             Vida:      110,

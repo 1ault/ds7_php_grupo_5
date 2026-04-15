@@ -48,22 +48,33 @@ const tienda = new Tienda({
 // Pantalla 3: Combate
 const combate = new Combate({
     onFinRonda: (gano) => {
-        if (gano) estadoJuego.rondasGanadas++;
-        estadoJuego.ronda++;
+        if (!gano) {
+        // 🔥 PERDISTE INMEDIATAMENTE
+        irA('pantalla-fin');
+        document.getElementById('pantalla-fin').innerHTML = `
+            <div style="text-align:center">
+                <h1 style="color:red;font-size:3rem">💀 Perdiste...</h1>
+                <button class="btn" onclick="location.reload()">🔄 Jugar de nuevo</button>
+            </div>`;
+        return;
+    }
 
-        if (estadoJuego.ronda > 3) {
-            // Fin del juego
-            irA('pantalla-fin');
-            const msg = estadoJuego.rondasGanadas >= 2 ? '🏆 ¡Ganaste Campeón!' : '💀 Perdiste...';
-            document.getElementById('pantalla-fin').innerHTML = `
-                <div style="text-align:center">
-                    <h1 style="color:#e2b04a;font-size:3rem">${msg}</h1>
-                    <p style="color:#ccc;margin:16px 0">Rondas ganadas: ${estadoJuego.rondasGanadas}/3</p>
-                    <button class="btn" onclick="location.reload()">🔄 Jugar de nuevo</button>
-                </div>`;
+    // ✅ Ganó la ronda
+    estadoJuego.rondasGanadas++;
+    estadoJuego.ronda++;
+
+    // 🏆 Ganó las 3 rondas
+    if (estadoJuego.rondasGanadas >= 3) {
+        irA('pantalla-fin');
+        document.getElementById('pantalla-fin').innerHTML = `
+            <div style="text-align:center">
+                <h1 style="color:#e2b04a;font-size:3rem">🏆 ¡Ganaste Campeón!</h1>
+                <button class="btn" onclick="location.reload()">🔄 Jugar de nuevo</button>
+            </div>`;
+        return;
         } else {
             // Siguiente ronda — volver a tienda
-            irA('canvas-seleccion');
+            irA('pantalla-tienda');
             tienda.init();
         }
     }

@@ -6,21 +6,31 @@ export class Combate {
     }
 
     async init(personajeElegido, itemsEquipados) {
+        this.items = itemsEquipados;
         const res = await fetch('api/combate_iniciar.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 personaje: personajeElegido.nombre,
-                items: itemsEquipados
+                items: itemsEquipados,
+                ronda: estadoJuego.ronda  
             })
         });
 
         const estado = await res.json();
         this.estado  = estado;
 
+        const jugadorImg = document.getElementById('jugador-img');
+        const enemigoImg = document.getElementById('enemigo-img');
+
+        jugadorImg.className = '';
+        enemigoImg.className = '';
+
         this._renderUI();
         this._log('⚔️ ¡Combate iniciado!');
         this._actualizarBarras();
+        this._deshabilitarBotones(false);
+
     }
 
     _renderUI() {
@@ -38,7 +48,29 @@ export class Combate {
 
         document.getElementById('btn-habilidad-normal').onclick  = () => this._accion('normal');
         document.getElementById('btn-habilidad-especial').onclick = () => this._accion('especial');
-        document.getElementById('btn-pocion').onclick             = () => this._accion('pocion');
+        const contenedorBotones = document.getElementById('contenedor-pociones');
+        contenedorBotones.innerHTML = '';
+
+// Revisar items equipados
+        this.items.forEach(item => {
+
+    if (item.id === 'pocion_vida') {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = '❤️ Usar Poción de Vida';
+        btn.onclick = () => this._accion('pocion_vida');
+        contenedorBotones.appendChild(btn);
+    }
+
+    if (item.id === 'pocion_mana') {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = '💧 Usar Poción de Mana';
+        btn.onclick = () => this._accion('pocion_mana');
+        contenedorBotones.appendChild(btn);
+    }
+
+});
 
         this._iniciarIdle();
     }
@@ -60,10 +92,23 @@ export class Combate {
             return;
         }
 
+        if (tipo.startsWith('pocion')) {
+    const index = this.items.findIndex(i => i.id === tipo);
+    if (index !== -1) {
+        this.items.splice(index, 1);
+    }
+
+    this._renderUI(); // actualizar botones
+}
+
         // Animaciones de ataque
-        if (tipo !== 'pocion') {
-            this._animarAtaque('jugador', 'enemigo');
-        }
+        // 🔥 SOLO SI ES ATAQUE
+if (!tipo.startsWith('pocion')) {
+
+    this._animarAtaque('jugador', 'enemigo');
+
+
+}
 
         // Animación del contraataque enemigo (llega después)
         setTimeout(() => {
@@ -135,12 +180,18 @@ export class Combate {
         document.getElementById('enemigo-mana-barra').style.width = (enemigo.mana / enemigo.mana_max * 100) + '%';
     }
 
-    _deshabilitarBotones(deshabilitar) {
-        ['btn-habilidad-normal', 'btn-habilidad-especial', 'btn-pocion'].forEach(id => {
-            document.getElementById(id).disabled = deshabilitar;
-        });
-    }
+  _deshabilitarBotones(deshabilitar) {
+    // botones fijos
+    ['btn-habilidad-normal', 'btn-habilidad-especial'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.disabled = deshabilitar;
+    });
 
+    // 🔥 botones dinámicos (pociones)
+    document.querySelectorAll('#contenedor-pociones .btn').forEach(btn => {
+        btn.disabled = deshabilitar;
+    });
+}
     _log(mensaje) {
         const lista = document.getElementById('log-lista');
         lista.innerHTML += `<li>${mensaje}</li>`;

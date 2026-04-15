@@ -11,6 +11,7 @@ session_start();
 
 $raw  = file_get_contents('php://input');
 $data = json_decode($raw, true);
+$ronda = $data['ronda'] ?? 1;
 
 $nombrePersonaje = $data['personaje'] ?? null;
 $items           = $data['items']     ?? [];
@@ -44,6 +45,9 @@ $objEnemigo = match($nombreEnemigo) {
     'Axolote'  => new Axolote(),
 };
 
+$vidaExtra   = ($ronda - 1) * 20;
+$ataqueExtra = ($ronda - 1) * 5;
+
 // Calcular bonuses de ítems equipados
 $bonusAtaque  = 0;
 $bonusDefensa = 0;
@@ -76,17 +80,17 @@ $_SESSION['combate'] = [
     ],
     'enemigo' => [
         'nombre'       => $objEnemigo->get_nombre(),
-        'vida'         => $objEnemigo->get_vida(),
-        'vida_max'     => $objEnemigo->get_vida(),
-        'mana'         => $objEnemigo->get_mana(),
-        'mana_max'     => $objEnemigo->get_mana(),
-        'habilidades'  => array_map(
-            fn($h) => $h->get_nombre(),
-            $objEnemigo->get_habilidades()
-        ),
-        'bonus_ataque'  => 0,
-        'bonus_defensa' => 0,
-        'pociones'      => 0,
+    'vida'         => $objEnemigo->get_vida() + $vidaExtra,
+    'vida_max'     => $objEnemigo->get_vida() + $vidaExtra,
+    'mana'         => $objEnemigo->get_mana(),
+    'mana_max'     => $objEnemigo->get_mana(),
+    'habilidades'  => array_map(
+        fn($h) => $h->get_nombre(),
+        $objEnemigo->get_habilidades()
+    ),
+    'bonus_ataque'  => $ataqueExtra,
+    'bonus_defensa' => 0,
+    'pociones'      => 0,
     ],
 ];
 

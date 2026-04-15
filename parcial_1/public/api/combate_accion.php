@@ -38,14 +38,33 @@ $objEnemigo = match($enemigo['nombre']) {
     'Axolote'  => new Axolote(),
 };
 
-if ($accion === 'pocion') {
+if ($accion === 'pocion_vida' || $accion === 'pocion_mana') {
+    if ($accion === 'pocion_vida') {
     if ($jugador['pociones'] <= 0) {
         Game::response(['error' => 'no tienes pociones'], 400);
     }
+
     $jugador['pociones']--;
-    $cura = 50;
-    $jugador['vida'] = min($jugador['vida_max'], $jugador['vida'] + $cura);
-    $log[] = "❤️ {$jugador['nombre']} usó una poción y recuperó {$cura} de vida";
+    $vidaAntes = $jugador['vida'];
+
+$cura = 50;
+$jugador['vida'] = min($jugador['vida_max'], $jugador['vida'] + $cura);
+
+$curadoReal = $jugador['vida'] - $vidaAntes;
+
+$log[] = "❤️ {$jugador['nombre']} recuperó {$curadoReal} de vida";
+}
+
+if ($accion === 'pocion_mana') {
+    $manaAntes = $jugador['mana'];
+
+$curaMana = 50;
+$jugador['mana'] = min($jugador['mana_max'], $jugador['mana'] + $curaMana);
+
+$manaRecuperado = $jugador['mana'] - $manaAntes;
+
+$log[] = "💧 {$jugador['nombre']} recuperó {$manaRecuperado} de mana";
+}
 
 } else {
     // Obtener habilidad
@@ -93,7 +112,25 @@ if ($enemigo['mana'] >= $habilidadEnemigo->get_coste()) {
     $resultadoEnemigo = $habilidadEnemigo->calcular_dano();
     $danoEnemigo = $resultadoEnemigo['dano'];
 
-    $jugador['vida'] = max(0.0, $jugador['vida'] - $danoEnemigo);
+// 🛡️ aplicar defensa del jugador
+$danoReducido = max(0, $danoEnemigo - $jugador['bonus_defensa']);
+
+$jugador['vida'] = max(0.0, $jugador['vida'] - $danoReducido);
+
+// 🔥 log mejorado
+$msg = "{$enemigo['nombre']} usó {$habilidadEnemigo->get_nombre()} — {$jugador['nombre']} recibió {$danoReducido} de daño";
+
+if ($jugador['bonus_defensa'] > 0) {
+    $msg .= " (🛡️ -{$jugador['bonus_defensa']} defensa)";
+}
+
+$msg .= ". Vida: {$jugador['vida']}";
+
+if ($resultadoEnemigo['es_critico']) {
+    $msg = "💥 ¡Crítico! " . $msg;
+}
+
+$log[] = $msg;
 
     $msg = "{$enemigo['nombre']} usó {$habilidadEnemigo->get_nombre()} — {$jugador['nombre']} recibió {$danoEnemigo} de daño. Vida: {$jugador['vida']}";
     if ($resultadoEnemigo['es_critico']) $msg = "💥 ¡Crítico! " . $msg;

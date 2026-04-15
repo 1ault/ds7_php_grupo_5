@@ -389,3 +389,8 @@ body {
 .anim-dano    { animation: recibir-dano 0.5s ease-in-out forwards; }
 .anim-morir   { animation: morir 0.8s ease-in forwards; }
 
+#contenedor-pociones {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
