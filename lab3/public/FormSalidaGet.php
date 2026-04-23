@@ -11,6 +11,7 @@
 <form>
 
 <?php
+
 $altura = filter_var($form->getKey("altura"), FILTER_VALIDATE_FLOAT);
 if ($altura === false) {
     $altura = 0;
@@ -24,7 +25,15 @@ if ($peso === false) {
 echo "Nombre: " . htmlspecialchars($form->getKey("nombre"), ENT_QUOTES, "UTF-8") . "<br>";
 echo "Peso: " . htmlspecialchars($form->getKey("peso"), ENT_QUOTES, "UTF-8") . "<br>";
 echo "Altura: " . htmlspecialchars($form->getKey("altura"), ENT_QUOTES, "UTF-8") . "<br>";
-echo "IMC = " . $peso / ($altura * $altura);
+echo "IMC = " . $peso / ($altura * $altura) . "<br><br>";
+
+echo "PHP Self: " . $_SERVER['PHP_SELF'] . "<br>";
+echo "Server Name: " . $_SERVER['SERVER_NAME'] . "<br>";
+echo "HTTP Host: " . $_SERVER['HTTP_USER_AGENT'] . "<br>";
+echo "Request Method: " . $_SERVER['REQUEST_METHOD'] . "<br>";
+echo "Remote Addr: " . $_SERVER['REMOTE_ADDR'] . "<br>";
+echo "Query String: " . $_SERVER['QUERY_STRING'] . "<br>";
+
 ?>
 </form>
 
