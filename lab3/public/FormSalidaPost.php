@@ -11,7 +11,6 @@
 <form>
 <?php
 
-
 echo "Nombre: " . htmlspecialchars($form->getKey("nombre"), ENT_QUOTES, "UTF-8") . "<br>";
 echo "Correo: " . htmlspecialchars($form->getKey("correo"), ENT_QUOTES, "UTF-8") . "<br>";
 echo "Cedula: " . htmlspecialchars($form->getKey("cedula"), ENT_QUOTES, "UTF-8") . "<br>";

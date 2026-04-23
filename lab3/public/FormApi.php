@@ -44,7 +44,7 @@ $file = match ($form->getRequestMethod()) {
 
 
 if (!$file) {
-    exit("Empty request_method");
+    exit("Vacio request_method");
 }
 
 require_once __DIR__ . "/" . $file;

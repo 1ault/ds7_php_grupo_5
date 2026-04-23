@@ -14,12 +14,20 @@
 
 $altura = filter_var($form->getKey("altura"), FILTER_VALIDATE_FLOAT);
 if ($altura === false) {
-    $altura = 0;
+    exit("altura inválida");
+}
+
+if ($altura <= 0) {
+    exit("altura debe ser mayor a 0");
 }
 
 $peso = filter_var($form->getKey("peso"), FILTER_VALIDATE_FLOAT);
 if ($peso === false) {
-    $peso = 0;
+    exit("peso inválido");
+}
+
+if ($peso <= 0) {
+    exit("peso debe ser mayor a 0");
 }
 
 echo "Nombre: " . htmlspecialchars($form->getKey("nombre"), ENT_QUOTES, "UTF-8") . "<br>";
