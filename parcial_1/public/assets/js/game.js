@@ -1,7 +1,6 @@
 export const signal = {
     async buttonSignal({ gameStatus, signal })
     {
-        console.log("------------------");
         console.log(signal);
         const response = await fetch("/api/input_signal.php", {
             method: "POST",

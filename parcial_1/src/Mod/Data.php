@@ -6,10 +6,7 @@ namespace Root\Program\Mod;
 class Data
 {
 
-    public function __construct
-    () 
-    {
-    }
+    public function __construct() {}
 
     
     static public function save($game_state)
@@ -20,7 +17,6 @@ class Data
         );
     }
 
-    public function load()
-    {
-    }
+    public function load() {}
+
 }

@@ -1,5 +1,6 @@
 all:
 	@echo "Example: make debug input=laboratorio_1"
+	@echo "make debug input=parcial_1"
 	@echo "Diagram: make debug <input>=<dir>"
 
 own:
@@ -12,6 +13,12 @@ git_debug:
 
 debug:
 	cd ./$(input) && su tuzz -c 'cd $(PWD)/$(input) && composer dump-autoload -o'
-	rm -rf /usr/local/www/caddy/*
-	cp -R ./$(input)/* /usr/local/www/caddy/
-	chown -R www:www /usr/local/www/caddy/
+	rm -rf /usr/local/www/web1/*
+	cp -R ./$(input)/* /usr/local/www/web1/
+	chown -R www:www /usr/local/www/web1/
+
+debug2:
+	cd ./$(input) && su tuzz -c 'cd $(PWD)/$(input) && composer dump-autoload -o'
+	rm -rf /usr/local/www/web2/*
+	cp -R ./$(input)/* /usr/local/www/web2/
+	chown -R www:www /usr/local/www/web2/
