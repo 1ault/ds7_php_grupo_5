@@ -46,11 +46,17 @@ class Web
             case '/crear';
                 LibroController::crear();
                 break;
+            case '/eliminar';
+                LibroController::eliminar();
+                break;
             case '/libro/crear';
                 LibroController::libro_crear();
                 break;
             case '/libro/editar';
                 LibroController::libro_editar();
+                break;
+            case '/libro/eliminar';
+                LibroController::libro_eliminar();
                 break;
             default:
                 self::response(

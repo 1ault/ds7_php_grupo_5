@@ -1,6 +1,6 @@
 <form action="/libro/editar" method="POST">
 
-    <label for="">Editor de libros</label>
+    <label for="">Editor de libro</label>
 
     <label for="id">ID:</label>
     <input type="text" name="id" placeholder="id">

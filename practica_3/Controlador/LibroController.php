@@ -42,6 +42,22 @@ class LibroController
         require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
     }
 
+
+    public static function eliminar()
+    {
+        
+        $logs = $_GET['logs'] ?? [];
+
+        ob_start();
+        require_once PATH_ROOT_VISTA . '/Eliminar.php';
+        $main = ob_get_clean();
+
+
+        $title = 'eliminar';
+    
+        require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
+    }
+
     public static function listar()
     {
         $libros_modelo = new Libro();
@@ -56,6 +72,39 @@ class LibroController
         $title = 'listar';
     
         require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
+    }
+
+    public static function libro_eliminar()
+    {    
+
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+
+        $logs = [];
+
+        if ($id === false || $id === null) {
+            $logs['id'] = 'id no es valido';
+        }
+
+
+        if (!empty($logs)) {
+            $query = http_build_query([
+                'logs' => $logs,
+            ]);
+
+            header('Location: /eliminar?' . $query);
+            exit;
+        }
+
+
+        $libro = new Libro
+        (
+            $id
+        );
+
+        $libro->remove();
+
+        header('Location: /eliminar');
+        exit;
     }
 
     public static function libro_crear()

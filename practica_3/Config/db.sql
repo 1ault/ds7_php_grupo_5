@@ -16,6 +16,7 @@ CREATE TABLE libro (
     categoria VARCHAR(255) NOT NULL,
     img VARCHAR(400) NOT NULL
 );
+
 INSERT INTO libro
 (
     nombre, 

@@ -92,6 +92,8 @@ class Libro
     public function remove(): void
     {
 
+        $layer8 = Layer8::Init();
+
         $consulta = $layer8->prepare(
             "DELETE FROM libro 
             WHERE id = :id"
