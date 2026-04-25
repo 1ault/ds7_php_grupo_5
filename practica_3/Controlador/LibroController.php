@@ -22,6 +22,8 @@ class LibroController
         ob_start();
         require_once PATH_ROOT_VISTA . '/Crear.php';
         $main = ob_get_clean();
+
+        $title = 'crear';
         
         require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
     }
@@ -34,10 +36,27 @@ class LibroController
         ob_start();
         require_once PATH_ROOT_VISTA . '/Editar.php';
         $main = ob_get_clean();
+
+        $title = 'editar';
         
         require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
     }
 
+    public static function listar()
+    {
+        $libros_modelo = new Libro();
+
+        $libros = $libros_modelo->listar();
+        
+        ob_start();
+        require_once PATH_ROOT_VISTA . '/Listar.php';
+        $main = ob_get_clean();
+
+
+        $title = 'listar';
+    
+        require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
+    }
 
     public static function libro_crear()
     {    
@@ -165,16 +184,4 @@ class LibroController
         exit;
     }
 
-    public static function listar()
-    {
-        $libros_modelo = new Libro();
-
-        $libros = $libros_modelo->listar();
-        
-        ob_start();
-        require_once PATH_ROOT_VISTA . '/Listar.php';
-        $main = ob_get_clean();
-    
-        require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
-    }
 }
