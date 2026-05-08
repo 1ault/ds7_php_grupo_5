@@ -1,0 +1,3 @@
+/listar
+/crear
+/editar
