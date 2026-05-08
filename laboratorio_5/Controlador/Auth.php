@@ -3,14 +3,11 @@ declare(strict_types=1);
 
 namespace Root\Program\Controlador;
 
-use Root\Program\Modelo\Usuario;
-use Root\Program\Modelo\Libro;
-
-class Servicio
+class Auth
 {
-
-    public static function login()
+    public static function viewLogin(): void
     {
+
         session_start();
 
         $logs = $_GET['logs'] ?? [];
@@ -36,9 +33,8 @@ class Servicio
         require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
     }
 
-    public static function registro()
-    {     
- 
+    public static function viewRegistro(): void
+    {
         ob_start();
         require_once PATH_ROOT_VISTA . '/Registro.php';
         $main = ob_get_clean();
@@ -48,9 +44,10 @@ class Servicio
         require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
     }
 
-    public static function usuario_registro()
-    {     
-        
+
+    public static function apiLogin(): void
+    {
+
         $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
         $contrasena = trim(filter_input(INPUT_POST, 'contrasena', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
         $logs = $_GET['logs'] ?? [];
@@ -85,20 +82,42 @@ class Servicio
         exit;
     }
 
-    public static function servicio()
+    public static function apiRegistro(): void
     {
-        session_start();
-        
+
+        $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
+        $contrasena = trim(filter_input(INPUT_POST, 'contrasena', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
         $logs = $_GET['logs'] ?? [];
 
-        ob_start();
-        require_once PATH_ROOT_VISTA . '/Servicio.php';
-        $main = ob_get_clean();
+        if (empty($nombre)) {
+            $logs['nombre'] = 'empty nombre';
+        }
 
+        if (empty($contrasena)) {
+            $logs['nombre'] = 'empty nombre';
+        }
 
-        $title = 'servicio';
-    
-        require_once PATH_ROOT_VISTA_LAYOUT . '/Main.php';
+        if (!empty($logs)) {
+            $query = http_build_query([
+                'logs' => $logs,
+            ]);
+
+            header('Location: /registro?' . $query);
+            exit;
+        }
+
+        $usuario = new 
+            Usuario(
+                -1, 
+                $nombre, 
+                $contrasena
+            )
+        
+        $usuario->insert();
+
+        header("Location: /login");
+        exit;
     }
+
 
 }

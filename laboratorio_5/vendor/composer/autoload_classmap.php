@@ -8,8 +8,10 @@ $baseDir = dirname($vendorDir);
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Root\\Program\\Config\\Layer8' => $baseDir . '/Config/Layer8.php',
-    'Root\\Program\\Controlador\\LibroController' => $baseDir . '/Controlador/LibroController.php',
-    'Root\\Program\\Modelo\\Libro' => $baseDir . '/Modelo/Libro.php',
+    'Root\\Program\\Controlador\\Auth' => $baseDir . '/Controlador/Auth.php',
+    'Root\\Program\\Controlador\\Servicio' => $baseDir . '/Controlador/Servicio.php',
+    'Root\\Program\\Modelo\\Servicio' => $baseDir . '/Modelo/Servicio.php',
+    'Root\\Program\\Modelo\\Usuario' => $baseDir . '/Modelo/Usuario.php',
     'Root\\Program\\Routers\\Api' => $baseDir . '/Routers/Api.php',
     'Root\\Program\\Routers\\Web' => $baseDir . '/Routers/Web.php',
 );

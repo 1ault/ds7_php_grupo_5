@@ -1,39 +1,16 @@
---
-
 SHOW DATABASES;
 
-DROP DATABASE libros;
+DROP DATABASE servicios;
 
-CREATE DATABASE libros;
+CREATE DATABASE servicios;
 
-USE libros;
+USE usuario;
 
-CREATE TABLE libro (
+CREATE TABLE usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    autor VARCHAR(255) NOT NULL,
-    fecha VARCHAR(255) NOT NULL,
-    categoria VARCHAR(255) NOT NULL,
-    img VARCHAR(400) NOT NULL
+    nombre VARCHAR(512) NOT NULL,
+    password VARCHAR(512) NOT NULL
 );
 
-INSERT INTO libro
-(
-    nombre, 
-    autor, 
-    fecha, 
-    categoria, 
-    img
-)
-VALUES 
-(
-    'Moby Dick', 
-    'Herman Melville', 
-    '1851', 
-    'novela', 
-    '/Assets/img/moby_dick.jpg'
-);
 
-SHOW TABLES;
 
-SELECT * FROM libro;

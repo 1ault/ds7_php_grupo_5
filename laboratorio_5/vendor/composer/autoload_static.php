@@ -7,7 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit4ccb1d6354b3f80aefdd56fe33203bd5
 {
     public static $files = array (
-        '3510b408d30cdd7201ebd85172433bff' => __DIR__ . '/../..' . '/Config/path.php',
+        'd84d7ad391062311e3cb914931ba68b0' => __DIR__ . '/../..' . '/Config/Path.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -42,8 +42,10 @@ class ComposerStaticInit4ccb1d6354b3f80aefdd56fe33203bd5
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Root\\Program\\Config\\Layer8' => __DIR__ . '/../..' . '/Config/Layer8.php',
-        'Root\\Program\\Controlador\\LibroController' => __DIR__ . '/../..' . '/Controlador/LibroController.php',
-        'Root\\Program\\Modelo\\Libro' => __DIR__ . '/../..' . '/Modelo/Libro.php',
+        'Root\\Program\\Controlador\\Auth' => __DIR__ . '/../..' . '/Controlador/Auth.php',
+        'Root\\Program\\Controlador\\Servicio' => __DIR__ . '/../..' . '/Controlador/Servicio.php',
+        'Root\\Program\\Modelo\\Servicio' => __DIR__ . '/../..' . '/Modelo/Servicio.php',
+        'Root\\Program\\Modelo\\Usuario' => __DIR__ . '/../..' . '/Modelo/Usuario.php',
         'Root\\Program\\Routers\\Api' => __DIR__ . '/../..' . '/Routers/Api.php',
         'Root\\Program\\Routers\\Web' => __DIR__ . '/../..' . '/Routers/Web.php',
     );

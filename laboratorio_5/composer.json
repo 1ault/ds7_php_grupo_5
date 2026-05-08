@@ -8,7 +8,7 @@
             "Root\\Program\\Config\\": "Config/"
         },
         "files": [
-            "Config/path.php"
+            "Config/Path.php"
         ]
     },
     "require": {}

@@ -25,9 +25,9 @@ class Usuario
         $layer8 = Layer8::Init();
 
         $consulta = $layer8->prepare(
-            "SELECT * FROM account
-              WHERE username = 'user'
-              AND   sha_pass_hash = 'user'
+            "SELECT * FROM user
+              WHERE username = ':nombre'
+              AND   contrasena = ':contrasena'
             "
         );
         $consulta->execute();
@@ -36,7 +36,7 @@ class Usuario
     }
 
 
-    public function registro()
+    public function insert()
     {
         $layer8 = Layer8::Init();
         

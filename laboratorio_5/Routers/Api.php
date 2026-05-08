@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace Root\Program\Routers;
 
 use Root\Program\Controlador\Auth;
-use Root\Program\Controlador\Servicio;
+use Root\Program\Utils\Http;
 
-
-class Web
+class Api
 {
     private string $uri;
 
@@ -16,21 +15,16 @@ class Web
         $this->uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH); 
     }
 
+
     public function run(): void
     {
         switch ($this->uri)
         {
-            case '/':
-                Auth::viewLogin();
+            case '/api/auth/login';
+                Auth::apiLogin();
                 break;
-            case '/login';
-                Auth::viewLogin();
-                break;
-            case '/registro';
-                Auth::viewRegistro();
-                break;
-            case '/home';
-                Servicio::viewHome();
+            case '/api/auth/register';
+                Auth::apiRegistro();
                 break;
             default:
                 Http::response(
