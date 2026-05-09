@@ -5,6 +5,7 @@ namespace Root\Program\Routers;
 
 use Root\Program\Controlador\Auth;
 use Root\Program\Utils\Http;
+use Root\Program\Utils\HttpStatus;
 
 class Api
 {

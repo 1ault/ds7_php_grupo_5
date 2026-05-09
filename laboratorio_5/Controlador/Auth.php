@@ -3,26 +3,12 @@ declare(strict_types=1);
 
 namespace Root\Program\Controlador;
 
+use Root\Program\Model\Usuario;
+
 class Auth
 {
     public static function viewLogin(): void
     {
-
-        session_start();
-
-        $logs = $_GET['logs'] ?? [];
-
-        $usuario_login = new Usuario(-1, $_POST['nombre'], $_POST['contrasena'])
-
-        $usuario_login->login();
-
-        if (!empty($usuario_login)) 
-        {
-            $_SESSION["nombre"] = $_POST['id'];
-            $_SESSION["nombre"] = $_POST['nombre'];
-
-            $nombre = $_SESSION["nombre"]; 
-        }
 
         ob_start();
         require_once PATH_ROOT_VISTA . '/Login.php';
@@ -47,6 +33,23 @@ class Auth
 
     public static function apiLogin(): void
     {
+
+
+        $logs = $_GET['logs'] ?? [];
+
+        //$usuario_login = new Usuario(-1, $_POST['nombre'], $_POST['contrasena'])
+
+        //$usuario_login->login();
+
+        if (!empty($usuario_login)) 
+        {
+            $_SESSION["nombre"] = $_POST['id'];
+            $_SESSION["nombre"] = $_POST['nombre'];
+
+            $nombre = $_SESSION["nombre"]; 
+        }
+
+
 
         $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
         $contrasena = trim(filter_input(INPUT_POST, 'contrasena', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
@@ -74,11 +77,11 @@ class Auth
                 -1, 
                 $nombre, 
                 $contrasena
-            )
+            );
         
-        $usuario->insert();
+        //$usuario->insert();
 
-        header("Location: /login");
+        header('Location: /login');
         exit;
     }
 
@@ -111,9 +114,9 @@ class Auth
                 -1, 
                 $nombre, 
                 $contrasena
-            )
+            );
         
-        $usuario->insert();
+        //$usuario->insert();
 
         header("Location: /login");
         exit;

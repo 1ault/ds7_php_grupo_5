@@ -1,6 +1,7 @@
 all:
 	@echo "Example: make debug input=laboratorio_1"
 	@echo "make debug input=laboratorio_4"
+	@echo "make debug input=laboratorio_6"
 	@echo "make debug input=parcial_1"
 	@echo "Diagram: make debug <input>=<dir>"
 

@@ -13,6 +13,7 @@ class ComposerStaticInit4ccb1d6354b3f80aefdd56fe33203bd5
     public static $prefixLengthsPsr4 = array (
         'R' =>
         array (
+            'Root\\Program\\Utils\\' => 19,
             'Root\\Program\\Routers\\' => 21,
             'Root\\Program\\Modelo\\' => 20,
             'Root\\Program\\Controlador\\' => 25,
@@ -21,6 +22,10 @@ class ComposerStaticInit4ccb1d6354b3f80aefdd56fe33203bd5
     );
 
     public static $prefixDirsPsr4 = array (
+        'Root\\Program\\Utils\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/Utils',
+        ),
         'Root\\Program\\Routers\\' =>
         array (
             0 => __DIR__ . '/../..' . '/Routers',
@@ -48,6 +53,8 @@ class ComposerStaticInit4ccb1d6354b3f80aefdd56fe33203bd5
         'Root\\Program\\Modelo\\Usuario' => __DIR__ . '/../..' . '/Modelo/Usuario.php',
         'Root\\Program\\Routers\\Api' => __DIR__ . '/../..' . '/Routers/Api.php',
         'Root\\Program\\Routers\\Web' => __DIR__ . '/../..' . '/Routers/Web.php',
+        'Root\\Program\\Utils\\Csrf' => __DIR__ . '/../..' . '/Utils/Csrf.php',
+        'Root\\Program\\Utils\\Http' => __DIR__ . '/../..' . '/Utils/Http.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

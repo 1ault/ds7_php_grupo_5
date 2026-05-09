@@ -14,4 +14,6 @@ return array(
     'Root\\Program\\Modelo\\Usuario' => $baseDir . '/Modelo/Usuario.php',
     'Root\\Program\\Routers\\Api' => $baseDir . '/Routers/Api.php',
     'Root\\Program\\Routers\\Web' => $baseDir . '/Routers/Web.php',
+    'Root\\Program\\Utils\\Csrf' => $baseDir . '/Utils/Csrf.php',
+    'Root\\Program\\Utils\\Http' => $baseDir . '/Utils/Http.php',
 );
