@@ -3,18 +3,17 @@ declare(strict_types=1);
 
 namespace Root\Program\Utils;
 
-class Csrf
+class CrossSiteRequestForgery
 {
-    public static function tokenCSRFGet(): string {
+    public static function tokenGenerate(): void {
         if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             $one_hour = time() + 3600;
             $_SESSION['csrf_token_expiry'] = $one_hour;
         }
-        return $_SESSION['csrf_token'];
     }
 
-    public static function tokenCSRFValidate(mixed $token): bool {
+    public static function tokenValidate(mixed $token): bool {
         // === Check server
         if ($_SERVER['REQUEST_METHOD'] != 'POST')
         {

@@ -1,31 +1,22 @@
-<form action="/login" method="POST">
+<form action="/api/auth/login" method="POST">
+    <label for="">Login</label>
 
-    <label for="">Editor de libro</label>
+    <label for="email">Correo:</label>
+    <input type="email" id="email" name="email" placeholder="example@local.com" required>
 
-    <label for="id">ID:</label>
-    <input type="text" name="id" placeholder="id">
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required>
 
-    <label for="nombre">Nombre:</label>
-    <input type="text" name="nombre" placeholder="nombre">
-
-    <label for="autor">Autor</label>
-    <input type="text" name="autor" placeholder="autor">
-
-    <label for="fecha">Fecha:</label>
-    <input type="text" name="fecha" placeholder="fecha">
-
-    <label for="categoria">Categoria:</label>
-    <input type="text" name="categoria" placeholder="categoria">
-
-    <label for="img">Portada:</label>
-    <input type="text" name="img" placeholder="/Assets/img/name.jpg">
-
-    <button type="submit">Editar</button>
+    <button type="submit">Entrar</button>
 </form>
+
+<a href="/register" class="button-href">Registrarse</a>
+
 <?php if (!empty($logs)): ?>
     <ul class="log">
         <?php foreach ($logs as $log): ?>
-            <li><?= htmlspecialchars($log) ?></li>
+            <li><?= htmlspecialchars($log, ENT_QUOTES, "UTF-8"); ?></li>
+
         <?php endforeach ?>
     </ul>
 <?php endif ?>

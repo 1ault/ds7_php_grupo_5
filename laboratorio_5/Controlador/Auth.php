@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Root\Program\Controlador;
 
-use Root\Program\Model\Usuario;
+use Root\Program\Modelo\Usuario;
+use Root\Program\Utils\Encrypted;
 
 class Auth
 {
@@ -34,33 +35,21 @@ class Auth
     public static function apiLogin(): void
     {
 
+        $password = trim(filter_input(INPUT_POST, 'password', FILTER_DEFAULT) ?? '');
+        $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '');
 
         $logs = $_GET['logs'] ?? [];
 
-        //$usuario_login = new Usuario(-1, $_POST['nombre'], $_POST['contrasena'])
-
-        //$usuario_login->login();
-
-        if (!empty($usuario_login)) 
-        {
-            $_SESSION["nombre"] = $_POST['id'];
-            $_SESSION["nombre"] = $_POST['nombre'];
-
-            $nombre = $_SESSION["nombre"]; 
+        if (empty($password)) {
+            $logs['password'] = 'empty password';
         }
 
-
-
-        $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
-        $contrasena = trim(filter_input(INPUT_POST, 'contrasena', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
-        $logs = $_GET['logs'] ?? [];
-
-        if (empty($nombre)) {
-            $logs['nombre'] = 'empty nombre';
+        if (empty($email)) {
+            $logs['email_empty'] = 'empty email';
         }
 
-        if (empty($contrasena)) {
-            $logs['nombre'] = 'empty nombre';
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            $logs['email_invalid'] = 'invalid email';
         }
 
         if (!empty($logs)) {
@@ -68,36 +57,61 @@ class Auth
                 'logs' => $logs,
             ]);
 
-            header('Location: /registro?' . $query);
+            header('Location: /login?' . $query);
             exit;
         }
 
         $usuario = new 
             Usuario(
-                -1, 
-                $nombre, 
-                $contrasena
+                name: '',
+                password: $password,
+                email: $email,
+                indexing_email: Encrypted::hashMessageAuthenticationCodeData(data: $email)
             );
-        
-        //$usuario->insert();
 
-        header('Location: /login');
+        $info = $usuario->login(); 
+        if(!empty($info))
+        {
+            
+            $logs['user_not_valid'] = $info;
+
+            $query = http_build_query([
+                'logs' => $logs,
+            ]);
+
+            header('Location: /login?' . $query);
+            exit; 
+        }
+
+
+        header('Location: /home');
         exit;
     }
 
     public static function apiRegistro(): void
     {
 
-        $nombre = trim(filter_input(INPUT_POST, 'nombre', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
-        $contrasena = trim(filter_input(INPUT_POST, 'contrasena', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
+        $name = trim(filter_input(INPUT_POST, 'nombre', FILTER_DEFAULT) ?? '');
+        $password = trim(filter_input(INPUT_POST, 'password', FILTER_DEFAULT) ?? '');
+        $email = trim(filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL) ?? '');
+        //strtolower
+
         $logs = $_GET['logs'] ?? [];
 
-        if (empty($nombre)) {
-            $logs['nombre'] = 'empty nombre';
+        if (empty($name)) {
+            $logs['name'] = 'empty nombre';
         }
 
-        if (empty($contrasena)) {
-            $logs['nombre'] = 'empty nombre';
+        if (empty($password)) {
+            $logs['password'] = 'empty password';
+        }
+
+        if (empty($email)) {
+            $logs['email_empty'] = 'empty email';
+        }
+
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            $logs['email_invalid'] = 'invalid email';
         }
 
         if (!empty($logs)) {
@@ -105,18 +119,20 @@ class Auth
                 'logs' => $logs,
             ]);
 
-            header('Location: /registro?' . $query);
+            header('Location: /register?' . $query);
             exit;
         }
 
+
         $usuario = new 
             Usuario(
-                -1, 
-                $nombre, 
-                $contrasena
+                name: Encrypted::securedEncrypt(data: $name),
+                password: Encrypted::hashPassword(password: $password),
+                email: Encrypted::securedEncrypt(data: $email), 
+                indexing_email: Encrypted::hashMessageAuthenticationCodeData(data: $email)
             );
         
-        //$usuario->insert();
+        $usuario->insert();
 
         header("Location: /login");
         exit;

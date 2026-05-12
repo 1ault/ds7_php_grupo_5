@@ -1,39 +1,26 @@
-<form action="/servicio" method="POST">
-    <label for="">Eliminar de Libro</label>
+<form action="/api/servicio/buy" method="POST">
 
-    <label for="id">ID:</label>
-    <input type="text" name="id" placeholder="id">
+    <label>Servicios</label>
 
-    <button type="submit">Eliminar</button>
+
+    <?php foreach ($servicios as $id => $servicio): ?>
+        <?= htmlspecialchars($id, ENT_QUOTES, 'UTF-8') ?>
+        <?= htmlspecialchars($servicio['name'], ENT_QUOTES, 'UTF-8') ?>
+        <?= htmlspecialchars($servicio['precio'], ENT_QUOTES, 'UTF-8') ?>
+    <?php endforeach ?>
+
+    <input 
+        type="hidden" 
+        name="csrf_token" 
+        value="<?= htmlspecialchars($_SESSION['csrf_token'], ENT_QUOTES, 'UTF-8') ?>"
+    >
+
+    <input 
+        type="hidden" 
+        name="csrf_token_expiry" 
+        value="<?= htmlspecialchars($_SESSION['csrf_token_expiry'], ENT_QUOTES, 'UTF-8') ?>"
+    >
+
+    <button type="submit">Submit</button>
+
 </form>
-<?php if (!empty($logs)): ?>
-    <ul class="log">
-        <?php foreach ($logs as $log): ?>
-            <li><?= htmlspecialchars($log) ?></li>
-        <?php endforeach ?>
-    </ul>
-<?php endif ?>
-
-<section class="libros">
-    <?php if (empty($libros)): ?>
-        <span>404 no encontrado</span>
-    <?php else: ?>
-        <?php foreach ($libros as $libro): ?>
-
-            <article class="libro">
-                <img 
-                    src="<?= htmlspecialchars($libro['img']) ?>" 
-                    alt="<?= htmlspecialchars($libro['nombre']) ?>"
-                >
-                <span>Nombre: <?= htmlspecialchars($libro['nombre']) ?></span>
-                <span>Autor: <?= htmlspecialchars($libro['autor']) ?></span>
-                <span>Fecha: <?= htmlspecialchars($libro['fecha']) ?></span>
-
-                <a href="/listar/<?= (int) $libro['id'] ?>">
-                    Ver
-                </a>
-            </article>
-
-        <?php endforeach ?>
-    <?php endif ?>
-</section>

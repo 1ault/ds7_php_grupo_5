@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+echo getenv('DB_HOST');
 
 require_once __DIR__ . '/vendor/autoload.php';
 

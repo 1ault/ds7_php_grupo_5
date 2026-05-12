@@ -12,9 +12,9 @@ class Layer8
         
         // Crear conexion PDO
         $conexion = new PDO(
-            DB_DSN,
-            DB_USUARIO,
-            DB_CONTRASENA
+            getenv('DB_DSN'),
+            getenv('DB_USUARIO'),
+            getenv('DB_CONTRASENA')
         );
         
         // Lanzar excepciones en errores

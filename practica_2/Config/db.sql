@@ -1,5 +1,3 @@
---
-
 SHOW DATABASES;
 
 DROP DATABASE libros;

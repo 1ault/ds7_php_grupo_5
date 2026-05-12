@@ -9,7 +9,10 @@
             "Root\\Program\\Utils\\": "Utils/"
         },
         "files": [
-            "Config/Path.php"
+            "Config/Vault.php",
+            "Config/Crypted.php",
+            "Config/Path.php",
+            "Config/Session.php"
         ]
     },
     "require": {}

@@ -9,9 +9,11 @@ use PDO;
 
 class Servicio
 {
-    
+    private readonly int  $id;
     public function __construct
     (
+        private readonly string $nombre,
+        private readonly string $precio,
     )
     {
     }

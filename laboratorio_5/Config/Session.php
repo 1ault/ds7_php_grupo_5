@@ -1,5 +1,8 @@
 <?php
 
+use Root\Program\Utils\CrossSiteRequestForgery;
+use Root\Program\Utils\Encrypted;
+
 /*
     // https://www.php.net/manual/en/session.security.ini.php
     ini_set('session.cookie_lifetime', '0');
@@ -32,19 +35,62 @@ session_set_cookie_params([
 // session.gc_maxlifetime is a setting for deleting obsolete session ID. Reliance on this setting is not recommended. Developers should manage the lifetime of sessions with a timestamp by themselves.
 define('MINUTE', 60);
 define('SESSION_TIMEOUT', 30 * MINUTE);
+define('SESSION_TIMEOUT_NOW', 0);
+
+
+// https://www.w3resource.com/php-exercises/cookies-sessions/php-cookies-sessions-exercise-11.php
 
 session_start();
 
 if 
 (
-    isset($_SESSION['last_activity']) &&
-    (time() - $_SESSION['last_activity']) > SESSION_TIMEOUT
-) {
+    isset($_SESSION['session_expired']) &&
+    $_SESSION['session_expired'] < time()
+) 
+{
     session_unset();
     session_destroy();
     exit;
 }
 
-$_SESSION['last_activity'] = time();
+if
+(
+    isset($_SESSION['session_actived']) &&
+    $_SESSION['session_actived'] == false
+)
+{
+    session_unset();
+    session_destroy();
+    exit;
+}
 
+
+// https://www.w3schools.com/PhP/php_superglobals_server.asp
+// https://www.php.net/manual/en/reserved.variables.server.php
+$_SESSION['session_actived'] = true;
+$_SESSION['session_expired'] = time() + SESSION_TIMEOUT;
+$_SESSION['session_start'] = time();
+CrossSiteRequestForgery::tokenGenerate();
+
+
+$_SESSION['fingerprint_lenguage'] =
+    Encrypted::hashMessageAuthenticationCodeData
+    (
+        data: $_SERVER['HTTP_ACCEPT_LANGUAGE']
+    );
+
+$_SESSION['fingerprint_browser_identification'] = 
+    Encrypted::hashMessageAuthenticationCodeData
+    (
+        data: $_SERVER['HTTP_USER_AGENT']
+    );
+
+$_SESSION['fingerprint_ip'] = 
+    Encrypted::hashMessageAuthenticationCodeData
+    (
+        data: $_SERVER['REMOTE_ADDR']
+    );
+
+
+// login ==>
 

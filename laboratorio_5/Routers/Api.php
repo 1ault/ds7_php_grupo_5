@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Root\Program\Routers;
 
 use Root\Program\Controlador\Auth;
+use Root\Program\Controlador\Servicio;
 use Root\Program\Utils\Http;
 use Root\Program\Utils\HttpStatus;
 
@@ -26,6 +27,9 @@ class Api
                 break;
             case '/api/auth/register';
                 Auth::apiRegistro();
+                break;
+            case '/api/servicio/buy';
+                Servicio::apiBuy();
                 break;
             default:
                 Http::response(

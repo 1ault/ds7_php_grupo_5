@@ -26,17 +26,13 @@ class Web
             case '/login';
                 Auth::viewLogin();
                 break;
-            case '/registro';
+            case '/register';
                 Auth::viewRegistro();
                 break;
             case '/home';
                 Servicio::viewHome();
                 break;
             default:
-                Http::response(
-                    "404 - Not Found",
-                    HttpStatus::NOT_FOUND
-                );
                 break;
         }
 

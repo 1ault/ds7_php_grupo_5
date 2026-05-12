@@ -12,8 +12,11 @@ return array(
     'Root\\Program\\Controlador\\Servicio' => $baseDir . '/Controlador/Servicio.php',
     'Root\\Program\\Modelo\\Servicio' => $baseDir . '/Modelo/Servicio.php',
     'Root\\Program\\Modelo\\Usuario' => $baseDir . '/Modelo/Usuario.php',
+    'Root\\Program\\Modelo\\UsuarioInfo' => $baseDir . '/Modelo/UsuarioInfo.php',
     'Root\\Program\\Routers\\Api' => $baseDir . '/Routers/Api.php',
     'Root\\Program\\Routers\\Web' => $baseDir . '/Routers/Web.php',
-    'Root\\Program\\Utils\\Csrf' => $baseDir . '/Utils/Csrf.php',
+    'Root\\Program\\Utils\\CrossSiteRequestForgery' => $baseDir . '/Utils/CrossSiteRequestForgery.php',
+    'Root\\Program\\Utils\\Encrypted' => $baseDir . '/Utils/Encrypted.php',
     'Root\\Program\\Utils\\Http' => $baseDir . '/Utils/Http.php',
+    'Root\\Program\\Utils\\VaultManager' => $baseDir . '/Utils/VaultManager.php',
 );
