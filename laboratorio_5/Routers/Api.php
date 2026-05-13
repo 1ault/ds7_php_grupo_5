@@ -22,14 +22,13 @@ class Api
     {
         switch ($this->uri)
         {
-            case '/api/auth/login';
+        case '/api/auth/login':
                 Auth::apiLogin();
                 break;
-            case '/api/auth/register';
+        case '/api/auth/register':
                 Auth::apiRegistro();
                 break;
-            case '/api/servicio/buy';
-                Servicio::apiBuy();
+        case '/api/servicio/buy':
                 break;
             default:
                 Http::response(
