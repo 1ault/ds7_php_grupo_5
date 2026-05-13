@@ -28,7 +28,7 @@ class Api
                 break;
             case '/api/auth/register':
                 Auth::apiRegistro();
-                break
+                break;
             case '/api/servicio/buy':
                 break;
             default:
