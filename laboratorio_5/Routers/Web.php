@@ -20,18 +20,21 @@ class Web
     {
         switch ($this->uri)
         {
+            case '':
+                Auth::viewLogin();
+                exit;
             case '/':
                 Auth::viewLogin();
-                break;
-            case '/login';
+                exit;
+            case '/login':
                 Auth::viewLogin();
-                break;
-            case '/register';
+                exit;
+            case '/register':
                 Auth::viewRegistro();
-                break;
-            case '/home';
+                exit;
+            case '/home':
                 Servicio::viewHome();
-                break;
+                exit;
             default:
                 break;
         }

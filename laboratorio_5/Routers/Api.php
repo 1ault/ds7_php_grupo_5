@@ -10,6 +10,7 @@ use Root\Program\Utils\HttpStatus;
 
 class Api
 {
+
     private string $uri;
 
     public function __construct()
@@ -25,18 +26,18 @@ class Api
 
             case '/api/auth/login':
                 Auth::apiLogin();
-                break;
+                exit;
             case '/api/auth/register':
                 Auth::apiRegistro();
-                break;
+                exit;
             case '/api/servicio/buy':
-                break;
+                exit;
             default:
                 Http::response(
                     "404 - Not Found",
                     HttpStatus::NOT_FOUND
                 );
-                break;
+                exit;
         }
 
     }
