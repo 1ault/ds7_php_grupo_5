@@ -24,13 +24,13 @@ class Api
         {
 
             case '/api/auth/login':
-                    Auth::apiLogin();
-                    break;
+                Auth::apiLogin();
+                break;
             case '/api/auth/register':
-                    Auth::apiRegistro();
-                    break;
+                Auth::apiRegistro();
+                break
             case '/api/servicio/buy':
-                    break;
+                break;
             default:
                 Http::response(
                     "404 - Not Found",
