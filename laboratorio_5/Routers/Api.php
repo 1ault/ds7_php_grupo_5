@@ -31,6 +31,7 @@ class Api
                 Auth::apiRegistro();
                 exit;
             case '/api/servicio/buy':
+                Servicio::apiBuy();
                 exit;
             default:
                 Http::response(
