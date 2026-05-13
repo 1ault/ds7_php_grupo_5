@@ -22,14 +22,15 @@ class Api
     {
         switch ($this->uri)
         {
-        case '/api/auth/login':
-                Auth::apiLogin();
-                break;
-        case '/api/auth/register':
-                Auth::apiRegistro();
-                break;
-        case '/api/servicio/buy':
-                break;
+
+            case '/api/auth/login':
+                    Auth::apiLogin();
+                    break;
+            case '/api/auth/register':
+                    Auth::apiRegistro();
+                    break;
+            case '/api/servicio/buy':
+                    break;
             default:
                 Http::response(
                     "404 - Not Found",
