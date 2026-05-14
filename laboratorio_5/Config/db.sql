@@ -127,7 +127,36 @@ CREATE TABLE relacion_usuario_formulario_de_compra
 
 -- Insert
 
+
+INSERT INTO servicio
+(
+    name,
+    precio
+)
+VALUES 
+(
+    'Mantenimiento de computadoras',
+    2500
+),
+(
+    'Instalacion de software', 
+    1500
+),
+(
+    'Respaldo de informacion', 
+    1000
+),
+(
+    'Limpieza interna de hardware',
+    2000
+),
+(
+    'Mantenimiento de computadoras',
+    2500
+),
+(
+    'Revision de red y conexion',
+    3000
+);
+
 SHOW TABLES;
-
-
-

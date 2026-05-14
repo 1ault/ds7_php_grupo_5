@@ -37,7 +37,7 @@ class CrossSiteRequestForgery
             return false;
         }
 
-        // === Check csrf token ===        
+        // === Check csrf token
         if (!isset($_SESSION['csrf_token'])) {
             return false;
         }

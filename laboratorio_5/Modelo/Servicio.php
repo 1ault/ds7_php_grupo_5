@@ -18,22 +18,48 @@ class Servicio
     {
     }
 
-
-    public function insert(): string
+    public static function listar(): array
     {
+        $layer8 = Layer8::init();
+
+        $consulta = $layer8->prepare(
+            "SELECT * FROM servicio"
+        );
+        $consulta->execute();
+
+        // Obtener resultados
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function edit(): void
+    public static function pedir(array $pedidos): array
     {
-    }
+        if (empty($pedidos)) {
+            return [];
+        }
 
-    public function remove(): void
-    {
-    }
+        $layer8 = Layer8::init();
 
+        $ids = array_map('intval', $pedidos);
+        $ids = array_unique($ids);
+        $ids = array_filter($ids, fn($id) => $id > 0);
 
-    public function listar(): array
-    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+        $sql_query = "
+            SELECT id, name, precio
+            FROM servicio
+            WHERE id 
+            IN ($placeholders)
+        ";
+
+        $consulta = $layer8->prepare($sql_query);
+        $consulta->execute($ids);
+
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
