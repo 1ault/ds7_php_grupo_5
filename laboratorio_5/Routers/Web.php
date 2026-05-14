@@ -35,6 +35,9 @@ class Web
             case '/home':
                 Servicio::viewHome();
                 exit;
+            case '/factura':
+                 Servicio::viewFactura();
+                 exit;
             default:
                 break;
         }

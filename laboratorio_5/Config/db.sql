@@ -160,3 +160,6 @@ VALUES
 );
 
 SHOW TABLES;
+
+CREATE TABLE relacion_formulario_servicio 
+( id BIGINT AUTO_INCREMENT PRIMARY KEY, id_formulario BIGINT NOT NULL, id_servicio BIGINT NOT NULL, FOREIGN KEY (id_formulario) REFERENCES formulario_de_compra(id), FOREIGN KEY (id_servicio) REFERENCES servicio(id) );

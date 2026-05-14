@@ -14,7 +14,7 @@
     <input type="tel" id="telefono" name="telefono" placeholder="123456769">
 
     <label for="date">Fecha de nacimiento</label>
-    <input type="date" id="date" value="2017-06-01">
+    <<input type="date" id="date" name="fecha_nacimiento" value="2017-06-01">
 
     <fieldset>
       <legend>Genero</legend>
@@ -38,7 +38,7 @@
     </datalist>
 
     <label for="residencia">Dirrecion residencial</label>
-    <input type="text" name="autor" placeholder="...">
+    <input type="text" name="residencia" placeholder="...">
 
     <button type="submit">Guardar</button>
 </form>

@@ -29,67 +29,66 @@ class Usuario
         $this->id = $id;
     }
 
-    public function login(): string
-    {
+    public function login(): array|false
+{
 
-        $layer8 = Layer8::Init();
-        $consulta = $layer8->prepare(
-            'SELECT id, name, email, password 
-             FROM usuario
-             WHERE indexing_email = :indexing_email
-             LIMIT 1;'
-        );
+    $layer8 = Layer8::Init();
 
-        // Vincular las parametros
-        $consulta->bindValue(':indexing_email', $this->indexing_email);
+    $consulta = $layer8->prepare(
+        'SELECT id, name, email, password 
+         FROM usuario
+         WHERE indexing_email = :indexing_email
+         LIMIT 1;'
+    );
 
-        // Ejecutar
-        $consulta->execute();
+    $consulta->bindValue(':indexing_email', $this->indexing_email);
 
-        $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
+    $consulta->execute();
 
-        if (!$usuario) {
-            return 'not user indexed';
-        } 
+    $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
 
-        $verify_password =
-            Encrypted::verifyPassword
-            (
-                password: $this->password,
-                hash: $usuario['password'] 
-            );
-        if (!$verify_password) 
-        {
-            return 'incorrect password';
-        }
-
-
-        $data_name = Encrypted::securedDecrypt
-            (
-                data: $usuario['name']
-            );
-
-        $data_email = Encrypted::securedDecrypt
-            (
-                data: $usuario['email']
-            );
-
-        $_SESSION['session_actived'] = false;
-
-
-        session_unset();
-        session_destroy();
-        session_start();
-        session_regenerate_id(true);
-
-        
-        $_SESSION['user_email'] = $data_email;
-        $_SESSION['user_name'] = $data_name;
-        $_SESSION['user_auth'] = true;
-        return '';
+    if (!$usuario) {
+        return false;
     }
 
-    public function insert(): string
+    $verify_password =
+        Encrypted::verifyPassword
+        (
+            password: $this->password,
+            hash: $usuario['password']
+        );
+
+    if (!$verify_password) {
+        return false;
+    }
+
+    $data_name = Encrypted::securedDecrypt(
+        data: $usuario['name']
+    );
+
+    $data_email = Encrypted::securedDecrypt(
+        data: $usuario['email']
+    );
+
+    session_unset();
+    session_destroy();
+
+    session_start();
+    session_regenerate_id(true);
+
+    $_SESSION['user_email'] = $data_email;
+    $_SESSION['user_name'] = $data_name;
+    $_SESSION['user_auth'] = true;
+
+    // DATOS DEL USUARIO
+    return [
+        'id' => $usuario['id'],
+        'name' => $data_name,
+        'email' => $data_email
+    ];
+}
+
+    public function insert(): int
     {
         $layer8 = Layer8::Init();
 

@@ -93,3 +93,54 @@ fieldset label {
   cursor: pointer;
 }
 
+.factura-container {
+    background-color: #ffffff;
+    border-radius: 0.63rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 800px;
+}
+
+.factura-container h1 {
+    text-align: center;
+    color: #0a2342;
+    margin-bottom: 1.5rem;
+}
+
+.factura-info {
+    margin-bottom: 1.5rem;
+}
+
+.factura-info p {
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.factura-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.factura-table thead {
+    background-color: #1a4f8a;
+    color: white;
+}
+
+.factura-table th,
+.factura-table td {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.factura-table tbody tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+.factura-total {
+    margin-top: 1.5rem;
+    text-align: right;
+    color: #0a2342;
+}
+
