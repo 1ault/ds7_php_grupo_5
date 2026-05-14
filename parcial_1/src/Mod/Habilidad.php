@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 namespace Root\Program\Mod;
 
-abstract class Habilidad
+use JsonSerializable;
+
+abstract 
+class Habilidad
+implements JsonSerializable
 {
     private string $nombre;
+<<<<<<< HEAD
     private float  $coste;
     private float  $dano_base;
     private float  $prob_critico;
@@ -26,6 +31,32 @@ abstract class Habilidad
         $this->prob_critico          = $prob_critico;
         $this->multiplicador_critico = $multiplicador_critico;
         $this->efecto_estado         = $efecto_estado;
+=======
+    private int $coste;
+    private int $dano_base;
+    private string $descripcion;
+
+    public function __construct(
+        string $nombre,
+        int $coste,
+        int $dano_base,
+        string $descripcion
+    ) {
+        $this->nombre = $nombre;
+        $this->coste = $coste;
+        $this->dano_base = $dano_base;
+        $this->descripcion = $descripcion;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            "nombre" => $this->nombre,
+            "coste" => $this->coste,
+            "dano_base" => $this->dano_base,
+            "descripcion" => $this->descripcion
+        ];
+>>>>>>> 324c2646896017040376d9eb086b34de89808e33
     }
 
     // Calcula el daño final (con posible crítico)

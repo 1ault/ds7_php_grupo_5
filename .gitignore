@@ -9,3 +9,8 @@
 
 # Not
 !**/.env.example
+
+# Core dumps
+*.core
+core
+yazi.core

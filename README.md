@@ -64,6 +64,24 @@ composer --version
 composer init
 ```
 
+```
+mysql -u root -p < db.sql
+mysql -u root -p < db.sql
+mysql -u root -p -D empresa -e "SELECT * FROM usuario;"
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'NewPassword123!';
+FLUSH PRIVILEGES;
+exit
+
+
+nvim ~/.my.cnf
+chmod 600 ~/.my.cnf
+mysql -e "SELECT 1;"
+
+mysql < db.sql
+mysql -D empresa -e "SELECT * FROM usuario;"
+
+```
+
 ## Makefile
 ```
 make debug input="parcial_1"

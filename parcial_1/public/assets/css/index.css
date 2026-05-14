@@ -24,6 +24,7 @@ body {
     color: white;
 }
 
+<<<<<<< HEAD
 .canvas-container{
     display: flex;
     justify-content: center;
@@ -34,6 +35,12 @@ body {
     font-size: 20px;
     margin-top: 10px;
 }
+=======
+.game-container {
+    margin-left: 0;
+    margin-right: auto;
+    margin-top: 20px;
+>>>>>>> 324c2646896017040376d9eb086b34de89808e33
 
 
 #titulo{
