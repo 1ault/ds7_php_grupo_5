@@ -1,9 +1,0 @@
-{
-    "name": "root/program",
-    "autoload": {
-        "psr-4": {
-            "Root\\Program\\": "src/"
-        }
-    },
-    "require": {}
-}
