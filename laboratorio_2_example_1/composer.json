@@ -1,9 +1,0 @@
-{
-    "name": "tuzz/laboratorio_2_1",
-    "autoload": {
-        "psr-4": {
-            "Tuzz\\Laboratorio21\\": "src/"
-        }
-    },
-    "require": {}
-}
