@@ -1,9 +1,6 @@
 <?php
-declare(strict_types=1);
 
-namespace Root\Program\Controlador;
-
-use Root\Program\Modelo\Usuario;
+require_once __DIR__ . "/../Modelo/Usuario.php";
 
 class UsuarioController
 {
