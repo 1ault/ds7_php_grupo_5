@@ -1,6 +1,4 @@
 <?php
-<<<<<<< Updated upstream
-=======
 declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -14,4 +12,3 @@ $controller->registrar();
 $mensaje = $controller->mensaje;
 
 require_once __DIR__ . "/../Vista/Registro.php";
->>>>>>> Stashed changes
