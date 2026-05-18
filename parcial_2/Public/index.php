@@ -6,3 +6,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Root\Program\Controlador\UsuarioController;
 
 UsuarioController::vistaRegistrar();
+
+
+
+use Root\Program\Routers\Web;
+use Root\Program\Routers\Api;
+
+Web::run();

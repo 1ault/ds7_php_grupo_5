@@ -1,0 +1,37 @@
+<?php
+declare(strict_types=1);
+
+namespace Root\Program\Routers;
+
+use Root\Program\Controlador\Auth;
+use Root\Program\Controlador\Servicio;
+use Root\Program\Utils\Http;
+use Root\Program\Utils\HttpStatus;
+
+class Api
+{
+    public static function run(): void
+    {
+        switch ($parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
+        {
+
+            case '/api/auth/login':
+                Auth::apiLogin();
+                exit;
+            case '/api/auth/register':
+                Auth::apiRegistro();
+                exit;
+            case '/api/servicio/buy':
+                Servicio::apiBuy();
+                exit;
+            default:
+                Http::response(
+                    "404 - Not Found",
+                    HttpStatus::NOT_FOUND
+                );
+                exit;
+        }
+
+    }
+    
+}
