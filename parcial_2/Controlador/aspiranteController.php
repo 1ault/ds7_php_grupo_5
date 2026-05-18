@@ -6,6 +6,24 @@ class AspiranteController
 {
     public string $mensaje = "";
 
+    public function procesar(): void
+{
+    if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+        return;
+    }
+
+    if (!isset($_SESSION["usuario_id"])) {
+        $this->mensaje = "Sesión inválida.";
+        return;
+    }
+
+    if (isset($_POST["accion"]) && $_POST["accion"] === "actualizar") {
+        $this->actualizar();
+    } else {
+        $this->guardar();
+    }
+}
+
     public function guardar(): void
     {
         if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -255,20 +273,6 @@ if (
     return;
 }
 
-
-if (
-    !in_array(
-        $nacionalidad,
-        $nacionalidadesValidas,
-        true
-    )
-) {
-    $this->mensaje =
-        "Nacionalidad inválida.";
-
-    return;
-}
-
         if (!preg_match("/^6[0-9]{3}-[0-9]{4}$/", $telefono)) {
             $this->mensaje = "Teléfono inválido. Use el formato 6123-4567.";
             return;
@@ -284,27 +288,39 @@ if (
             return;
         }
 
-        $modelo = new Aspirante();
+       $datos = [
+    "usuario_id" => $_SESSION["usuario_id"],
+    "cedula" => $cedula,
+    "nombre" => $nombre,
+    "apellido" => $apellido,
+    "estado_civil" => $estado_civil,
+    "genero" => $genero,
+    "tipo_sangre" => $tipo_sangre,
+    "fecha_nacimiento" => $fecha_nacimiento,
+    "nacionalidad" => $nacionalidad,
+    "telefono" => $telefono,
+    "residencia" => $residencia,
+    "correo" => $correo
+];
 
-        $resultado = $modelo->guardar([
-            "usuario_id" => $_SESSION["usuario_id"],
-            "cedula" => $cedula,
-            "nombre" => $nombre,
-            "apellido" => $apellido,
-            "estado_civil" => $estado_civil,
-            "genero" => $genero,
-            "tipo_sangre" => $tipo_sangre,
-            "fecha_nacimiento" => $fecha_nacimiento,
-            "nacionalidad" => $nacionalidad,
-            "telefono" => $telefono,
-            "residencia" => $residencia,
-            "correo" => $correo
-        ]);
+$modelo = new Aspirante();
 
-        if ($resultado) {
-            $this->mensaje = "Solicitud guardada correctamente.";
-        } else {
-            $this->mensaje = "Error al guardar la solicitud.";
-        }
+if (isset($_POST["accion"]) && $_POST["accion"] === "actualizar") {
+    $resultado = $modelo->actualizar($datos);
+
+    $this->mensaje = $resultado
+        ? "Información actualizada correctamente."
+        : "Error al actualizar la información.";
+} else {
+    $resultado = $modelo->guardar($datos);
+
+    $this->mensaje = $resultado
+        ? "Solicitud guardada correctamente."
+        : "Error al guardar la solicitud.";
+}
     }
+ public function actualizar(): void
+  {
+    $this->guardar();
+  }
 }
