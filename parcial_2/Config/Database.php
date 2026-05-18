@@ -5,32 +5,28 @@ namespace Root\Program\Config;
 
 class Database
 {
-    private $host = "localhost";
-    private $dbname = "sistema_rh";
-    private $user = "root";
-    private $password = "";
 
-    public function conectar()
+    public static function conectar()
     {
         try {
-
+            // Crear conexion PDO
             $conexion = new PDO(
-                "mysql:host={$this->host};dbname={$this->dbname};charset=utf8",
-                $this->user,
-                $this->password
+                getenv('DB_DSN_BSD'),
+                getenv('DB_USUARIO'),
+                getenv('DB_CONTRASENA')
             );
-
+            
+            // Lanzar excepciones en errores
             $conexion->setAttribute(
-                PDO::ATTR_ERRMODE,
+                PDO::ATTR_ERRMODE, 
                 PDO::ERRMODE_EXCEPTION
             );
 
             return $conexion;
 
         } catch(PDOException $e) {
-
             die("Error de conexión.");
-
         }
     }
+
 }

@@ -9,11 +9,36 @@ class AspiranteController
 {
     public string $mensaje = "";
 
-    public function guardar(): void
+
+    public static function vistaAspirante(): void
     {
-        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            return;
+        require_once __DIR__ . "/../Vista/formulario.php";
+    }
+
+
+    public static function postGuardarAspirante(): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] !== "POST") 
+        {
+            header('Location: /aspirante');
+            exit;
         }
+
+        $result = self::logicGuardarAspirante($_POST);
+
+        if (!$result['success']) 
+        {
+            $_SESSION['user_logs'] = $result['user_logs'];
+            header('Location: /aspirante');
+            exit;
+        }
+
+        header('Location: /aspirante');
+    }
+
+
+    public static function logicGuardarAspirante($data): array
+    {
 
         $cedula = trim($_POST["cedula"] ?? "");
         $nombre = trim($_POST["nombre"] ?? "");
@@ -33,37 +58,40 @@ class AspiranteController
             empty($nacionalidad) || empty($telefono) ||
             empty($residencia) || empty($correo)
         ) {
-            $this->mensaje = "Complete todos los campos obligatorios.";
-            return;
+            $logs[] = 
+                "Complete todos los campos obligatorios.";
         }
+
+        if (!empty($logs)) {
+            return ['success' => false, 'user_logs' => $logs];
+        }
+
 
         if (!preg_match("/^([0-9]{1,2}-[0-9]{1,4}-[0-9]{1,6}|[PEEN]-[0-9]{1,4}-[0-9]{1,6}|[A-Z0-9]{6,15})$/", $cedula)) {
-            $this->mensaje = "Cédula o pasaporte inválido.";
-            return;
+            $logs[] = 
+                "Cédula o pasaporte inválido.";
         }
 
-        if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$/", $nombre)) {
-            $this->mensaje = "Nombre inválido.";
-            return;
+        if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$/", $nombre)) {    
+            $logs[] =      
+                "Nombre inválido.";
         }
 
         if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$/", $apellido)) {
-            $this->mensaje = "Apellido inválido.";
-            return;
+            $logs[] = 
+                "Apellido inválido.";
         }
 
         $estadosValidos = ["", "Soltero", "Casado"];
-
         if (!in_array($estado_civil, $estadosValidos, true)) {
-            $this->mensaje = "Estado civil inválido.";
-            return;
+            $logs[] = 
+                "Estado civil inválido.";
         }
 
         $generosValidos = ["Masculino", "Femenino"];
-
         if (!in_array($genero, $generosValidos, true)) {
-            $this->mensaje = "Género inválido.";
-            return;
+            $logs[] = 
+                "Género inválido.";
         }
 
         $tiposSangreValidos = [
@@ -77,15 +105,14 @@ class AspiranteController
             "O+",
             "O-"
         ];
-
         if (!in_array($tipo_sangre, $tiposSangreValidos, true)) {
-            $this->mensaje = "Tipo de sangre inválido.";
-            return;
+            $logs[] = 
+                "Tipo de sangre inválido.";
         }
 
         if (!strtotime($fecha_nacimiento)) {
-            $this->mensaje = "Fecha de nacimiento inválida.";
-            return;
+            $logs[] = 
+                "Fecha de nacimiento inválida.";
         }
 
         $edad = date_diff(
@@ -94,13 +121,13 @@ class AspiranteController
         )->y;
 
         if ($fecha_nacimiento > date("Y-m-d")) {
-            $this->mensaje = "La fecha no puede ser futura.";
-            return;
+            $logs[] = 
+                "La fecha no puede ser futura.";
         }
 
         if ($edad < 18) {
-            $this->mensaje = "El aspirante debe ser mayor de edad.";
-            return;
+            $logs[] = 
+                "El aspirante debe ser mayor de edad.";
         }
 
         $nacionalidadesValidas = [
@@ -243,53 +270,41 @@ class AspiranteController
          "Yemení",
         "Zambiana",
         "Zimbabuense"
-    ];
+        ];
 
-if (
-    !in_array(
-        $nacionalidad,
-        $nacionalidadesValidas,
-        true
-    )
-) {
-    $this->mensaje =
-        "Nacionalidad inválida.";
-
-    return;
-}
-
-
-if (
-    !in_array(
-        $nacionalidad,
-        $nacionalidadesValidas,
-        true
-    )
-) {
-    $this->mensaje =
-        "Nacionalidad inválida.";
-
-    return;
-}
+        if (
+            !in_array(
+                $nacionalidad,
+                $nacionalidadesValidas,
+                true
+            )
+        ) {
+            $logs[] = 
+                "Nacionalidad inválida.";
+        }
 
         if (!preg_match("/^6[0-9]{3}-[0-9]{4}$/", $telefono)) {
-            $this->mensaje = "Teléfono inválido. Use el formato 6123-4567.";
-            return;
+            $logs[] = 
+                "Teléfono inválido. Use el formato 6123-4567.";
         }
 
         if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s#.,-]{5,100}$/", $residencia)) {
-            $this->mensaje = "Residencia inválida.";
-            return;
+            $logs[] = 
+                "Residencia inválida.";
         }
 
-        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
-            $this->mensaje = "Correo inválido.";
-            return;
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {    
+            $logs[] = 
+                "Correo inválido.";
         }
 
-        $modelo = new Aspirante();
+        if (!empty($logs)) {
+            return ['success' => false, 'user_logs' => $logs];
+        }
 
-        $resultado = $modelo->guardar([
+        $modelo_aspirante = new Aspirante();
+
+        $resultado = $modelo_aspirante->guardar([
             "usuario_id" => $_SESSION["usuario_id"],
             "cedula" => $cedula,
             "nombre" => $nombre,
@@ -303,11 +318,17 @@ if (
             "residencia" => $residencia,
             "correo" => $correo
         ]);
-
-        if ($resultado) {
-            $this->mensaje = "Solicitud guardada correctamente.";
-        } else {
-            $this->mensaje = "Error al guardar la solicitud.";
+        
+        if (!$resultado)
+        {
+            $logs[] = 
+                "Error al guardar la solicitud.";
         }
+
+        if (!empty($logs)) {
+            return ['success' => false, 'user_logs' => $logs];
+        }
+
+        return ['success' => true, 'user_logs' => "Solicitud guardada correctamente."];
     }
 }

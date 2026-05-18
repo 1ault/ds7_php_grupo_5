@@ -11,8 +11,7 @@ class Usuario
 
     public function __construct()
     {
-        $db = new Database();
-        $this->conexion = $db->conectar();
+        $this->conexion = Database::conectar();
     }
 
     public function existeUsuario($usuario)
@@ -32,29 +31,37 @@ class Usuario
 
     public function registrar($usuario, $password)
     {
+        // Cifrar contraseña
+        $passwordHash = password_hash(
+            $password,
+            PASSWORD_BCRYPT
+        );
+
+        // !TODO Cifrar usuario
+
         $sql = "INSERT INTO usuarios(usuario,password)
                 VALUES(:usuario,:password)";
 
         $stmt = $this->conexion->prepare($sql);
 
         return $stmt->execute([
-            ":usuario" => htmlspecialchars($usuario),
+            ":usuario" => $usuario,
             ":password" => $password
         ]);
     }
 
     public function obtenerUsuario($usuario)
-{
-    $sql = "SELECT *
-            FROM usuarios
-            WHERE usuario = :usuario";
+    {
+        $sql = "SELECT *
+                FROM usuarios
+                WHERE usuario = :usuario";
 
-    $stmt = $this->conexion->prepare($sql);
+        $stmt = $this->conexion->prepare($sql);
 
-    $stmt->execute([
-        ":usuario" => $usuario
-    ]);
+        $stmt->execute([
+            ":usuario" => $usuario
+        ]);
 
-    return $stmt->fetch(PDO::FETCH_ASSOC);
-}
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

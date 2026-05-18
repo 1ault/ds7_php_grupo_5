@@ -7,63 +7,79 @@ use Root\Program\Modelo\Usuario;
 
 class LoginController
 {
-    public $mensaje = "";
-
-
-    public function __construct
-    (        
-    )
+    public static function vistaLogin(): void
     {
+        //  session_start();
+        require_once __DIR__ ."/../Vista/login.php";
     }
 
-    public function login()
-    {
-        session_start();
-
-        if($_SERVER["REQUEST_METHOD"] == "POST")
+    public static function postLogin(): void
+    {       
+        if ($_SERVER["REQUEST_METHOD"] !== "POST") 
         {
-            $usuario = trim($_POST["usuario"]);
-            $password = trim($_POST["password"]);
+            header('Location: /login');
+            exit;
+        }
 
-            if(empty($usuario) || empty($password))
-            {
-                $this->mensaje =
-                    "Todos los campos son obligatorios.";
+        $result = self::logicLogin($_POST);
+        
+        if (!$result['success']) 
 
-                return;
-            }
+        {
+            $_SESSION['user_logs'] = $result['user_logs'];
+            header('Location: /registro');
+            exit;
+        }
+    }
 
-            $modelo = new Usuario();
+    public static function logicLogin: array
+    {
 
-            $usuarioDB =
-                $modelo->obtenerUsuario($usuario);
+        $usuario = trim($_POST["usuario"]);
+        $password = trim($_POST["password"]);
+        $logs = [];
 
-            if(!$usuarioDB)
-            {
-                $this->mensaje =
-                    "Usuario o contraseña incorrectos.";
 
-                return;
-            }
+        // Check input (Validar usuario && password)
+        if($usuario === '' && $password === '')
+        {
+            $logs[] = 'Todos los campos son obligatorios.';
+        }
 
-            if(
-                password_verify(
+        if (!empty($logs)) {
+            return ['success' => false, 'user_logs' => $logs];
+        }
+
+        // Validar usuario
+        $modelo_usuario = new Usuario();
+        $usuarioDB = $modelo_usuario>obtenerUsuario($usuario);
+
+        if(!$usuarioDB)
+        {
+            $logs[] =  
+                'Usuario o contraseña incorrectos.';
+        }
+
+        if (!empty($logs)) {
+            return ['success' => false, 'user_logs' => $logs];
+        }
+
+        $result = password_verify(
                     $password,
                     $usuarioDB["password"]
-                )
-            )
-            {
-                $_SESSION["usuario"] = $usuarioDB["usuario"];
-                $_SESSION["usuario_id"] = $usuarioDB["id"];
+                );
 
-                header("Location: formularioP.php");
-                exit;
-            }
-            else
-            {
-                $this->mensaje =
-                    "Usuario o contraseña incorrectos.";
-            }
+        if(!$result)
+        { 
+            $logs[] = 
+                "Usuario o contraseña incorrectos.";
         }
+
+
+        $_SESSION["usuario"] = $usuarioDB["usuario"];
+        $_SESSION["usuario_id"] = $usuarioDB["id"];
+
+        header("Location: formularioP.php");
+        exit;
     }
 }

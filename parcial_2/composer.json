@@ -6,7 +6,10 @@
             "Root\\Program\\Modelo\\": "Modelo/",
             "Root\\Program\\Routers\\": "Routers/",
             "Root\\Program\\Config\\": "Config/"
-        }
+        },
+        "files": [
+            "Config/Vault.php"
+        ]
     },
     "require": {}
 }

@@ -11,10 +11,7 @@ class Aspirante
 
     public function __construct()
     {
-        $database = new Database();
-
-        $this->conexion =
-            $database->conectar();
+        $this->conexion = Database::conectar();
     }
 
     public function guardar(array $datos): bool

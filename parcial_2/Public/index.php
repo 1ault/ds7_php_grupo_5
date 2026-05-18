@@ -5,10 +5,4 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use Root\Program\Controlador\UsuarioController;
 
-$controller = new UsuarioController();
-
-$controller->registrar();
-
-$mensaje = $controller->mensaje;
-
-require_once __DIR__ . "/../Vista/Registro.php";
+UsuarioController::vistaRegistrar();

@@ -5,8 +5,8 @@ CREATE TABLE usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     usuario VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    rol ENUM('aspirante','rh') DEFAULT 'aspirante',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    rol ENUM('aspirante','rh') DEFAULT 'aspirante' NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE aspirantes (
@@ -43,7 +43,7 @@ CREATE TABLE aspirantes (
         'no considerado'
     ) DEFAULT 'no revisado',
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 
     FOREIGN KEY (usuario_id)
     REFERENCES usuarios(id)
