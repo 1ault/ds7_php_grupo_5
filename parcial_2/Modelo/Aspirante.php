@@ -5,6 +5,8 @@ namespace Root\Program\Modelo;
 
 use Root\Program\Config\Database;
 
+use PDO;
+
 class Aspirante
 {
     private PDO $conexion;

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Root\Program\Config;
 
+use PDO;
+
 class Database
 {
 

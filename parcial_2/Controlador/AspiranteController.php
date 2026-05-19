@@ -5,21 +5,36 @@ namespace Root\Program\Controlador;
 
 use Root\Program\Modelo\Aspirante;
 
+use DateTime;
+
 class AspiranteController
 {
-    public string $mensaje = "";
-
 
     public static function vistaAspirante(): void
     {
-        require_once __DIR__ . "/../Vista/formulario.php";
+        if (empty($_SESSION['usuario_id'])) 
+        {
+            $_SESSION['user_logs'] = ["Usuario no logueado."];
+            header("Location: /login");
+            exit;
+        }
+
+        require_once __DIR__ . "/../Vista/Aspirante.php";
     }
 
 
     public static function postGuardarAspirante(): void
     {
+        if (empty($_SESSION['usuario_id'])) 
+        {
+            $_SESSION['user_logs'] = ["Usuario no logueado."];
+            header("Location: /login");
+            exit;
+        }
+
         if ($_SERVER["REQUEST_METHOD"] !== "POST") 
         {
+            $_SESSION['user_logs'] = ['success' => false, 'user_logs' => ["No metodo Post."]];
             header('Location: /aspirante');
             exit;
         }
@@ -39,44 +54,71 @@ class AspiranteController
 
     public static function logicGuardarAspirante($data): array
     {
+        if (empty($_SESSION['usuario_id'])) 
+        {
+            $_SESSION['user_logs'] = ["Usuario no logueado."];
+            header("Location: /login");
+            exit;
+        }
 
-        $cedula = trim($_POST["cedula"] ?? "");
-        $nombre = trim($_POST["nombre"] ?? "");
-        $apellido = trim($_POST["apellido"] ?? "");
-        $estado_civil = trim($_POST["estado_civil"] ?? "");
-        $genero = trim($_POST["genero"] ?? "");
-        $tipo_sangre = trim($_POST["tipo_sangre"] ?? "");
-        $fecha_nacimiento = trim($_POST["fecha_nacimiento"] ?? "");
-        $nacionalidad = trim($_POST["nacionalidad"] ?? "");
-        $telefono = trim($_POST["telefono"] ?? "");
-        $residencia = trim($_POST["residencia"] ?? "");
-        $correo = trim($_POST["correo"] ?? "");
+        $cedula = trim($data["cedula"] ?? "");
+        $nombre = trim($data["nombre"] ?? "");
+        $apellido = trim($data["apellido"] ?? "");
+        $estado_civil = trim($data["estado_civil"] ?? "");
+        $genero = trim($data["genero"] ?? "");
+        $tipo_sangre = trim($data["tipo_sangre"] ?? "");
+        $fecha_nacimiento = trim($data["fecha_nacimiento"] ?? "");
+        $nacionalidad = trim($data["nacionalidad"] ?? "");
+        $telefono = trim($data["telefono"] ?? "");
+        $residencia = trim($data["residencia"] ?? "");
+        $correo = trim($data["correo"] ?? "");
 
         if (
-            empty($cedula) || empty($nombre) || empty($apellido) ||
-            empty($genero) || empty($fecha_nacimiento) ||
-            empty($nacionalidad) || empty($telefono) ||
-            empty($residencia) || empty($correo)
+            empty($cedula) ||
+            empty($nombre) || 
+            empty($apellido) ||
+            empty($genero) || 
+            empty($fecha_nacimiento) ||
+            empty($nacionalidad) || 
+            empty($telefono) ||
+            empty($residencia) || 
+            empty($correo)
         ) {
             $logs[] = 
                 "Complete todos los campos obligatorios.";
         }
 
-        if (!empty($logs)) {
+        if (!empty($logs)) 
+        {
             return ['success' => false, 'user_logs' => $logs];
         }
 
 
-        if (!preg_match("/^([0-9]{1,2}-[0-9]{1,4}-[0-9]{1,6}|[PEEN]-[0-9]{1,4}-[0-9]{1,6}|[A-Z0-9]{6,15})$/", $cedula)) {
-            $logs[] = 
-                "Cédula o pasaporte inválido.";
+        // Check cedula
+        // National cedula: 8-123-45678
+        $national = '[0-9]{1,2}-[0-9]{1,4}-[0-9]{1,6}';
+
+        // Special cedula: E-123-456789
+        $special  = '[PEN]-[0-9]{1,4}-[0-9]{1,6}';
+
+        // Passport: AB123456
+        $passport = '[A-Z0-9]{6,15}';
+
+        // Combined
+        $pattern = "/^($national|$special|$passport)$/";
+
+        if (!preg_match($pattern, $cedula)) {
+            $logs[] = "Cédula o pasaporte inválido.";
         }
 
+
+        // check nombre
         if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$/", $nombre)) {    
             $logs[] =      
                 "Nombre inválido.";
         }
 
+        // check apellido
         if (!preg_match("/^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$/", $apellido)) {
             $logs[] = 
                 "Apellido inválido.";
@@ -110,25 +152,36 @@ class AspiranteController
                 "Tipo de sangre inválido.";
         }
 
-        if (!strtotime($fecha_nacimiento)) {
-            $logs[] = 
-                "Fecha de nacimiento inválida.";
+        // Check Fecha
+        $date_obj = DateTime::createFromFormat('Y-m-d', $fecha_nacimiento);
+        if (!$date_obj || $date_obj->format('Y-m-d') !== $fecha_nacimiento) {
+            $logs[] = "Fecha de nacimiento inválida.";
+        } 
+
+        if (!empty($logs)) 
+        {
+            return ['success' => false, 'user_logs' => $logs];
         }
 
-        $edad = date_diff(
-            date_create($fecha_nacimiento),
-            date_create("today")
-        )->y;
+        $today = new DateTime('today');
+        if ($date_obj >= $today) {
+            $logs[] = "La fecha no puede ser futura.";
+        } 
 
-        if ($fecha_nacimiento > date("Y-m-d")) {
-            $logs[] = 
-                "La fecha no puede ser futura.";
+        if (!empty($logs)) 
+        {
+            return ['success' => false, 'user_logs' => $logs];
         }
-
+        
+        $edad = $date_obj->diff($today)->y;
         if ($edad < 18) {
-            $logs[] = 
-                "El aspirante debe ser mayor de edad.";
+            $logs[] = "El aspirante debe ser mayor de edad.";
         }
+
+        if ($edad > 120) {
+            $logs[] = "Fecha de nacimiento inválida.";
+        }
+        
 
         $nacionalidadesValidas = [
           "Afgana",
@@ -293,9 +346,15 @@ class AspiranteController
                 "Residencia inválida.";
         }
 
+
         if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {    
             $logs[] = 
                 "Correo inválido.";
+        }
+
+        if (strlen($correo) > 254)
+        { 
+            $logs[] = "Correo máximo 254 caracteres.";
         }
 
         if (!empty($logs)) {
@@ -329,6 +388,6 @@ class AspiranteController
             return ['success' => false, 'user_logs' => $logs];
         }
 
-        return ['success' => true, 'user_logs' => "Solicitud guardada correctamente."];
+        return ['success' => true, 'user_logs' => ["Solicitud guardada correctamente."]];
     }
 }

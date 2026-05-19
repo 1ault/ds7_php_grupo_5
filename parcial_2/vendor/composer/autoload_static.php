@@ -8,11 +8,13 @@ class ComposerStaticInit786866ff27380b9ecbe94533d44fae68
 {
     public static $files = array (
         'edc58681bb6ee798a4957d728f5073d2' => __DIR__ . '/../..' . '/Config/Vault.php',
+        '61dcfb59ba486c056dc41d237b4dbd59' => __DIR__ . '/../..' . '/Config/Session.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'R' =>
         array (
+            'Root\\Program\\Utils\\' => 19,
             'Root\\Program\\Routers\\' => 21,
             'Root\\Program\\Modelo\\' => 20,
             'Root\\Program\\Controlador\\' => 25,
@@ -21,6 +23,10 @@ class ComposerStaticInit786866ff27380b9ecbe94533d44fae68
     );
 
     public static $prefixDirsPsr4 = array (
+        'Root\\Program\\Utils\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/Utils',
+        ),
         'Root\\Program\\Routers\\' =>
         array (
             0 => __DIR__ . '/../..' . '/Routers',
@@ -43,10 +49,11 @@ class ComposerStaticInit786866ff27380b9ecbe94533d44fae68
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Root\\Program\\Config\\Database' => __DIR__ . '/../..' . '/Config/Database.php',
         'Root\\Program\\Controlador\\AspiranteController' => __DIR__ . '/../..' . '/Controlador/AspiranteController.php',
-        'Root\\Program\\Controlador\\LoginController' => __DIR__ . '/../..' . '/Controlador/LoginController.php',
         'Root\\Program\\Controlador\\UsuarioController' => __DIR__ . '/../..' . '/Controlador/UsuarioController.php',
         'Root\\Program\\Modelo\\Aspirante' => __DIR__ . '/../..' . '/Modelo/Aspirante.php',
         'Root\\Program\\Modelo\\Usuario' => __DIR__ . '/../..' . '/Modelo/Usuario.php',
+        'Root\\Program\\Routers\\Web' => __DIR__ . '/../..' . '/Routers/Web.php',
+        'Root\\Program\\Utils\\Http' => __DIR__ . '/../..' . '/Utils/Http.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

@@ -5,6 +5,8 @@ namespace Root\Program\Modelo;
 
 use Root\Program\Config\Database;
 
+use PDO;
+
 class Usuario
 {
     private $conexion;
@@ -14,54 +16,113 @@ class Usuario
         $this->conexion = Database::conectar();
     }
 
-    public function existeUsuario($usuario)
+    public function existeUsuario(string $usuario): bool
     {
-        $sql = "SELECT id
-                FROM usuarios
-                WHERE usuario = :usuario";
-
-        $stmt = $this->conexion->prepare($sql);
-
-        $stmt->execute([
-            ":usuario" => $usuario
-        ]);
-
-        return $stmt->fetch();
-    }
-
-    public function registrar($usuario, $password)
-    {
-        // Cifrar contraseña
-        $passwordHash = password_hash(
-            $password,
-            PASSWORD_BCRYPT
+        // Prepare to SELECT
+        $consulta = $this->conexion->prepare(
+            'SELECT id 
+             FROM usuarios 
+             WHERE indexing_usuario = :indexing_usuario'
         );
 
-        // !TODO Cifrar usuario
+        // Create hash to search
+        $indexing_usuario = CryptoVault::hashMessageAuthentication(data: $usuario);
 
-        $sql = "INSERT INTO usuarios(usuario,password)
-                VALUES(:usuario,:password)";
+        // Bind
+        $consulta->bindValue(':indexing_usuario', $indexing_usuario); // ✅ fixed name
 
-        $stmt = $this->conexion->prepare($sql);
+        // Ejecutar
+        $consulta->execute();
 
-        return $stmt->execute([
-            ":usuario" => $usuario,
-            ":password" => $password
-        ]);
+        // Return true if user exists, false if not
+        return $consulta->fetch(PDO::FETCH_ASSOC) !== false; // ✅ returns bool
     }
 
-    public function obtenerUsuario($usuario)
+
+    public function registrar($usuario, $password): string
     {
-        $sql = "SELECT *
-                FROM usuarios
-                WHERE usuario = :usuario";
 
-        $stmt = $this->conexion->prepare($sql);
+        // Prepare la operacion INSERT
+        $consulta = $this->conexion->prepare(
+            'INSERT INTO usuarios
+            (
+                usuario,
+                password,
+                indexing_usuario
+            )
+            VALUES 
+            (
+                :usuario, 
+                :password,
+                :indexing_usuario
+            )'
+        );
 
-        $stmt->execute([
-            ":usuario" => $usuario
-        ]);
+        // Crear variables
+        $crypto_usuario   = CryptoVault::securedEncrypt(data: $usuario);
+        $crypto_password  = CryptoVault::hashPassword(password: $password);
+        $indexing_usuario = CryptoVault::hashMessageAuthentication(data: $usuario);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        // Vincular las parametros
+        $consulta->bindValue(':usuario', $crypto_usuario);
+        $consulta->bindValue(':password', $crypto_password);
+        $consulta->bindValue(':indexing_usuario', $indexing_usuario);
+
+        // Ejecutar
+        $consulta->execute();
+
+    
+        // Obtener resultados
+        return $this->conexion->lastInsertId();
+    }
+
+    public function obtenerUsuario(string $usuario, string $password): array
+    {
+
+        $consulta = $this->conexion->prepare(
+            'SELECT 
+                id, 
+                usuario, 
+                password, 
+                rol, 
+                created_at
+             FROM usuarios
+             WHERE index_usuario = :index_usuario
+             LIMIT 1;'
+        );
+
+        // Vincular las parametros
+        $indexing_usuario: CryptoVault::hashMessageAuthentication(data: $usuario);
+        $consulta->bindValue(':index_usuario', $index_usuario);
+
+        // Ejecutar
+        $consulta->execute();
+        
+        // Obtener usuario
+        $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
+
+        if (!$usuario) {
+            return [];
+        }
+
+        // verificar password
+        $verify_password =
+            Encrypted::verifyPassword
+            (
+                password: $password,
+                hash: $usuario['password'] 
+            );
+
+        if (!$verify_password) 
+        {
+            return [];
+        }
+
+        return [
+            'id'         => $usuario['id'],
+            'usuario'    => Encrypted::securedDecrypt(data: $usuario['usuario']),
+            'rol'        => $usuario['rol'],
+            'created_at' => $usuario['created_at']
+        ];
     }
 }

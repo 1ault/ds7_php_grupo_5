@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 namespace Root\Program\Routers;
 
-use Root\Program\Controlador\Auth;
-use Root\Program\Controlador\Servicio;
+use Root\Program\Controlador\UsuarioController;
+use Root\Program\Controlador\LoginController;
+use Root\Program\Controlador\AspiranteController;
+use Root\Program\Utils\Http;
+use Root\Program\Utils\HttpStatus;
 
-use Root\Program\Modelo\Usuario;
-
-
-namespace Root\Program\Controlador;
 class Web
 {
     public static function run(): void
@@ -17,21 +16,42 @@ class Web
         switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
         {
             case '':
-                UsuarioController::vistaRegistrar();
+                UsuarioController::vistaRegistro();
                 exit;
             case '/':
-                UsuarioController::vistaRegistrar();
+                UsuarioController::vistaRegistro();
                 exit;
-            case '/register':
-                UsuarioController::vistaRegistrar();
+
+
+            case '/registro':
+                UsuarioController::vistaRegistro();
                 exit;
+            case '/post/usuario/registro':
+                UsuarioController::postRegistro();
+                exit;
+
+
             case '/login':
-                LoginController::vistaLogin();
+                UsuarioController::vistaLogin();
                 exit;
-            case '/':
-                Servicio::viewHome();
+            case '/post/usuario/login':
+                UsuarioController::postLogin();
                 exit;
+
+
+            case '/aspirante':
+                AspiranteController::vistaAspirante();
+                exit;
+            case '/post/aspirante/guardar':
+                AspiranteController::postGuardarAspirante();
+                exit;
+
             default:
+                Http::response(
+                    "404 - Not Found",
+                    HttpStatus::NOT_FOUND
+                );
+                exit;
                 break;
         }
 

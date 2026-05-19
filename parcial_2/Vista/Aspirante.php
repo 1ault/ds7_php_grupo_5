@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario Aspirante</title>
     <link rel="stylesheet" href="/Assets/css/index.css">
 </head>
@@ -11,40 +12,66 @@
 
     <h2>Formulario de Aspirante</h2>
 
-    <?php if (!empty($mensaje)): ?>
-    <div class="mensaje">
-        <?= htmlspecialchars($_SESSION['user_log'], ENT_QUOTES, 'UTF-8'); ?>
-    </div>
+    <?php if(!empty($_SESSION['user_logs']) && is_array($_SESSION['user_logs'])): ?>
+        <?php foreach ($_SESSION['user_logs'] as $log): ?>
+        <div class="mensaje">
+            <?= htmlspecialchars($log, ENT_QUOTES, 'UTF-8'); ?>
+        </div>
+        <?php endforeach ?>
+        <?php unset($_SESSION['user_logs']); ?> 
     <?php endif; ?>
 
-    <form method="POST">
-
+    <form action="/post/aspirante/guardar" method="POST">
         <div class="grupo">
-            <label>Cédula o Pasaporte</label>
-            <input type="text" name="cedula"required pattern="^([0-9]{1,2}-[0-9]{1,4}-[0-9]{1,6}|[PEEN]-[0-9]{1,4}-[0-9]{1,6}|[A-Z0-9]{6,15})$" maxlength="15" title="Ingrese una cédula panameña válida o un pasaporte válido.">
+            <label for="cedula">Cédula o Pasaporte</label>
+            <input 
+                type="text" 
+                name="cedula"
+                id="cedula"
+                pattern="^([0-9]{1,2}-[0-9]{1,4}-[0-9]{1,6}|[PEEN]-[0-9]{1,4}-[0-9]{1,6}|[A-Z0-9]{6,15})$" 
+                maxlength="15" 
+                title="Ingrese una cédula panameña válida o un pasaporte válido."
+                required 
+                >
         </div>
 
         <div class="grupo">
-            <label>Nombre</label>
-            <input type="text" name="nombre" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$" maxlength="25" title="El nombre solo debe contener letras." required>
+            <label for="nombre">Nombre</label>
+            <input 
+                type="text" 
+                name="nombre"
+                id="nombre"
+                pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$" 
+                maxlength="25" 
+                title="El nombre solo debe contener letras." 
+                required
+                >
         </div>
 
         <div class="grupo">
-            <label>Apellido</label>
-            <input type="text" name="apellido" pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$" maxlength="25" title="El apellido solo debe contener letras." required>
+            <label for="apellido">Apellido</label>
+            <input 
+                type="text" 
+                name="apellido"
+                id="apellido"
+                pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$" 
+                maxlength="25" 
+                title="El apellido solo debe contener letras." 
+                required
+                >
         </div>
 
-        <div class="grupo">
-    <label>Estado Civil</label>
+    <div class="grupo">
+    <label for="estado_civil">Estado Civil</label>
     <select name="estado_civil">
-        <option value=""> Seleccione una opción </option>
+        <option value="">Seleccione una opción</option>
         <option value="Soltero">Soltero</option>
         <option value="Casado">Casado</option>
     </select>
     </div>
 
     <div class="grupo">
-      <label>Género</label>
+      <label for="genero">Género</label>
       <select name="genero" required>
         <option value="">Seleccione una opción</option>
         <option value="Masculino">Masculino </option>
@@ -125,8 +152,7 @@
         <option value="Salvadoreña">Salvadoreña</option>
         <option value="Emiratí">Emiratí</option>
         <option value="Eritrea">Eritrea</option>
-        <option value="Eslovaca">Eslovaca</option>
-        <option value="Eslovena">Eslovena</option>
+        <option value="Eslovaca">Eslovaca</option> <option value="Eslovena">Eslovena</option>
         <option value="Española">Española</option>
         <option value="Estadounidense">Estadounidense</option>
         <option value="Estonia">Estonia</option>
@@ -233,7 +259,11 @@
 
     <div class="grupo">
         <label>Correo</label>
-        <input type="email" name="correo" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" maxlength="50" placeholder="ejemplo@correo.com" autocomplete="email" title="Ingrese un correo válido." required>
+        <input 
+            type="email" 
+            name="correo" 
+            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$" 
+            maxlength="50" placeholder="ejemplo@correo.com" autocomplete="email" title="Ingrese un correo válido." required>
     </div>
 
     <button type="submit">Guardar Solicitud</button>

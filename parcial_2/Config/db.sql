@@ -1,12 +1,16 @@
+DROP DATABASE IF EXISTS rh_system;
+
 CREATE DATABASE rh_system;
 USE rh_system;
 
 CREATE TABLE usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    usuario VARCHAR(50) UNIQUE NOT NULL,
+    usuario VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     rol ENUM('aspirante','rh') DEFAULT 'aspirante' NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+
+    indexing_usuario VARCHAR(255) UNIQUE NOT NULL,
 );
 
 CREATE TABLE aspirantes (
@@ -15,27 +19,27 @@ CREATE TABLE aspirantes (
 
     usuario_id INT NOT NULL,
 
-    cedula_pasaporte VARCHAR(30) NOT NULL,
+    cedula_pasaporte VARCHAR(255) NOT NULL,
 
-    nombre VARCHAR(100) NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
 
-    apellido VARCHAR(100) NOT NULL,
+    apellido VARCHAR(255) NOT NULL,
 
-    estado_civil VARCHAR(50),
+    estado_civil VARCHAR(255) NOT NULL,
 
-    genero VARCHAR(20) NOT NULL,
+    genero VARCHAR(255) NOT NULL,
 
-    tipo_sangre VARCHAR(10),
+    tipo_sangre VARCHAR(255) NOT NULL,
 
     fecha_nacimiento DATE NOT NULL,
 
-    nacionalidad VARCHAR(50) NOT NULL,
+    nacionalidad VARCHAR(255) NOT NULL,
 
-    telefono VARCHAR(20) NOT NULL,
+    telefono VARCHAR(255) NOT NULL,
 
-    residencia TEXT NOT NULL,
+    residencia VARCHAR(255) NOT NULL,
 
-    correo VARCHAR(100) NOT NULL,
+    correo VARCHAR(255) NOT NULL,
 
     estado_solicitud ENUM(
         'no revisado',

@@ -9,8 +9,9 @@ return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Root\\Program\\Config\\Database' => $baseDir . '/Config/Database.php',
     'Root\\Program\\Controlador\\AspiranteController' => $baseDir . '/Controlador/AspiranteController.php',
-    'Root\\Program\\Controlador\\LoginController' => $baseDir . '/Controlador/LoginController.php',
     'Root\\Program\\Controlador\\UsuarioController' => $baseDir . '/Controlador/UsuarioController.php',
     'Root\\Program\\Modelo\\Aspirante' => $baseDir . '/Modelo/Aspirante.php',
     'Root\\Program\\Modelo\\Usuario' => $baseDir . '/Modelo/Usuario.php',
+    'Root\\Program\\Routers\\Web' => $baseDir . '/Routers/Web.php',
+    'Root\\Program\\Utils\\Http' => $baseDir . '/Utils/Http.php',
 );
