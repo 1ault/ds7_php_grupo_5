@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Root\Program\Modelo;
 
 use Root\Program\Config\Database;
+use Root\Program\Utils\CryptoVault;
 
 use PDO;
 
@@ -59,8 +60,8 @@ class Usuario
         );
 
         // Crear variables
-        $crypto_usuario   = CryptoVault::securedEncrypt(data: $usuario);
-        $crypto_password  = CryptoVault::hashPassword(password: $password);
+        $crypto_usuario = CryptoVault::securedEncrypt(data: $usuario);
+        $crypto_password = CryptoVault::hashPassword(password: $password);
         $indexing_usuario = CryptoVault::hashMessageAuthentication(data: $usuario);
 
         // Vincular las parametros
@@ -70,16 +71,16 @@ class Usuario
 
         // Ejecutar
         $consulta->execute();
-
-    
+ 
         // Obtener resultados
         return $this->conexion->lastInsertId();
     }
 
     public function obtenerUsuario(string $usuario, string $password): array
     {
-
-        $consulta = $this->conexion->prepare(
+        
+        // Prepare la operacion INSERT
+         $consulta = $this->conexion->prepare(
             'SELECT 
                 id, 
                 usuario, 
@@ -87,42 +88,34 @@ class Usuario
                 rol, 
                 created_at
              FROM usuarios
-             WHERE index_usuario = :index_usuario
-             LIMIT 1;'
+             WHERE indexing_usuario = :indexing_usuario
+             LIMIT 1'
         );
 
         // Vincular las parametros
-        $indexing_usuario: CryptoVault::hashMessageAuthentication(data: $usuario);
-        $consulta->bindValue(':index_usuario', $index_usuario);
-
+        $indexing_usuario = CryptoVault::hashMessageAuthentication(data: $usuario);
+        $consulta->bindValue(':indexing_usuario', $indexing_usuario);
         // Ejecutar
         $consulta->execute();
-        
+            
         // Obtener usuario
         $usuario = $consulta->fetch(PDO::FETCH_ASSOC);
-
         if (!$usuario) {
             return [];
         }
-
         // verificar password
-        $verify_password =
-            Encrypted::verifyPassword
-            (
-                password: $password,
-                hash: $usuario['password'] 
-            );
-
-        if (!$verify_password) 
-        {
+        $verify_password = CryptoVault::verifyPassword(
+            password: $password,
+            hash: $usuario['password'] 
+        );
+        if (!$verify_password) {
             return [];
         }
-
         return [
-            'id'         => $usuario['id'],
-            'usuario'    => Encrypted::securedDecrypt(data: $usuario['usuario']),
-            'rol'        => $usuario['rol'],
+            'id' => $usuario['id'],
+            'usuario' => CryptoVault::securedDecrypt(data: $usuario['usuario']),
+            'rol'=> $usuario['rol'],
             'created_at' => $usuario['created_at']
-        ];
+        ];   
     }
 }

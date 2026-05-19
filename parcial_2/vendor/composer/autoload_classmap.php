@@ -13,5 +13,6 @@ return array(
     'Root\\Program\\Modelo\\Aspirante' => $baseDir . '/Modelo/Aspirante.php',
     'Root\\Program\\Modelo\\Usuario' => $baseDir . '/Modelo/Usuario.php',
     'Root\\Program\\Routers\\Web' => $baseDir . '/Routers/Web.php',
+    'Root\\Program\\Utils\\CryptoVault' => $baseDir . '/Utils/CryptoVault.php',
     'Root\\Program\\Utils\\Http' => $baseDir . '/Utils/Http.php',
 );

@@ -4,15 +4,12 @@ Admin_admin
 1Aa@_123456789_@&
 
 
-
+## Register
 0-000-0000
 juano
 pakir
-
-
-Panama
 6555-5555
-
+Panama
 mango_juanitaro@gmail.com
 
 mysql -u root -p < db.sql

@@ -53,6 +53,7 @@ class ComposerStaticInit786866ff27380b9ecbe94533d44fae68
         'Root\\Program\\Modelo\\Aspirante' => __DIR__ . '/../..' . '/Modelo/Aspirante.php',
         'Root\\Program\\Modelo\\Usuario' => __DIR__ . '/../..' . '/Modelo/Usuario.php',
         'Root\\Program\\Routers\\Web' => __DIR__ . '/../..' . '/Routers/Web.php',
+        'Root\\Program\\Utils\\CryptoVault' => __DIR__ . '/../..' . '/Utils/CryptoVault.php',
         'Root\\Program\\Utils\\Http' => __DIR__ . '/../..' . '/Utils/Http.php',
     );
 

@@ -1,9 +1,7 @@
-
 <?php
 declare(strict_types=1);
 
 namespace Root\Program\Utils;
-
 
 class CryptoVault
 {
@@ -15,6 +13,11 @@ class CryptoVault
             ARGON2ID_ALGO,
             ARGON2ID_OPTIONS,
         );
+    }
+
+    public static function verifyPassword(string $password, string $hash): bool 
+    {
+        return password_verify($password, $hash);
     }
 
     // https://www.php.net/manual/en/function.hash.php

@@ -5,12 +5,12 @@ USE rh_system;
 
 CREATE TABLE usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    usuario VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    usuario VARCHAR(512) UNIQUE NOT NULL,
+    password VARCHAR(512) NOT NULL,
     rol ENUM('aspirante','rh') DEFAULT 'aspirante' NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 
-    indexing_usuario VARCHAR(255) UNIQUE NOT NULL,
+    indexing_usuario VARCHAR(512) UNIQUE NOT NULL
 );
 
 CREATE TABLE aspirantes (
@@ -19,27 +19,27 @@ CREATE TABLE aspirantes (
 
     usuario_id INT NOT NULL,
 
-    cedula_pasaporte VARCHAR(255) NOT NULL,
+    cedula_pasaporte VARCHAR(512) NOT NULL,
 
-    nombre VARCHAR(255) NOT NULL,
+    nombre VARCHAR(512) NOT NULL,
 
-    apellido VARCHAR(255) NOT NULL,
+    apellido VARCHAR(512) NOT NULL,
 
-    estado_civil VARCHAR(255) NOT NULL,
+    estado_civil VARCHAR(512) NOT NULL,
 
-    genero VARCHAR(255) NOT NULL,
+    genero VARCHAR(512) NOT NULL,
 
-    tipo_sangre VARCHAR(255) NOT NULL,
+    tipo_sangre VARCHAR(512) NOT NULL,
 
     fecha_nacimiento DATE NOT NULL,
 
-    nacionalidad VARCHAR(255) NOT NULL,
+    nacionalidad VARCHAR(512) NOT NULL,
 
-    telefono VARCHAR(255) NOT NULL,
+    telefono VARCHAR(512) NOT NULL,
 
-    residencia VARCHAR(255) NOT NULL,
+    residencia VARCHAR(512) NOT NULL,
 
-    correo VARCHAR(255) NOT NULL,
+    correo VARCHAR(512) NOT NULL,
 
     estado_solicitud ENUM(
         'no revisado',

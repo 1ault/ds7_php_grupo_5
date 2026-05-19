@@ -274,7 +274,7 @@ class UsuarioController
 
         // Validar usuario
         $modelo_usuario = new Usuario();
-        $usuarioDB = $modelo_usuario->obtenerUsuario($usuario);
+        $usuarioDB = $modelo_usuario->obtenerUsuario($usuario, $password);
 
         if(empty($usuarioDB))
         {
