@@ -48,11 +48,13 @@ class ComposerStaticInit786866ff27380b9ecbe94533d44fae68
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Root\\Program\\Config\\Database' => __DIR__ . '/../..' . '/Config/Database.php',
+        'Root\\Program\\Controlador\\AdminController' => __DIR__ . '/../..' . '/Controlador/AdminController.php',
         'Root\\Program\\Controlador\\AspiranteController' => __DIR__ . '/../..' . '/Controlador/AspiranteController.php',
         'Root\\Program\\Controlador\\UsuarioController' => __DIR__ . '/../..' . '/Controlador/UsuarioController.php',
         'Root\\Program\\Modelo\\Aspirante' => __DIR__ . '/../..' . '/Modelo/Aspirante.php',
         'Root\\Program\\Modelo\\Usuario' => __DIR__ . '/../..' . '/Modelo/Usuario.php',
         'Root\\Program\\Routers\\Web' => __DIR__ . '/../..' . '/Routers/Web.php',
+        'Root\\Program\\Utils\\BruteForce' => __DIR__ . '/../..' . '/Utils/BruteForce.php',
         'Root\\Program\\Utils\\CryptoVault' => __DIR__ . '/../..' . '/Utils/CryptoVault.php',
         'Root\\Program\\Utils\\Http' => __DIR__ . '/../..' . '/Utils/Http.php',
     );

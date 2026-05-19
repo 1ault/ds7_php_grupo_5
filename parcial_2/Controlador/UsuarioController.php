@@ -56,10 +56,12 @@ class UsuarioController
             return;
         }
 
-        exit;    
+        http_response_code(405);
+        echo json_encode(["ok" => "ok api"]);
+        return;    
     }
 
-    public static function logicRegistro($data): array
+    public static function logicRegistro(array: $data): array
     {
 
         $usuario = trim($data['usuario'] ?? '');

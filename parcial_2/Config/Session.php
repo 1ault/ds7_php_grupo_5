@@ -1,4 +1,8 @@
 <?php
+declare(strict_types=1);
+
+use Root\Program\Utils\CryptoVault;
+
 /*
     // https://www.php.net/manual/en/session.security.ini.php
     ini_set('session.cookie_lifetime', '0');
@@ -59,3 +63,24 @@ if (empty($_SESSION['csrf_token'])) {
     $one_hour = time() + 3600;
     $_SESSION['csrf_token_expiry'] = $one_hour;
 }
+
+
+$_SESSION['fingerprint_lenguage'] =
+    CryptoVault::hashMessageAuthentication
+    (
+        data: $_SERVER['HTTP_ACCEPT_LANGUAGE']
+    );
+
+$_SESSION['fingerprint_browser_identification'] = 
+    CryptoVault::hashMessageAuthentication
+    (
+        data: $_SERVER['HTTP_USER_AGENT']
+    );
+
+$_SESSION['fingerprint_ip'] = 
+    CryptoVault::hashMessageAuthentication
+    (
+        data: $_SERVER['REMOTE_ADDR']
+    );
+
+

@@ -52,3 +52,21 @@ CREATE TABLE aspirantes (
     FOREIGN KEY (usuario_id)
     REFERENCES usuarios(id)
 );
+
+CREATE TABLE login_attempts (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    fingerprint VARCHAR(255) NOT NULL,
+    success     TINYINT(1)  DEFAULT 0 NOT NULL,
+    created_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP NOT NULL,
+
+    INDEX idx_fingerprint (fingerprint, created_at)
+);
+
+CREATE TABLE register_attempts (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    fingerprint VARCHAR(255) NOT NULL,
+    success     TINYINT(1)  DEFAULT 0 NOT NULL,
+    created_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP NOT NULL,
+
+    INDEX idx_fingerprint (fingerprint, created_at)
+);

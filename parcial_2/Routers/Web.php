@@ -6,6 +6,7 @@ namespace Root\Program\Routers;
 use Root\Program\Controlador\UsuarioController;
 use Root\Program\Controlador\LoginController;
 use Root\Program\Controlador\AspiranteController;
+use Root\Program\Controlador\AdminController;
 use Root\Program\Utils\Http;
 use Root\Program\Utils\HttpStatus;
 
@@ -45,14 +46,27 @@ class Web
             case '/post/aspirante/guardar':
                 AspiranteController::postGuardarAspirante();
                 exit;
+            case '/post/aspirante/update':
+                AspiranteController::postUpdateAspirante();
+                exit;
+
+
+            case '/admin':
+                AdminController::vistaAdmin();
+                exit;
+            case '/post/admin/update':
+                AdminController::postAdminUpdateAspirante();
+                exit;
+            case '/api/admin/update':
+                AdminController::apiAdminUpdateAspirante();
+                exit;
 
             default:
                 Http::response(
-                    "404 - Not Found",
+                    ["404 - Not Found"],
                     HttpStatus::NOT_FOUND
                 );
                 exit;
-                break;
         }
 
     }

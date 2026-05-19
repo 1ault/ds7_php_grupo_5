@@ -8,7 +8,7 @@ use PDO;
 class Database
 {
 
-    public static function conectar()
+    public static function conectar(): PDO
     {
         try {
             // Crear conexion PDO
