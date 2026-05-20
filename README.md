@@ -7,13 +7,21 @@
 #### 1 Disable validation
 
 ```js
-// Config<script>
+// Config <script>
 document.addEventListener("contextmenu", function(event) {
     event.preventDefault();
 });
 
 document.addEventListener("copy", function(event) {
     event.preventDefault();
+});
+
+// Lock body innerHTML
+Object.defineProperty(document.body, 'innerHTML', {
+  set: function() { /* block the replacement */ },
+  get: function() {
+    return document.documentElement.innerHTML;
+  }
 });
 
 document.addEventListener("keydown", function(event) {
