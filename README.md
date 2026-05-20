@@ -7,7 +7,59 @@
 #### 1 Disable validation
 
 ```js
-// Config
+// Config<script>
+document.addEventListener("contextmenu", function(event) {
+    event.preventDefault();
+});
+
+document.addEventListener("copy", function(event) {
+    event.preventDefault();
+});
+
+document.addEventListener("keydown", function(event) {
+
+    const key = (event.key || "").toLowerCase();
+
+    // Ctrl + V
+    if (event.ctrlKey && key === "v") {
+        event.preventDefault();
+    }
+
+    // Ctrl + C
+    if (event.ctrlKey && key === "c") {
+        event.preventDefault();
+    }
+
+    // Ctrl + Shift + I
+    if (event.ctrlKey && event.shiftKey && key === "i") {
+        event.preventDefault();
+    }
+
+    // F12
+    if (key === "f12") {
+        event.preventDefault();
+    }
+
+    // Context Menu key
+    if (key === "contextmenu") {
+        event.preventDefault();
+    }
+
+    // Shift + F10
+    if (event.shiftKey && key === "f10") {
+        event.preventDefault();
+    }
+
+});
+
+setInterval(function() {
+
+    if (window.outerWidth - window.innerWidth > 100) {
+        alert("DevTools detected!");
+    }
+
+}, 1000);
+</script>
 {
     // disable built-in validation
     HTMLInputElement.prototype.checkValidity = () => true;
@@ -181,51 +233,91 @@ brute force ??????????????/
 ### 1 Cheat
 
 ```js
-document.addEventListener("contextmenu", function (event) {
-    event.preventDefault();
-});
+(() => {
 
-document.addEventListener("copy", event => event.preventDefault());
-
-document.addEventListener("keydown", function(event) {
-
-    const key = event.key.toLowerCase();
-
-    // Ctrl + V
-    if (event.ctrlKey && key === "v") {
+    /* Block right click */
+    document.addEventListener("contextmenu", event => {
         event.preventDefault();
-    }
+    });
 
-    // Ctrl + C
-    if (event.ctrlKey && key === "c") {
+    /* Block copy */
+    document.addEventListener("copy", event => {
         event.preventDefault();
-    }
+    });
 
-    // Ctrl + Shift + I (DevTools)
-    if (event.ctrlKey && event.shiftKey && key === "i") {
+    /* Block paste */
+    document.addEventListener("paste", event => {
         event.preventDefault();
-    }
+    });
 
-    // F12 (DevTools)
-    if (key === "f12") {
-        event.preventDefault();
-    }
+    /* Block keys */
+    document.addEventListener("keydown", event => {
 
-    // Context Menu key
-    if (key === "contextmenu") {
-        event.preventDefault();
-    }
+        const key = (event.key || "").toLowerCase();
 
-    // Shift + F10 (opens context menu)
-    if (event.shiftKey && key === "f10") {
-        event.preventDefault();
-    }
-});
+        // Ctrl + C
+        if (event.ctrlKey && key === "c") {
+            event.preventDefault();
+        }
 
-setInterval(() => {
-    if (window.outerWidth - window.innerWidth > 100) {
-        alert("DevTools detected!");
-    }
-}, 1000);
+        // Ctrl + V
+        if (event.ctrlKey && key === "v") {
+            event.preventDefault();
+        }
+
+        // Ctrl + Shift + I
+        if (event.ctrlKey && event.shiftKey && key === "i") {
+            event.preventDefault();
+        }
+
+        // F12
+        if (key === "f12") {
+            event.preventDefault();
+        }
+
+        // Context Menu key
+        if (key === "contextmenu") {
+            event.preventDefault();
+        }
+
+        // Shift + F10
+        if (event.shiftKey && key === "f10") {
+            event.preventDefault();
+        }
+
+    });
+
+    /* Silent DevTools detection */
+    let devtoolsOpened = false;
+
+    setInterval(() => {
+
+        const widthDiff = window.outerWidth - window.innerWidth;
+        const heightDiff = window.outerHeight - window.innerHeight;
+
+        if ((widthDiff > 160 || heightDiff > 160) && !devtoolsOpened) {
+
+            devtoolsOpened = true;
+
+            console.clear();
+
+            document.body.innerHTML = `
+                <div style="
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    height:100vh;
+                    font-family:sans-serif;
+                    font-size:20px;
+                ">
+                    Developer tools detected
+                </div>
+            `;
+
+        }
+
+    }, 1000);
+
+})();
 ```
 
