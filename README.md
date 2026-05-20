@@ -6,16 +6,8 @@
 
 #### 1 Disable validation
 
-```js
-// Config <script>
-document.addEventListener("contextmenu", function(event) {
-    event.preventDefault();
-});
-
-document.addEventListener("copy", function(event) {
-    event.preventDefault();
-});
-
+**for innerHTML***
+```
 // Lock body innerHTML
 Object.defineProperty(document.body, 'innerHTML', {
   set: function() { /* block the replacement */ },
@@ -23,123 +15,77 @@ Object.defineProperty(document.body, 'innerHTML', {
     return document.documentElement.innerHTML;
   }
 });
+```
 
-document.addEventListener("keydown", function(event) {
+```js
+// disable built-in validation
+HTMLInputElement.prototype.checkValidity = () => true;
+HTMLFormElement.prototype.checkValidity = () => true;
+HTMLTextAreaElement.prototype.checkValidity = () => true;
+HTMLSelectElement.prototype.checkValidity = () => true;
 
-    const key = (event.key || "").toLowerCase();
-
-    // Ctrl + V
-    if (event.ctrlKey && key === "v") {
-        event.preventDefault();
-    }
-
-    // Ctrl + C
-    if (event.ctrlKey && key === "c") {
-        event.preventDefault();
-    }
-
-    // Ctrl + Shift + I
-    if (event.ctrlKey && event.shiftKey && key === "i") {
-        event.preventDefault();
-    }
-
-    // F12
-    if (key === "f12") {
-        event.preventDefault();
-    }
-
-    // Context Menu key
-    if (key === "contextmenu") {
-        event.preventDefault();
-    }
-
-    // Shift + F10
-    if (event.shiftKey && key === "f10") {
-        event.preventDefault();
-    }
-
+// remove attribute validation
+document.querySelectorAll("*").forEach(element => {
+    element.removeAttribute("required");
+    element.removeAttribute("minlength");
+    element.removeAttribute("maxlength");
+    element.removeAttribute("pattern");
+    element.removeAttribute("min");
+    element.removeAttribute("max");
+    element.removeAttribute("step");
+    element.removeAttribute("disabled");
+    element.removeAttribute("type");
 });
 
-setInterval(function() {
 
-    if (window.outerWidth - window.innerWidth > 100) {
-        alert("DevTools detected!");
-    }
+// change input type = text;
+document.querySelectorAll("input").forEach(input => {
+    input.type = "text";
+});
 
-}, 1000);
-</script>
+
+// override custom validation messages
+document.querySelectorAll("input, textarea, select").forEach(element => {
+    element.setCustomValidity("");
+});
+
+// remove event validation
+document.querySelectorAll("input, textarea, select, form").forEach(element => {
+    element.oninput = null;
+    element.onchange = null;
+    element.onblur = null;
+    element.onsubmit = null;
+});
+
+// stop java script from blocking submission
+document.querySelectorAll("form").forEach(form => {
+    form.addEventListener("submit", function(event) {
+        // prevent listener 
+        event.stopPropagation();
+    }, true);
+});
+
+// disable copy paste protection
+document.oncopy = null;
+document.onpaste = null;
+
+// disable right click protection by removing custom context
+document.oncontextmenu = null;
+
+// disable validation for all the form
+const forms = document.querySelectorAll("form");    
+forms.forEach(form => {
+    form.noValidate = true;
+});
+
 {
-    // disable built-in validation
-    HTMLInputElement.prototype.checkValidity = () => true;
-    HTMLFormElement.prototype.checkValidity = () => true;
-    HTMLTextAreaElement.prototype.checkValidity = () => true;
-    HTMLSelectElement.prototype.checkValidity = () => true;
-
-
-    // remove attribute validation
-    document.querySelectorAll("*").forEach(element => {
-        element.removeAttribute("required");
-        element.removeAttribute("minlength");
-        element.removeAttribute("maxlength");
-        element.removeAttribute("pattern");
-        element.removeAttribute("min");
-        element.removeAttribute("max");
-        element.removeAttribute("step");
-        element.removeAttribute("disabled");
-        element.removeAttribute("type");
-    });
-
-
-    // change input type = text;
-    document.querySelectorAll("input").forEach(input => {
-        input.type = "text";
-    });
-
-
-    // override custom validation messages
-    document.querySelectorAll("input, textarea, select").forEach(element => {
-        element.setCustomValidity("");
-    });
-
-    // remove event validation
-    document.querySelectorAll("input, textarea, select, form").forEach(element => {
-        element.oninput = null;
-        element.onchange = null;
-        element.onblur = null;
-        element.onsubmit = null;
-    });
-
-    // stop java script from blocking submission
-    document.querySelectorAll("form").forEach(form => {
-        form.addEventListener("submit", function(event) {
-            // prevent listener 
-            event.stopPropagation();
-        }, true);
-    });
-
-    // disable copy paste protection
-    document.oncopy = null;
-    document.onpaste = null;
-
-    // disable right click protection by removing custom context
-    document.oncontextmenu = null;
-
-    // disable validation for all the form
-    const forms = document.querySelectorAll("form");    
-    forms.forEach(form => {
-        form.noValidate = true;
-    });
-
-
-    {
-        window.outerWidth = window.innerWidth;
-        for (let i = 0; i < 10000; i++) {
-            clearInterval(i);
-        }
+    window.outerWidth = window.innerWidth;
+    for (let i = 0; i < 10000; i++) {
+        clearInterval(i);
     }
-
-    console.log("Client-site validation disabled \^w^/");
 }
+
+console.log("Client-site validation disabled \^w^/");
 ```
 ### 2 Manual
 
