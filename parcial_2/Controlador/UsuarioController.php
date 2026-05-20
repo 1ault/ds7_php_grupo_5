@@ -4,9 +4,23 @@ declare(strict_types=1);
 namespace Root\Program\Controlador;
 
 use Root\Program\Modelo\Usuario;
+use Root\Program\Utils\BruteForce;
 
 class UsuarioController
 {
+
+    // ── Helper: validar CSRF ─────────────────────────────────────────────────
+    private static function validarCsrf(array $data): bool
+    {
+        $token = $data['csrf_token'] ?? '';
+        return
+            !empty($_SESSION['csrf_token']) &&
+            !empty($token) &&
+            hash_equals($_SESSION['csrf_token'], $token) &&
+            (!isset($_SESSION['csrf_token_expiry']) || $_SESSION['csrf_token_expiry'] >= time());
+    }
+
+    // ── Vistas ───────────────────────────────────────────────────────────────
 
     public static function vistaRegistro(): void
     {
@@ -15,16 +29,22 @@ class UsuarioController
 
     public static function postRegistro(): void
     {
-        if ($_SERVER["REQUEST_METHOD"] !== "POST") 
+        if ($_SERVER["REQUEST_METHOD"] !== "POST")
         {
             $_SESSION['user_logs'] = ["No metodo Post."];
             header('Location: /registro');
             exit;
         }
 
+        if (!self::validarCsrf($_POST)) {
+            $_SESSION['user_logs'] = ["Solicitud inválida. Recarga la página e intenta de nuevo."];
+            header('Location: /registro');
+            exit;
+        }
+
         $result = self::logicRegistro($_POST);
 
-        if (!$result['success']) 
+        if (!$result['success'])
         {
             $_SESSION['user_logs'] = $result['user_logs'];
             header('Location: /registro');
@@ -64,7 +84,8 @@ class UsuarioController
 
         $modelo_usuario = new Usuario();
         if ($modelo_usuario->existeUsuario($usuario)) {
-            $logs[] = 'El usuario ya existe.';
+            // Mensaje ambiguo: no confirma si el usuario existe (evita user enumeration)
+            $logs[] = 'No fue posible completar el registro. Verifica los datos e intenta de nuevo.';
         }
         if (!empty($logs)) return ['success' => false, 'user_logs' => $logs];
 
@@ -81,17 +102,23 @@ class UsuarioController
     }
 
     public static function postLogin(): void
-    {       
-        if ($_SERVER["REQUEST_METHOD"] !== "POST") 
+    {
+        if ($_SERVER["REQUEST_METHOD"] !== "POST")
         {
             $_SESSION['user_logs'] = ["No metodo Post."];
             header('Location: /login');
             exit;
         }
 
+        if (!self::validarCsrf($_POST)) {
+            $_SESSION['user_logs'] = ["Solicitud inválida. Recarga la página e intenta de nuevo."];
+            header('Location: /login');
+            exit;
+        }
+
         $result = self::logicLogin($_POST);
-        
-        if (!$result['success']) 
+
+        if (!$result['success'])
         {
             $_SESSION['user_logs'] = $result['user_logs'];
             header('Location: /login');
@@ -100,7 +127,6 @@ class UsuarioController
 
         $_SESSION['user_logs'] = $result['user_logs'];
 
-        // Redirigir según rol
         if (($_SESSION['usuario_rol'] ?? '') === 'rh') {
             header('Location: /admin');
         } else {
@@ -110,13 +136,29 @@ class UsuarioController
 
     public static function postLogout(): void
     {
+        // Destruir sesión completamente y regenerar ID para evitar session fixation
         session_unset();
         session_destroy();
+        session_start();
+        session_regenerate_id(true);
         header('Location: /login');
     }
 
     public static function logicLogin(array $data): array
     {
+        $bruteForce = new BruteForce();
+
+        // Verificar bloqueo antes de cualquier validación.
+        // Si la tabla no existe o hay error de BD, se ignora para no cortar acceso legítimo.
+        try {
+            if ($bruteForce->isBlocked()) {
+                return [
+                    'success'   => false,
+                    'user_logs' => ['Demasiados intentos fallidos. Espera 15 minutos.'],
+                ];
+            }
+        } catch (\Throwable) {}
+
         $usuario  = trim($data['usuario']  ?? '');
         $password = trim($data['password'] ?? '');
         $logs     = [];
@@ -145,17 +187,26 @@ class UsuarioController
         $usuarioDB      = $modelo_usuario->obtenerUsuario($usuario, $password);
 
         if (empty($usuarioDB)) {
+            // Registrar intento fallido
+            try { $bruteForce->loginAttempt(false); } catch (\Throwable) {}
+            // Mensaje ambiguo: no revela si el usuario existe o no (evita user enumeration)
             $logs[] = 'Usuario o contraseña incorrectos.';
         }
         if (!empty($logs)) return ['success' => false, 'user_logs' => $logs];
 
         session_regenerate_id(true);
 
-        $_SESSION['session_expired']    = time() + SESSION_TIMEOUT;
-        $_SESSION["usuario_id"]         = $usuarioDB["id"];
-        $_SESSION["usuario_nombre"]     = $usuarioDB["usuario"];
-        $_SESSION["usuario_rol"]        = $usuarioDB["rol"];
-        $_SESSION["usuario_create_at"]  = $usuarioDB["created_at"];
+        $_SESSION['session_expired']   = time() + SESSION_TIMEOUT;
+        $_SESSION["usuario_id"]        = $usuarioDB["id"];
+        $_SESSION["usuario_nombre"]    = $usuarioDB["usuario"];
+        $_SESSION["usuario_rol"]       = $usuarioDB["rol"];
+        $_SESSION["usuario_create_at"] = $usuarioDB["created_at"];
+
+        // Login exitoso: registrar y limpiar intentos previos
+        try {
+            $bruteForce->loginAttempt(true);
+            $bruteForce->clearAttempts();
+        } catch (\Throwable) {}
 
         return ['success' => true, 'user_logs' => ["Usuario login correctamente."]];
     }

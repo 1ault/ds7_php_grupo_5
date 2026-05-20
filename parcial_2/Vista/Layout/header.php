@@ -30,7 +30,11 @@
         <?php if (!empty($_SESSION['usuario_nombre'])): ?>
             <span>👤 <?= htmlspecialchars($_SESSION['usuario_nombre'], ENT_QUOTES, 'UTF-8') ?></span>
         <?php endif; ?>
-        <a href="/post/usuario/logout" class="btn-logout">Cerrar sesión</a>
+        <!-- Logout como POST con CSRF para evitar logout forzado por terceros -->
+        <form action="/post/usuario/logout" method="POST" style="display:inline">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+            <button type="submit" class="btn-logout">Cerrar sesión</button>
+        </form>
     </div>
 </nav>
 

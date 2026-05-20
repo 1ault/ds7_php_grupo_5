@@ -21,6 +21,8 @@
     <?php endif; ?>
 
     <form action="/post/usuario/login" method="POST">
+        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+
         <div class="grupo">
             <label for="usuario">Usuario</label>
             <input 

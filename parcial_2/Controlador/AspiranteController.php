@@ -10,6 +10,17 @@ use DateTime;
 class AspiranteController
 {
 
+    // ── Helper: validar CSRF ─────────────────────────────────────────────────
+    private static function validarCsrf(array $data): bool
+    {
+        $token = $data['csrf_token'] ?? '';
+        return
+            !empty($_SESSION['csrf_token']) &&
+            !empty($token) &&
+            hash_equals($_SESSION['csrf_token'], $token) &&
+            (!isset($_SESSION['csrf_token_expiry']) || $_SESSION['csrf_token_expiry'] >= time());
+    }
+
     public static function vistaAspirante(): void
     {
         if (empty($_SESSION['usuario_id'])) 
@@ -19,8 +30,7 @@ class AspiranteController
             exit;
         }
 
-        // Cargar solicitud existente (si la tiene) para mostrarla en la vista
-        $modelo = new Aspirante();
+        $modelo    = new Aspirante();
         $solicitud = $modelo->obtenerPorUsuario((int) $_SESSION['usuario_id']);
 
         require_once __DIR__ . "/../Vista/Aspirante/index.php";
@@ -38,7 +48,13 @@ class AspiranteController
 
         if ($_SERVER["REQUEST_METHOD"] !== "POST") 
         {
-            $_SESSION['user_logs'] = ['success' => false, 'user_logs' => ["No metodo Post."]];
+            $_SESSION['user_logs'] = ["No metodo Post."];
+            header('Location: /aspirante');
+            exit;
+        }
+
+        if (!self::validarCsrf($_POST)) {
+            $_SESSION['user_logs'] = ["Solicitud inválida. Recarga la página e intenta de nuevo."];
             header('Location: /aspirante');
             exit;
         }
@@ -73,6 +89,12 @@ class AspiranteController
             exit;
         }
 
+        if (!self::validarCsrf($_POST)) {
+            $_SESSION['user_logs'] = ["Solicitud inválida. Recarga la página e intenta de nuevo."];
+            header('Location: /aspirante');
+            exit;
+        }
+
         $result = self::logicUpdateAspirante($_POST);
 
         $_SESSION['user_logs'] = $result['user_logs'];
@@ -82,7 +104,6 @@ class AspiranteController
 
     public static function logicUpdateAspirante(array $data): array
     {
-        // Reutiliza la misma validación de guardar pero hace UPDATE
         $validated = self::validarCampos($data);
 
         if (!$validated['success']) {
@@ -91,7 +112,7 @@ class AspiranteController
 
         $campos = $validated['campos'];
 
-        $modelo = new Aspirante();
+        $modelo    = new Aspirante();
         $resultado = $modelo->actualizar(
             (int) $_SESSION['usuario_id'],
             $campos
@@ -125,20 +146,20 @@ class AspiranteController
         $modelo_aspirante = new Aspirante();
 
         $resultado = $modelo_aspirante->guardar([
-            "usuario_id"      => $_SESSION["usuario_id"],
-            "cedula"          => $campos['cedula'],
-            "nombre"          => $campos['nombre'],
-            "apellido"        => $campos['apellido'],
-            "estado_civil"    => $campos['estado_civil'],
-            "genero"          => $campos['genero'],
-            "tipo_sangre"     => $campos['tipo_sangre'],
-            "fecha_nacimiento"=> $campos['fecha_nacimiento'],
-            "nacionalidad"    => $campos['nacionalidad'],
-            "telefono"        => $campos['telefono'],
-            "residencia"      => $campos['residencia'],
-            "correo"          => $campos['correo'],
+            "usuario_id"       => $_SESSION["usuario_id"],
+            "cedula"           => $campos['cedula'],
+            "nombre"           => $campos['nombre'],
+            "apellido"         => $campos['apellido'],
+            "estado_civil"     => $campos['estado_civil'],
+            "genero"           => $campos['genero'],
+            "tipo_sangre"      => $campos['tipo_sangre'],
+            "fecha_nacimiento" => $campos['fecha_nacimiento'],
+            "nacionalidad"     => $campos['nacionalidad'],
+            "telefono"         => $campos['telefono'],
+            "residencia"       => $campos['residencia'],
+            "correo"           => $campos['correo'],
         ]);
-        
+
         if (!$resultado)
         {
             return ['success' => false, 'user_logs' => ["Error al guardar la solicitud."]];
@@ -151,17 +172,17 @@ class AspiranteController
     // ─── Validación compartida ───────────────────────────────────────────────
     private static function validarCampos(array $data): array
     {
-        $cedula          = trim($data["cedula"]          ?? "");
-        $nombre          = trim($data["nombre"]          ?? "");
-        $apellido        = trim($data["apellido"]        ?? "");
-        $estado_civil    = trim($data["estado_civil"]    ?? "");
-        $genero          = trim($data["genero"]          ?? "");
-        $tipo_sangre     = trim($data["tipo_sangre"]     ?? "");
-        $fecha_nacimiento= trim($data["fecha_nacimiento"]?? "");
-        $nacionalidad    = trim($data["nacionalidad"]    ?? "");
-        $telefono        = trim($data["telefono"]        ?? "");
-        $residencia      = trim($data["residencia"]      ?? "");
-        $correo          = trim($data["correo"]          ?? "");
+        $cedula           = trim($data["cedula"]           ?? "");
+        $nombre           = trim($data["nombre"]           ?? "");
+        $apellido         = trim($data["apellido"]         ?? "");
+        $estado_civil     = trim($data["estado_civil"]     ?? "");
+        $genero           = trim($data["genero"]           ?? "");
+        $tipo_sangre      = trim($data["tipo_sangre"]      ?? "");
+        $fecha_nacimiento = trim($data["fecha_nacimiento"] ?? "");
+        $nacionalidad     = trim($data["nacionalidad"]     ?? "");
+        $telefono         = trim($data["telefono"]         ?? "");
+        $residencia       = trim($data["residencia"]       ?? "");
+        $correo           = trim($data["correo"]           ?? "");
 
         $logs = [];
 
@@ -212,9 +233,9 @@ class AspiranteController
         if (!empty($logs)) return ['success' => false, 'user_logs' => $logs];
 
         return [
-            'success' => true,
+            'success'   => true,
             'user_logs' => [],
-            'campos' => compact(
+            'campos'    => compact(
                 'cedula','nombre','apellido','estado_civil','genero',
                 'tipo_sangre','fecha_nacimiento','nacionalidad',
                 'telefono','residencia','correo'

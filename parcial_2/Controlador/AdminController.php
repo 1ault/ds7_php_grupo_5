@@ -9,6 +9,17 @@ use Root\Program\Utils\HttpStatus;
 
 class AdminController
 {
+    // ── Helper: validar CSRF ─────────────────────────────────────────────────
+    private static function validarCsrf(array $data): bool
+    {
+        $token = $data['csrf_token'] ?? '';
+        return
+            !empty($_SESSION['csrf_token']) &&
+            !empty($token) &&
+            hash_equals($_SESSION['csrf_token'], $token) &&
+            (!isset($_SESSION['csrf_token_expiry']) || $_SESSION['csrf_token_expiry'] >= time());
+    }
+
     // ── Helpers de autorización ──────────────────────────────────────────────
 
     private static function requireAdmin(): void
@@ -50,6 +61,12 @@ class AdminController
             exit;
         }
 
+        if (!self::validarCsrf($_POST)) {
+            $_SESSION['user_logs'] = ["Solicitud inválida."];
+            header("Location: /admin");
+            exit;
+        }
+
         $result = self::logicAdminUpdateAspirante($_POST);
 
         $_SESSION['user_logs'] = $result['user_logs'];
@@ -70,6 +87,11 @@ class AdminController
             Http::response(['err' => 'no autorizado'], HttpStatus::NOT_FOUND);
         }
 
+        // Para la API fetch también validamos CSRF (el token viaja en el body)
+        if (!self::validarCsrf($_POST)) {
+            Http::response(['err' => 'csrf inválido'], HttpStatus::BAD_REQUEST);
+        }
+
         $result = self::logicAdminUpdateAspirante($_POST);
 
         if (!$result['success']) {
@@ -83,8 +105,8 @@ class AdminController
 
     public static function logicAdminUpdateAspirante(array $data): array
     {
-        $usuario_id      = (int) ($data['usuario_id']      ?? 0);
-        $estado_solicitud = trim($data['estado_solicitud'] ?? '');
+        $usuario_id       = (int)  ($data['usuario_id']       ?? 0);
+        $estado_solicitud = trim(   $data['estado_solicitud']  ?? '');
 
         $estadosValidos = ['no revisado', 'considerado', 'no considerado'];
 

@@ -70,3 +70,7 @@ CREATE TABLE register_attempts (
 
     INDEX idx_fingerprint (fingerprint, created_at)
 );
+
+delete from register_attempts;
+delete from login_attempts;
+

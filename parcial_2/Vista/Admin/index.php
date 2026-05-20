@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
     <title>Panel Admin - RH</title>
     <link rel="stylesheet" href="/Assets/css/index.css">
     <style>
@@ -191,6 +192,8 @@
 <div id="toast"></div>
 
 <script>
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
     function mostrarToast(mensaje, exito = true) {
         const toast = document.getElementById('toast');
         toast.textContent = mensaje;
@@ -209,7 +212,7 @@
         fetch('/api/admin/update', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `usuario_id=${usuario_id}&estado_solicitud=${encodeURIComponent(estado)}`
+            body: `usuario_id=${usuario_id}&estado_solicitud=${encodeURIComponent(estado)}&csrf_token=${encodeURIComponent(csrfToken)}`
         })
         .then(res => res.json())
         .then(data => {
