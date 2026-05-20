@@ -188,19 +188,38 @@ document.addEventListener("contextmenu", function (event) {
 document.addEventListener("copy", event => event.preventDefault());
 
 document.addEventListener("keydown", function(event) {
-    if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
-        e.preventDefault();
+
+    const key = event.key.toLowerCase();
+
+    // Ctrl + V
+    if (event.ctrlKey && key === "v") {
+        event.preventDefault();
     }
 
-    if (event.key === "ContextMenu" || (event.shiftKey && event.ctrlKey && event.key === "I")) {
-        e.preventDefault();
+    // Ctrl + C
+    if (event.ctrlKey && key === "c") {
+        event.preventDefault();
     }
 
-
-    if (event.key === "ContextMenu" || event.key === "F12") {
-        e.preventDefault();
+    // Ctrl + Shift + I (DevTools)
+    if (event.ctrlKey && event.shiftKey && key === "i") {
+        event.preventDefault();
     }
 
+    // F12 (DevTools)
+    if (key === "f12") {
+        event.preventDefault();
+    }
+
+    // Context Menu key
+    if (key === "contextmenu") {
+        event.preventDefault();
+    }
+
+    // Shift + F10 (opens context menu)
+    if (event.shiftKey && key === "f10") {
+        event.preventDefault();
+    }
 });
 
 setInterval(() => {
