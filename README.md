@@ -7,85 +7,65 @@
 #### 1 Disable validation
 
 **for innerHTML***
-```
-// Lock body innerHTML
-Object.defineProperty(document.body, 'innerHTML', {
-  set: function() { /* block the replacement */ },
-  get: function() {
-    return document.documentElement.innerHTML;
-  }
-});
-```
-
 ```js
-// disable built-in validation
-HTMLInputElement.prototype.checkValidity = () => true;
-HTMLFormElement.prototype.checkValidity = () => true;
-HTMLTextAreaElement.prototype.checkValidity = () => true;
-HTMLSelectElement.prototype.checkValidity = () => true;
+(() => {
+  // 1. Disable built-in validation
+  HTMLInputElement.prototype.checkValidity = () => true;
+  HTMLFormElement.prototype.checkValidity = () => true;
+  HTMLTextAreaElement.prototype.checkValidity = () => true;
+  HTMLSelectElement.prototype.checkValidity = () => true;
 
-// remove attribute validation
-document.querySelectorAll("*").forEach(element => {
-    element.removeAttribute("required");
-    element.removeAttribute("minlength");
-    element.removeAttribute("maxlength");
-    element.removeAttribute("pattern");
-    element.removeAttribute("min");
-    element.removeAttribute("max");
-    element.removeAttribute("step");
-    element.removeAttribute("disabled");
-    element.removeAttribute("type");
-});
+  HTMLInputElement.prototype.reportValidity = () => true;
+  HTMLFormElement.prototype.reportValidity = () => true;
+  HTMLTextAreaElement.prototype.reportValidity = () => true;
+  HTMLSelectElement.prototype.reportValidity = () => true;
 
+  HTMLInputElement.prototype.setCustomValidity = () => {};
+  HTMLTextAreaElement.prototype.setCustomValidity = () => {};
+  HTMLSelectElement.prototype.setCustomValidity = () => {};
 
-// change input type = text;
-document.querySelectorAll("input").forEach(input => {
-    input.type = "text";
-});
+  // 2. Remove attribute validation
+  document.querySelectorAll("*").forEach(el => {
+    ["required","minlength","maxlength","pattern",
+     "min","max","step","disabled"].forEach(attr => {
+      el.removeAttribute(attr);
+    });
+  });
 
+  // 3. Set all inputs to type=text
+  document.querySelectorAll("input").forEach(input => {
+    try { input.type = "text"; } catch(e) {}
+  });
 
-// override custom validation messages
-document.querySelectorAll("input, textarea, select").forEach(element => {
-    element.setCustomValidity("");
-});
+  // 4. Remove ALL listeners by cloning nodes
+  document.querySelectorAll("input, textarea, select, form").forEach(el => {
+    el.oninput = el.onchange = el.onblur = el.onsubmit = null;
+    const clone = el.cloneNode(true);
+    el.replaceWith(clone);
+  });
 
-// remove event validation
-document.querySelectorAll("input, textarea, select, form").forEach(element => {
-    element.oninput = null;
-    element.onchange = null;
-    element.onblur = null;
-    element.onsubmit = null;
-});
-
-// stop java script from blocking submission
-document.querySelectorAll("form").forEach(form => {
-    form.addEventListener("submit", function(event) {
-        // prevent listener 
-        event.stopPropagation();
-    }, true);
-});
-
-// disable copy paste protection
-document.oncopy = null;
-document.onpaste = null;
-
-// disable right click protection by removing custom context
-document.oncontextmenu = null;
-
-// disable validation for all the form
-const forms = document.querySelectorAll("form");    
-forms.forEach(form => {
+  // 5. Re-grab forms after cloning and unlock submission
+  document.querySelectorAll("form").forEach(form => {
     form.noValidate = true;
-});
+    form.addEventListener("submit", e => e.stopPropagation(), true);
+  });
 
-{
-    window.outerWidth = window.innerWidth;
-    for (let i = 0; i < 10000; i++) {
-        clearInterval(i);
-    }
-}
+  // 6. Disable copy/paste/context protection
+  document.oncopy = document.onpaste = document.oncontextmenu = null;
+  document.addEventListener("copy", e => e.stopImmediatePropagation(), true);
+  document.addEventListener("paste", e => e.stopImmediatePropagation(), true);
+  document.addEventListener("contextmenu", e => e.stopImmediatePropagation(), true);
 
-console.log("Client-site validation disabled \^w^/");
+  // 7. Fix DevTools detection
+  Object.defineProperty(window, 'outerWidth', { get: () => window.innerWidth });
+  Object.defineProperty(window, 'outerHeight', { get: () => window.innerHeight });
+
+  // 8. Kill all intervals
+  const maxId = setInterval(() => {}, 0);
+  for (let i = 0; i <= maxId; i++) clearInterval(i);
+
+  console.log("Client-side validation disabled \\^w^/");
+})();
 ```
 ### 2 Manual
 
