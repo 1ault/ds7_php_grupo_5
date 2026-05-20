@@ -13,7 +13,7 @@ class Database
         try {
             // Crear conexion PDO
             $conexion = new PDO(
-                getenv('DB_DSN_BSD'),
+                getenv('DB_DSN_WINDOWS'),
                 getenv('DB_USUARIO'),
                 getenv('DB_CONTRASENA')
             );

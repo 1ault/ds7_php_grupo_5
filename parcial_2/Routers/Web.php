@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Root\Program\Routers;
 
 use Root\Program\Controlador\UsuarioController;
-use Root\Program\Controlador\LoginController;
 use Root\Program\Controlador\AspiranteController;
 use Root\Program\Controlador\AdminController;
 use Root\Program\Utils\Http;
@@ -16,14 +15,13 @@ class Web
     {
         switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
         {
+            // ── Raíz ───────────────────────────────────────────────────────
             case '':
-                UsuarioController::vistaRegistro();
-                exit;
             case '/':
                 UsuarioController::vistaRegistro();
                 exit;
 
-
+            // ── Registro ───────────────────────────────────────────────────
             case '/registro':
                 UsuarioController::vistaRegistro();
                 exit;
@@ -31,15 +29,18 @@ class Web
                 UsuarioController::postRegistro();
                 exit;
 
-
+            // ── Login / Logout ─────────────────────────────────────────────
             case '/login':
                 UsuarioController::vistaLogin();
                 exit;
             case '/post/usuario/login':
                 UsuarioController::postLogin();
                 exit;
+            case '/post/usuario/logout':
+                UsuarioController::postLogout();
+                exit;
 
-
+            // ── Aspirante ──────────────────────────────────────────────────
             case '/aspirante':
                 AspiranteController::vistaAspirante();
                 exit;
@@ -50,7 +51,7 @@ class Web
                 AspiranteController::postUpdateAspirante();
                 exit;
 
-
+            // ── Admin ──────────────────────────────────────────────────────
             case '/admin':
                 AdminController::vistaAdmin();
                 exit;
@@ -61,6 +62,7 @@ class Web
                 AdminController::apiAdminUpdateAspirante();
                 exit;
 
+            // ── 404 ────────────────────────────────────────────────────────
             default:
                 Http::response(
                     ["404 - Not Found"],
@@ -68,7 +70,5 @@ class Web
                 );
                 exit;
         }
-
     }
-    
 }

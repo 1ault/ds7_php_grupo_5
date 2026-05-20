@@ -1,2 +1,8 @@
 RewriteEngine On
+
+# Servir archivos y carpetas que existen directamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Todo lo demás va al index.php
 RewriteRule ^ index.php [L]
