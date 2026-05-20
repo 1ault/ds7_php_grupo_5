@@ -113,35 +113,42 @@ user: 0@_normalUser_@0
 <input autofocus onfocus=alert(0)>
 <a href="javascript:alert(0)">click</a>
 
+// ===========================================
 // WEAK - default, only escapes < > &
-htmlspecialchars($input)
+// htmlspecialchars($input)
+// ===========================================
 
 " onmouseover="alert(1)
 ' onmouseover='alert(0)
 
+// ===========================================
 // WEAK - no charset specified
-htmlspecialchars($input, ENT_QUOTES)
+// htmlspecialchars($input, ENT_QUOTES)
+// ===========================================
 
 +ADw-script+AD4-alert(1)+ADw-/script+AD4-
 
+// ===========================================
 // CORRECT - escapes ' " < > &
-htmlspecialchars($input, ENT_QUOTES, 'UTF-8')
+// htmlspecialchars($input, ENT_QUOTES, 'UTF-8')
+// ===========================================
 ```
 
 ##### Link
 ```
-
-<a href="<?= htmlspecialchars($url, ENT_QUOTES, 'UTF-8') ?>">click</a>
-
-<a href="javascript:alert(1)">click</a>
-
-javascript:alert(1)
-
+// ===========================================
+// <a href="<?= htmlspecialchars($url, ENT_QUOTES, 'UTF-8') ?>">click</a>
+// <a href="javascript:alert(1)">click</a>
+/*
 $url = $_GET['url'];
 if (!preg_match('/^https?:\/\//', $url)) {
     $url = '#';
 }
 <a href="<?= htmlspecialchars($url, ENT_QUOTES, 'UTF-8') ?>">click</a>
+*/
+// ===========================================
+
+javascript:alert(1)
 ```
 
 #### CSS Injection
