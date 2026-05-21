@@ -146,22 +146,21 @@ class UsuarioController
 
     public static function logicLogin(array $data): array
     {
-        $bruteForce = new BruteForce();
-
-        // Verificar bloqueo antes de cualquier validación.
-        // Si la tabla no existe o hay error de BD, se ignora para no cortar acceso legítimo.
-        try {
-            if ($bruteForce->isBlocked()) {
-                return [
-                    'success'   => false,
-                    'user_logs' => ['Demasiados intentos fallidos. Espera 15 minutos.'],
-                ];
-            }
-        } catch (\Throwable) {}
-
         $usuario  = trim($data['usuario']  ?? '');
         $password = trim($data['password'] ?? '');
         $logs     = [];
+
+        $bruteForce = new BruteForce();
+
+        // Verificar bloqueo por cuenta antes de cualquier validación.
+        try {
+            if ($usuario !== '' && $bruteForce->isBlocked($usuario)) {
+                return [
+                    'success'   => false,
+                    'user_logs' => ['Cuenta bloqueada por demasiados intentos fallidos. Espera 2 minutos.'],
+                ];
+            }
+        } catch (\Throwable) {}
 
         if ($usuario === '' && $password === '') {
             $logs[] = 'Todos los campos son obligatorios.';
@@ -187,9 +186,8 @@ class UsuarioController
         $usuarioDB      = $modelo_usuario->obtenerUsuario($usuario, $password);
 
         if (empty($usuarioDB)) {
-            // Registrar intento fallido
-            try { $bruteForce->loginAttempt(false); } catch (\Throwable) {}
-            // Mensaje ambiguo: no revela si el usuario existe o no (evita user enumeration)
+            // Registrar intento fallido vinculado al nombre de usuario
+            try { $bruteForce->loginAttempt(false, $usuario); } catch (\Throwable) {}
             $logs[] = 'Usuario o contraseña incorrectos.';
         }
         if (!empty($logs)) return ['success' => false, 'user_logs' => $logs];
@@ -202,10 +200,10 @@ class UsuarioController
         $_SESSION["usuario_rol"]       = $usuarioDB["rol"];
         $_SESSION["usuario_create_at"] = $usuarioDB["created_at"];
 
-        // Login exitoso: registrar y limpiar intentos previos
+        // Login exitoso: limpiar intentos de esa cuenta
         try {
-            $bruteForce->loginAttempt(true);
-            $bruteForce->clearAttempts();
+            $bruteForce->loginAttempt(true, $usuario);
+            $bruteForce->clearAttempts($usuario);
         } catch (\Throwable) {}
 
         return ['success' => true, 'user_logs' => ["Usuario login correctamente."]];

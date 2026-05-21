@@ -1,205 +1,233 @@
-<?php
-declare(strict_types=1);
-// Vista/Aspirante/index.php
-// Pantalla principal del aspirante: muestra su solicitud si ya la envió,
-// o el formulario para completarla por primera vez.
-//
-// Variables inyectadas por AspiranteController::vistaAspirante():
-//   $solicitud (array|null) — fila de la tabla aspirantes del usuario actual
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Solicitud — RH System</title>
+    <link rel="stylesheet" href="/Assets/css/index.css">
+</head>
+<body>
 
-$pageTitle  = 'Mi Solicitud — Aspirante';
-$layoutRole = 'aspirante';
-require_once __DIR__ . '/../Layout/header.php';
-?>
+<!-- ── Navbar ─────────────────────────────────────────────────────── -->
+<nav class="navbar navbar-aspirante">
+    <span class="navbar-brand">📋 RH System</span>
+    <div class="navbar-info">
+        <span>👤 <?= htmlspecialchars($_SESSION['usuario_nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
+        <a href="/post/usuario/logout" class="btn-logout">Cerrar sesión</a>
+    </div>
+</nav>
 
+<!-- ── Contenido principal ────────────────────────────────────────── -->
+<div class="main-content">
 <div class="contenedor aspirante-contenedor">
 
-    <h2>Mi Solicitud de Empleo</h2>
+    <h2>Mi Solicitud</h2>
 
-    <?php /* ── Mensajes flash ── */ ?>
+    <!-- Mensajes flash -->
     <?php if (!empty($_SESSION['user_logs']) && is_array($_SESSION['user_logs'])): ?>
+        <?php
+            $exitoMsgs = ['Solicitud guardada correctamente.', 'Solicitud actualizada correctamente.'];
+            $esExito   = in_array($_SESSION['user_logs'][0] ?? '', $exitoMsgs);
+        ?>
         <?php foreach ($_SESSION['user_logs'] as $log): ?>
-            <div class="mensaje <?= str_starts_with($log, 'Solicitud guardada') ? 'mensaje-ok' : '' ?>">
+            <div class="mensaje <?= $esExito ? 'mensaje-ok' : '' ?>">
                 <?= htmlspecialchars($log, ENT_QUOTES, 'UTF-8') ?>
             </div>
-        <?php endforeach ?>
+        <?php endforeach; ?>
         <?php unset($_SESSION['user_logs']); ?>
     <?php endif; ?>
 
-    <?php if (!empty($solicitud)): ?>
-        <?php /* ════════════════════════════════════════════
-               ESTADO: ya tiene solicitud enviada
-               ════════════════════════════════════════════ */ ?>
+    <?php
+        $tieneS = !empty($solicitud);
+        $accion = $tieneS ? '/post/aspirante/update' : '/post/aspirante/guardar';
+        $boton  = $tieneS ? 'Actualizar Solicitud'  : 'Guardar Solicitud';
 
-        <div class="estado-badge estado-<?= htmlspecialchars($solicitud['estado_solicitud'], ENT_QUOTES, 'UTF-8') ?>">
-            <?php
-            $estadoLabel = match($solicitud['estado_solicitud']) {
-                'no revisado'    => '🕐 En revisión',
-                'considerado'    => '✅ Considerado',
-                'no considerado' => '❌ No considerado',
-                default          => htmlspecialchars($solicitud['estado_solicitud'], ENT_QUOTES, 'UTF-8'),
+        $v = [
+            'cedula'           => $tieneS ? $solicitud['cedula_pasaporte'] : '',
+            'nombre'           => $tieneS ? $solicitud['nombre']           : '',
+            'apellido'         => $tieneS ? $solicitud['apellido']         : '',
+            'estado_civil'     => $tieneS ? $solicitud['estado_civil']     : '',
+            'genero'           => $tieneS ? $solicitud['genero']           : '',
+            'tipo_sangre'      => $tieneS ? $solicitud['tipo_sangre']      : '',
+            'fecha_nacimiento' => $tieneS ? $solicitud['fecha_nacimiento'] : '',
+            'nacionalidad'     => $tieneS ? $solicitud['nacionalidad']     : '',
+            'telefono'         => $tieneS ? $solicitud['telefono']         : '',
+            'residencia'       => $tieneS ? $solicitud['residencia']       : '',
+            'correo'           => $tieneS ? $solicitud['correo']           : '',
+        ];
+    ?>
+
+    <!-- Badge de estado (solo si ya tiene solicitud) -->
+    <?php if ($tieneS): ?>
+        <?php
+            $estado      = $solicitud['estado_solicitud'];
+            $claseEstado = match($estado) {
+                'considerado'    => 'badge-considerado',
+                'no considerado' => 'badge-no-considerado',
+                default          => 'badge-no-revisado',
             };
-            echo $estadoLabel;
-            ?>
-        </div>
-
+            $bloqueado = $estado !== 'no revisado';
+        ?>
         <p class="solicitud-fecha">
-            Solicitud enviada el: 
-            <strong><?= htmlspecialchars($solicitud['created_at'], ENT_QUOTES, 'UTF-8') ?></strong>
+            Estado actual:
+            <span class="badge <?= $claseEstado ?>">
+                <?= htmlspecialchars($estado, ENT_QUOTES, 'UTF-8') ?>
+            </span>
         </p>
-
-        <div class="datos-grid">
-            <div class="dato-item"><span class="dato-label">Cédula / Pasaporte</span><span><?= htmlspecialchars($solicitud['cedula_pasaporte'], ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item"><span class="dato-label">Nombre</span><span><?= htmlspecialchars($solicitud['nombre'], ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item"><span class="dato-label">Apellido</span><span><?= htmlspecialchars($solicitud['apellido'], ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item"><span class="dato-label">Estado Civil</span><span><?= htmlspecialchars($solicitud['estado_civil'] ?: '—', ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item"><span class="dato-label">Género</span><span><?= htmlspecialchars($solicitud['genero'], ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item"><span class="dato-label">Tipo de Sangre</span><span><?= htmlspecialchars($solicitud['tipo_sangre'] ?: '—', ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item"><span class="dato-label">Fecha de Nacimiento</span><span><?= htmlspecialchars($solicitud['fecha_nacimiento'], ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item"><span class="dato-label">Nacionalidad</span><span><?= htmlspecialchars($solicitud['nacionalidad'], ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item"><span class="dato-label">Teléfono</span><span><?= htmlspecialchars($solicitud['telefono'], ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item"><span class="dato-label">Residencia</span><span><?= htmlspecialchars($solicitud['residencia'], ENT_QUOTES, 'UTF-8') ?></span></div>
-            <div class="dato-item dato-item--full"><span class="dato-label">Correo</span><span><?= htmlspecialchars($solicitud['correo'], ENT_QUOTES, 'UTF-8') ?></span></div>
-        </div>
-
-        <?php if ($solicitud['estado_solicitud'] === 'no revisado'): ?>
-        <p class="nota-update">
-            ¿Necesitas corregir un dato? Puedes actualizar tu solicitud mientras esté pendiente.
-        </p>
-        <form action="/post/aspirante/update" method="POST" class="form-update-toggle">
-            <button type="button" id="btn-editar" class="btn-secundario">✏️ Editar solicitud</button>
-        </form>
+        <?php if ($bloqueado): ?>
+            <p class="intro-form" style="color:#856404; background:#fff3cd; padding:10px 14px; border-radius:8px; margin-bottom:16px;">
+                ⚠ Su solicitud ya fue revisada y no puede ser modificada.
+            </p>
         <?php endif; ?>
-
     <?php else: ?>
-        <?php /* ════════════════════════════════════════════
-               ESTADO: aún no ha enviado solicitud
-               ════════════════════════════════════════════ */ ?>
-
-        <p class="intro-form">Completa el formulario a continuación para enviar tu solicitud de empleo.</p>
-
-        <form action="/post/aspirante/guardar" method="POST" class="form-aspirante">
-
-            <fieldset class="fieldset-seccion">
-                <legend>Identificación</legend>
-
-                <div class="grupo">
-                    <label for="cedula">Cédula o Pasaporte <span class="requerido">*</span></label>
-                    <input type="text" name="cedula" id="cedula"
-                        pattern="^([0-9]{1,2}-[0-9]{1,4}-[0-9]{1,6}|[PEN]-[0-9]{1,4}-[0-9]{1,6}|[A-Z0-9]{6,15})$"
-                        maxlength="15"
-                        placeholder="8-123-4567 o E-123-456789 o AB123456"
-                        title="Cédula panameña, cédula especial o pasaporte."
-                        required>
-                </div>
-
-                <div class="grupo-fila">
-                    <div class="grupo">
-                        <label for="nombre">Nombre <span class="requerido">*</span></label>
-                        <input type="text" name="nombre" id="nombre"
-                            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$"
-                            maxlength="25" title="Solo letras." required>
-                    </div>
-                    <div class="grupo">
-                        <label for="apellido">Apellido <span class="requerido">*</span></label>
-                        <input type="text" name="apellido" id="apellido"
-                            pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$"
-                            maxlength="25" title="Solo letras." required>
-                    </div>
-                </div>
-            </fieldset>
-
-            <fieldset class="fieldset-seccion">
-                <legend>Datos Personales</legend>
-
-                <div class="grupo-fila">
-                    <div class="grupo">
-                        <label for="estado_civil">Estado Civil</label>
-                        <select name="estado_civil" id="estado_civil">
-                            <option value="">Seleccione...</option>
-                            <option value="Soltero">Soltero/a</option>
-                            <option value="Casado">Casado/a</option>
-                        </select>
-                    </div>
-                    <div class="grupo">
-                        <label for="genero">Género <span class="requerido">*</span></label>
-                        <select name="genero" id="genero" required>
-                            <option value="">Seleccione...</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Femenino">Femenino</option>
-                        </select>
-                    </div>
-                    <div class="grupo">
-                        <label for="tipo_sangre">Tipo de Sangre</label>
-                        <select name="tipo_sangre" id="tipo_sangre">
-                            <option value="">Seleccione...</option>
-                            <option>A+</option><option>A-</option>
-                            <option>B+</option><option>B-</option>
-                            <option>AB+</option><option>AB-</option>
-                            <option>O+</option><option>O-</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grupo-fila">
-                    <div class="grupo">
-                        <label for="fecha_nacimiento">Fecha de Nacimiento <span class="requerido">*</span></label>
-                        <input type="date" name="fecha_nacimiento" id="fecha_nacimiento"
-                            max="<?= date('Y-m-d', strtotime('-18 years')) ?>" required>
-                    </div>
-                    <div class="grupo">
-                        <label for="nacionalidad">Nacionalidad <span class="requerido">*</span></label>
-                        <select name="nacionalidad" id="nacionalidad" required>
-                            <option value="">Seleccione...</option>
-                            <?php
-                            $nacionalidades = ["Afgana","Albanesa","Alemana","Andorrana","Angoleña","Antiguana","Argentina","Armenia","Australiana","Austriaca","Azerbaiyana","Bahameña","Bareiní","Bangladesí","Barbadense","Belga","Beliceña","Beninesa","Bielorrusa","Boliviana","Bosnia","Botsuana","Brasileña","Británica","Bruneana","Búlgara","Burkinesa","Burundesa","Camboyana","Camerunesa","Canadiense","Chadiana","Chilena","China","Chipriota","Colombiana","Congoleña","Costarricense","Croata","Cubana","Danesa","Dominicana","Ecuatoriana","Egipcia","Salvadoreña","Emiratí","Eritrea","Eslovaca","Eslovena","Española","Estadounidense","Estonia","Etíope","Filipina","Finlandesa","Francesa","Gabonesa","Gambiana","Georgiana","Ghanesa","Granadina","Griega","Guatemalteca","Guineana","Guyonesa","Haitiana","Hondureña","Húngara","India","Indonesia","Iraní","Iraquí","Irlandesa","Islandesa","Israelí","Italiana","Jamaiquina","Japonesa","Jordana","Kazaja","Keniana","Kirguisa","Kiribatiana","Kuwaití","Laosiana","Lesotense","Letona","Libanesa","Liberiana","Libia","Liechtensteiniana","Lituana","Luxemburguesa","Macedonia","Malasia","Malauí","Maldiva","Maliense","Maltesa","Marroquí","Mauriciana","Mexicana","Moldava","Monegasca","Mongola","Namibia","Nepalesa","Nicaragüense","Nigeriana","Noruega","Neozelandesa","Panameña","Paraguaya","Peruana","Polaca","Portuguesa","Qatarí","Rumana","Rusa","Senegalesa","Serbia","Singapurense","Siria","Somalí","Sudafricana","Sueca","Suiza","Tailandesa","Tanzana","Tunecina","Turca","Ucraniana","Ugandesa","Uruguaya","Venezolana","Vietnamita","Yemení","Zambiana","Zimbabuense"];
-                            foreach ($nacionalidades as $n):
-                            ?>
-                                <option value="<?= htmlspecialchars($n, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($n, ENT_QUOTES, 'UTF-8') ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </div>
-            </fieldset>
-
-            <fieldset class="fieldset-seccion">
-                <legend>Contacto</legend>
-
-                <div class="grupo-fila">
-                    <div class="grupo">
-                        <label for="telefono">Teléfono <span class="requerido">*</span></label>
-                        <input type="tel" name="telefono" id="telefono"
-                            pattern="^6[0-9]{3}-[0-9]{4}$" maxlength="9"
-                            placeholder="6123-4567"
-                            title="Formato: 6123-4567" required>
-                    </div>
-                    <div class="grupo">
-                        <label for="correo">Correo Electrónico <span class="requerido">*</span></label>
-                        <input type="email" name="correo" id="correo"
-                            pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[A-Za-z]{2,}$"
-                            maxlength="254" placeholder="ejemplo@correo.com"
-                            autocomplete="email" required>
-                    </div>
-                </div>
-
-                <div class="grupo">
-                    <label for="residencia">Residencia <span class="requerido">*</span></label>
-                    <input type="text" name="residencia" id="residencia"
-                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s#.,-]{5,100}$"
-                        maxlength="100"
-                        placeholder="Ej: Calle 50, Edificio Torres, Apto 3B"
-                        title="Ingrese una dirección válida." required>
-                </div>
-            </fieldset>
-
-            <p class="nota-requerido"><span class="requerido">*</span> Campos obligatorios</p>
-
-            <button type="submit" class="btn-primario">📨 Enviar Solicitud</button>
-
-        </form>
-
+        <p class="intro-form">Complete el formulario para enviar su solicitud.</p>
     <?php endif; ?>
 
+    <!-- Formulario -->
+    <form action="<?= $accion ?>" method="POST">
+        <input type="hidden" name="csrf_token"
+               value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
+
+        <?php
+        // Si la solicitud fue revisada, deshabilitar todos los campos
+        $dis = ($tieneS && $bloqueado) ? 'disabled' : '';
+        ?>
+
+        <!-- Sección: Identificación -->
+        <fieldset class="fieldset-seccion">
+            <legend>Identificación</legend>
+
+            <div class="grupo-fila">
+                <div class="grupo">
+                    <label for="cedula">Cédula o Pasaporte <span class="requerido">*</span></label>
+                    <input type="text" name="cedula" id="cedula" <?= $dis ?>
+                        value="<?= htmlspecialchars($v['cedula'], ENT_QUOTES, 'UTF-8') ?>"
+                        pattern="^([0-9]{1,2}-[0-9]{1,4}-[0-9]{1,6}|[PEN]-[0-9]{1,4}-[0-9]{1,6}|[A-Z0-9]{6,15})$"
+                        maxlength="15" placeholder="8-123-4567"
+                        title="Cédula panameña o pasaporte válido." required>
+                </div>
+                <div class="grupo">
+                    <label for="nacionalidad">Nacionalidad <span class="requerido">*</span></label>
+                    <select name="nacionalidad" id="nacionalidad" <?= $dis ?> required>
+                        <option value="">Seleccione</option>
+                        <?php
+                        $nacs = ["Afgana","Albanesa","Alemana","Andorrana","Angoleña","Antiguana","Argentina","Armenia","Australiana","Austriaca","Azerbaiyana","Bahameña","Bareiní","Bangladesí","Barbadense","Belga","Beliceña","Beninesa","Bielorrusa","Boliviana","Bosnia","Botsuana","Brasileña","Británica","Bruneana","Búlgara","Burkinesa","Burundesa","Camboyana","Camerunesa","Canadiense","Chadiana","Chilena","China","Chipriota","Colombiana","Congoleña","Costarricense","Croata","Cubana","Danesa","Dominicana","Ecuatoriana","Egipcia","Salvadoreña","Emiratí","Eritrea","Eslovaca","Eslovena","Española","Estadounidense","Estonia","Etíope","Filipina","Finlandesa","Francesa","Gabonesa","Gambiana","Georgiana","Ghanesa","Granadina","Griega","Guatemalteca","Guineana","Guyonesa","Haitiana","Hondureña","Húngara","India","Indonesia","Iraní","Iraquí","Irlandesa","Islandesa","Israelí","Italiana","Jamaiquina","Japonesa","Jordana","Kazaja","Keniana","Kirguisa","Kiribatiana","Kuwaití","Laosiana","Lesotense","Letona","Libanesa","Liberiana","Libia","Liechtensteiniana","Lituana","Luxemburguesa","Macedonia","Malasia","Malauí","Maldiva","Maliense","Maltesa","Marroquí","Mauriciana","Mexicana","Moldava","Monegasca","Mongola","Namibia","Nepalesa","Nicaragüense","Nigeriana","Noruega","Neozelandesa","Panameña","Paraguaya","Peruana","Polaca","Portuguesa","Qatarí","Rumana","Rusa","Senegalesa","Serbia","Singapurense","Siria","Somalí","Sudafricana","Sueca","Suiza","Tailandesa","Tanzana","Tunecina","Turca","Ucraniana","Ugandesa","Uruguaya","Venezolana","Vietnamita","Yemení","Zambiana","Zimbabuense"];
+                        foreach ($nacs as $nac):
+                        ?>
+                            <option value="<?= htmlspecialchars($nac, ENT_QUOTES, 'UTF-8') ?>"
+                                <?= $v['nacionalidad'] === $nac ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($nac, ENT_QUOTES, 'UTF-8') ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Sección: Datos Personales -->
+        <fieldset class="fieldset-seccion">
+            <legend>Datos Personales</legend>
+
+            <div class="grupo-fila">
+                <div class="grupo">
+                    <label for="nombre">Nombre <span class="requerido">*</span></label>
+                    <input type="text" name="nombre" id="nombre" <?= $dis ?>
+                        value="<?= htmlspecialchars($v['nombre'], ENT_QUOTES, 'UTF-8') ?>"
+                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$" maxlength="25"
+                        title="Solo letras, 2-25 caracteres." required>
+                </div>
+                <div class="grupo">
+                    <label for="apellido">Apellido <span class="requerido">*</span></label>
+                    <input type="text" name="apellido" id="apellido" <?= $dis ?>
+                        value="<?= htmlspecialchars($v['apellido'], ENT_QUOTES, 'UTF-8') ?>"
+                        pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ]{2,25}$" maxlength="25"
+                        title="Solo letras, 2-25 caracteres." required>
+                </div>
+            </div>
+
+            <div class="grupo-fila">
+                <div class="grupo">
+                    <label for="genero">Género <span class="requerido">*</span></label>
+                    <select name="genero" id="genero" <?= $dis ?> required>
+                        <option value="">Seleccione</option>
+                        <?php foreach (['Masculino','Femenino'] as $op): ?>
+                            <option value="<?= $op ?>" <?= $v['genero'] === $op ? 'selected' : '' ?>><?= $op ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="grupo">
+                    <label for="estado_civil">Estado Civil</label>
+                    <select name="estado_civil" id="estado_civil" <?= $dis ?>>
+                        <option value="">Seleccione</option>
+                        <?php foreach (['Soltero','Casado'] as $op): ?>
+                            <option value="<?= $op ?>" <?= $v['estado_civil'] === $op ? 'selected' : '' ?>><?= $op ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grupo-fila">
+                <div class="grupo">
+                    <label for="fecha_nacimiento">Fecha de Nacimiento <span class="requerido">*</span></label>
+                    <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" <?= $dis ?>
+                        value="<?= htmlspecialchars($v['fecha_nacimiento'], ENT_QUOTES, 'UTF-8') ?>"
+                        max="<?= date('Y-m-d', strtotime('-18 years')) ?>" required>
+                </div>
+                <div class="grupo">
+                    <label for="tipo_sangre">Tipo de Sangre</label>
+                    <select name="tipo_sangre" id="tipo_sangre" <?= $dis ?>>
+                        <option value="">Seleccione</option>
+                        <?php foreach (['A+','A-','B+','B-','AB+','AB-','O+','O-'] as $op): ?>
+                            <option value="<?= $op ?>" <?= $v['tipo_sangre'] === $op ? 'selected' : '' ?>><?= $op ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Sección: Contacto -->
+        <fieldset class="fieldset-seccion">
+            <legend>Contacto</legend>
+
+            <div class="grupo-fila">
+                <div class="grupo">
+                    <label for="telefono">Teléfono <span class="requerido">*</span></label>
+                    <input type="tel" name="telefono" id="telefono" <?= $dis ?>
+                        value="<?= htmlspecialchars($v['telefono'], ENT_QUOTES, 'UTF-8') ?>"
+                        pattern="^6[0-9]{3}-[0-9]{4}$" maxlength="9"
+                        placeholder="6123-4567" title="Formato: 6123-4567" required>
+                </div>
+                <div class="grupo">
+                    <label for="correo">Correo <span class="requerido">*</span></label>
+                    <input type="email" name="correo" id="correo" <?= $dis ?>
+                        value="<?= htmlspecialchars($v['correo'], ENT_QUOTES, 'UTF-8') ?>"
+                        maxlength="254" placeholder="ejemplo@correo.com"
+                        autocomplete="email" required>
+                </div>
+            </div>
+
+            <div class="grupo">
+                <label for="residencia">Residencia <span class="requerido">*</span></label>
+                <input type="text" name="residencia" id="residencia" <?= $dis ?>
+                    value="<?= htmlspecialchars($v['residencia'], ENT_QUOTES, 'UTF-8') ?>"
+                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s#.,-]{5,100}$" maxlength="100"
+                    title="Ingrese una dirección válida." required>
+            </div>
+        </fieldset>
+
+        <p class="nota-requerido"><span class="requerido">*</span> Campos obligatorios</p>
+
+        <?php if (!$tieneS || !$bloqueado): ?>
+            <button type="submit"><?= $boton ?></button>
+        <?php endif; ?>
+
+    </form>
+
+</div>
 </div>
 
-<?php require_once __DIR__ . '/../Layout/footer.php'; ?>
+<!-- ── Footer ─────────────────────────────────────────────────────── -->
+<footer class="site-footer">RH System &copy; <?= date('Y') ?> — DS7 Grupo 5</footer>
+
+</body>
+</html>

@@ -4,128 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
-    <title>Panel Admin - RH</title>
+    <title>Panel Admin — RH System</title>
     <link rel="stylesheet" href="/Assets/css/index.css">
-    <style>
-        main {
-            width: 100%;
-            max-width: 1100px;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: #0a2342;
-        }
-
-        .tabla-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-
-        thead {
-            background-color: #1a4f8a;
-            color: white;
-        }
-
-        thead th {
-            padding: 0.75rem 1rem;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f0f4f9;
-        }
-
-        tbody tr:hover {
-            background-color: #dce8f7;
-        }
-
-        tbody td {
-            padding: 0.65rem 1rem;
-            border-bottom: 1px solid #ddd;
-            vertical-align: middle;
-            white-space: nowrap;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.65rem;
-            border-radius: 1rem;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: capitalize;
-        }
-
-        .badge-no-revisado { background-color: #f0ad4e; color: #fff; }
-        .badge-considerado { background-color: #5cb85c; color: #fff; }
-        .badge-no-considerado { background-color: #d9534f; color: #fff; }
-
-        .acciones {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-considerado, .btn-no-considerado {
-            padding: 0.35rem 0.75rem;
-            border: none;
-            border-radius: 0.3rem;
-            font-size: 0.85rem;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-        }
-
-        .btn-considerado     { background-color: #5cb85c; }
-        .btn-considerado:hover { background-color: #449d44; }
-
-        .btn-no-considerado  { background-color: #d9534f; }
-        .btn-no-considerado:hover { background-color: #c9302c; }
-
-        .sin-aspirantes {
-            text-align: center;
-            padding: 2rem;
-            color: #666;
-            font-style: italic;
-        }
-
-        #toast {
-            display: none;
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background-color: #1a4f8a;
-            color: white;
-            padding: 0.75rem 1.25rem;
-            border-radius: 0.5rem;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            z-index: 999;
-        }
-    </style>
 </head>
 <body>
 
-<main>
-    <h2>Panel de Administración — Solicitudes</h2>
+<!-- ── Navbar ─────────────────────────────────────────────────────── -->
+<nav class="navbar navbar-admin">
+    <span class="navbar-brand">⚙ RH System — Panel Admin</span>
+    <div class="navbar-info">
+        <span>👤 <?= htmlspecialchars($_SESSION['usuario_nombre'] ?? '', ENT_QUOTES, 'UTF-8') ?></span>
+        <a href="/post/usuario/logout" class="btn-logout">Cerrar sesión</a>
+    </div>
+</nav>
 
+<!-- ── Contenido principal ────────────────────────────────────────── -->
+<div class="main-content">
+<div class="contenedor admin-contenedor">
+
+    <h2>Solicitudes de Aspirantes</h2>
+
+    <!-- Mensajes flash -->
     <?php if (!empty($_SESSION['user_logs']) && is_array($_SESSION['user_logs'])): ?>
+        <?php
+            // Detectar si es mensaje de éxito o error
+            $esExito = in_array($_SESSION['user_logs'][0] ?? '', [
+                'Estado actualizado correctamente.',
+                'Solicitud actualizada correctamente.'
+            ]);
+        ?>
         <?php foreach ($_SESSION['user_logs'] as $log): ?>
-            <div class="mensaje">
-                <?= htmlspecialchars($log, ENT_QUOTES, 'UTF-8'); ?>
+            <div class="mensaje <?= $esExito ? 'mensaje-ok' : '' ?>">
+                <?= htmlspecialchars($log, ENT_QUOTES, 'UTF-8') ?>
             </div>
         <?php endforeach; ?>
         <?php unset($_SESSION['user_logs']); ?>
     <?php endif; ?>
 
+    <!-- Toast (notificación flotante) -->
+    <div id="toast" role="alert" aria-live="assertive"></div>
+
+    <!-- Filtro de búsqueda -->
+    <div class="admin-filtros">
+        <label for="filtro-buscar">🔍 Buscar:</label>
+        <input
+            type="text"
+            id="filtro-buscar"
+            class="filtro-input"
+            placeholder="Nombre, apellido, cédula, correo…"
+            autocomplete="off">
+        <label for="filtro-estado">Estado:</label>
+        <select id="filtro-estado">
+            <option value="">Todos</option>
+            <option value="no revisado">No revisado</option>
+            <option value="considerado">Considerado</option>
+            <option value="no considerado">No considerado</option>
+        </select>
+    </div>
+
+    <!-- Tabla -->
     <div class="tabla-wrapper">
-        <table>
+        <table class="tabla-admin" id="tabla-aspirantes">
             <thead>
                 <tr>
                     <th>#</th>
@@ -136,48 +75,48 @@
                     <th>Teléfono</th>
                     <th>Correo</th>
                     <th>Estado</th>
-                    <th>Acciones</th>
+                    <th>Cambiar estado</th>
                 </tr>
             </thead>
             <tbody>
                 <?php if (empty($aspirantes)): ?>
                     <tr>
-                        <td colspan="9" class="sin-aspirantes">No hay solicitudes registradas.</td>
+                        <td colspan="9" class="admin-vacio">No hay solicitudes registradas.</td>
                     </tr>
                 <?php else: ?>
                     <?php foreach ($aspirantes as $a): ?>
+                    <?php
+                        $estado = $a['estado_solicitud'];
+                        $clase  = match($estado) {
+                            'considerado'    => 'badge-considerado',
+                            'no considerado' => 'badge-no-considerado',
+                            default          => 'badge-no-revisado',
+                        };
+                    ?>
                     <tr>
-                        <td><?= htmlspecialchars((string)$a['id'],            ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($a['cedula_pasaporte'],       ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($a['nombre'],                 ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($a['apellido'],               ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($a['genero'],                 ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($a['telefono'],               ENT_QUOTES, 'UTF-8') ?></td>
-                        <td><?= htmlspecialchars($a['correo'],                 ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= (int)$a['id'] ?></td>
+                        <td><?= htmlspecialchars($a['cedula_pasaporte'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($a['nombre'],           ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($a['apellido'],         ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($a['genero'],           ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($a['telefono'],         ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($a['correo'],           ENT_QUOTES, 'UTF-8') ?></td>
                         <td>
-                            <?php
-                                $estado = $a['estado_solicitud'];
-                                $clase  = match($estado) {
-                                    'considerado'    => 'badge-considerado',
-                                    'no considerado' => 'badge-no-considerado',
-                                    default          => 'badge-no-revisado',
-                                };
-                            ?>
-                            <span class="badge <?= $clase ?>">
+                            <span class="badge <?= $clase ?>" data-estado-badge>
                                 <?= htmlspecialchars($estado, ENT_QUOTES, 'UTF-8') ?>
                             </span>
                         </td>
                         <td>
-                            <div class="acciones">
+                            <div class="form-estado-inline">
+                                <select class="select-estado-inline" data-select-estado>
+                                    <option value="no revisado"    <?= $estado === 'no revisado'    ? 'selected' : '' ?>>No revisado</option>
+                                    <option value="considerado"    <?= $estado === 'considerado'    ? 'selected' : '' ?>>Considerado</option>
+                                    <option value="no considerado" <?= $estado === 'no considerado' ? 'selected' : '' ?>>No considerado</option>
+                                </select>
                                 <button
-                                    class="btn-considerado"
-                                    onclick="actualizarEstado(<?= (int)$a['usuario_id'] ?>, 'considerado', this)">
-                                    Considerado
-                                </button>
-                                <button
-                                    class="btn-no-considerado"
-                                    onclick="actualizarEstado(<?= (int)$a['usuario_id'] ?>, 'no considerado', this)">
-                                    No Considerado
+                                    class="btn-guardar-estado"
+                                    data-uid="<?= (int)$a['usuario_id'] ?>">
+                                    Guardar
                                 </button>
                             </div>
                         </td>
@@ -187,56 +126,16 @@
             </tbody>
         </table>
     </div>
-</main>
 
-<div id="toast"></div>
+    <p class="admin-total">Total: <?= count($aspirantes) ?> solicitud(es)</p>
 
-<script>
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+</div>
+</div>
 
-    function mostrarToast(mensaje, exito = true) {
-        const toast = document.getElementById('toast');
-        toast.textContent = mensaje;
-        toast.style.backgroundColor = exito ? '#1a4f8a' : '#d9534f';
-        toast.style.display = 'block';
-        setTimeout(() => { toast.style.display = 'none'; }, 3000);
-    }
+<!-- ── Footer ─────────────────────────────────────────────────────── -->
+<footer class="site-footer">RH System &copy; <?= date('Y') ?> — DS7 Grupo 5</footer>
 
-    function actualizarEstado(usuario_id, estado, boton) {
-        const fila    = boton.closest('tr');
-        const badge   = fila.querySelector('.badge');
-        const botones = fila.querySelectorAll('button');
-
-        botones.forEach(b => b.disabled = true);
-
-        fetch('/api/admin/update', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `usuario_id=${usuario_id}&estado_solicitud=${encodeURIComponent(estado)}&csrf_token=${encodeURIComponent(csrfToken)}`
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.ok) {
-                const clases = {
-                    'considerado':    'badge-considerado',
-                    'no considerado': 'badge-no-considerado',
-                    'no revisado':    'badge-no-revisado'
-                };
-                badge.className   = 'badge ' + (clases[estado] ?? 'badge-no-revisado');
-                badge.textContent = estado.trim();
-                mostrarToast('Estado actualizado correctamente.', true);
-            } else {
-                mostrarToast('Error al actualizar.', false);
-            }
-        })
-        .catch(() => {
-            mostrarToast('Error de conexión.', false);
-        })
-        .finally(() => {
-            botones.forEach(b => b.disabled = false);
-        });
-    }
-</script>
+<script src="/Assets/js/admin.js"></script>
 
 </body>
 </html>
