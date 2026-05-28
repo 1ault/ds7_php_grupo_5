@@ -1,0 +1,409 @@
+/* ═══════════════════════════════════════════════════════════════
+   index.css — Estilos globales DS7 Grupo 5 — RH System
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   NAVBAR
+   ════════════════════════════════════════════════════════════════ */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 30px;
+    color: #fff;
+    font-size: 15px;
+}
+
+/* Color de barra según rol */
+.navbar-aspirante { background: #1a73e8; }
+.navbar-admin     { background: #2d3748; }
+.navbar-default   { background: #555;    }
+
+.navbar-brand {
+    font-size: 17px;
+    font-weight: bold;
+    letter-spacing: .3px;
+}
+
+.navbar-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.btn-logout {
+    background: rgba(255,255,255,.18);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: background .2s;
+}
+.btn-logout:hover { background: rgba(255,255,255,.32); }
+
+/* ════════════════════════════════════════════════════════════════
+   MAIN CONTENT
+   ════════════════════════════════════════════════════════════════ */
+.main-content {
+    flex: 1;
+    padding: 36px 20px;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.site-footer {
+    text-align: center;
+    padding: 14px;
+    font-size: 12px;
+    color: #888;
+    background: #eef0f3;
+    border-top: 1px solid #dde1e7;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CONTENEDOR GENÉRICO (registro / login)
+   ════════════════════════════════════════════════════════════════ */
+.contenedor {
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+    background: #fff;
+    padding: 36px 32px;
+    border-radius: 14px;
+    box-shadow: 0 2px 18px rgba(0,0,0,.09);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 26px;
+    color: #222;
+    font-size: 22px;
+}
+
+/* ── Grupos de campo ─────────────────────────────────────────── */
+.grupo {
+    margin-bottom: 16px;
+    flex: 1;
+}
+
+.grupo-fila {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 13px;
+    color: #555;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color .2s;
+    background: #fafafa;
+}
+
+input:focus,
+select:focus {
+    border-color: #1a73e8;
+    background: #fff;
+}
+
+/* ── Botones ─────────────────────────────────────────────────── */
+button,
+.btn-primario {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background: #1a73e8;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .2s;
+    margin-top: 8px;
+}
+button:hover,
+.btn-primario:hover { background: #1558b0; }
+
+.btn-secundario {
+    background: #fff;
+    color: #1a73e8;
+    border: 1.5px solid #1a73e8;
+}
+.btn-secundario:hover { background: #e8f0fe; }
+
+/* ── Mensajes flash ──────────────────────────────────────────── */
+.mensaje {
+    background: #fde8ea;
+    color: #721c24;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 14px;
+    border-left: 4px solid #e84040;
+}
+.mensaje-ok {
+    background: #d4edda;
+    color: #155724;
+    border-left-color: #28a745;
+}
+
+/* ── Links ───────────────────────────────────────────────────── */
+.login-link {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+}
+.login-link a { color: #1a73e8; text-decoration: none; }
+.login-link a:hover { text-decoration: underline; }
+
+/* ── Hint de contraseña ──────────────────────────────────────── */
+.info-password {
+    font-size: 12px;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* ── Campo requerido ─────────────────────────────────────────── */
+.requerido { color: #e84040; }
+.nota-requerido { font-size: 12px; color: #888; margin-bottom: 12px; }
+
+/* ════════════════════════════════════════════════════════════════
+   VISTA ASPIRANTE
+   ════════════════════════════════════════════════════════════════ */
+.aspirante-contenedor {
+    max-width: 820px;
+}
+
+.intro-form {
+    color: #555;
+    margin-bottom: 22px;
+    font-size: 14px;
+}
+
+/* Fieldsets por sección */
+.fieldset-seccion {
+    border: 1px solid #e0e4ea;
+    border-radius: 10px;
+    padding: 18px 20px 8px;
+    margin-bottom: 22px;
+}
+.fieldset-seccion legend {
+    font-weight: bold;
+    font-size: 13px;
+    color: #1a73e8;
+    padding: 0 8px;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+}
+
+/* Estado badge (cuando ya tiene solicitud) */
+.estado-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+.estado-no\ revisado    { background: #fff3cd; color: #856404; }
+.estado-considerado     { background: #d4edda; color: #155724; }
+.estado-no\ considerado { background: #fde8ea; color: #721c24; }
+
+.solicitud-fecha {
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* Grid de datos para mostrar la solicitud */
+.datos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+.dato-item {
+    background: #f8f9fc;
+    border: 1px solid #e8eaed;
+    border-radius: 8px;
+    padding: 12px 14px;
+}
+.dato-item--full { grid-column: 1 / -1; }
+.dato-label {
+    display: block;
+    font-size: 11px;
+    font-weight: bold;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    margin-bottom: 4px;
+}
+
+.nota-update {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   VISTA ADMIN
+   ════════════════════════════════════════════════════════════════ */
+.admin-contenedor {
+    max-width: 1200px;
+}
+
+/* Filtros */
+.admin-filtros {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+    padding: 16px 18px;
+    background: #f0f4ff;
+    border-radius: 10px;
+}
+.admin-filtros label { font-weight: bold; font-size: 13px; color: #444; margin: 0; }
+.admin-filtros select,
+.filtro-input {
+    padding: 8px 12px;
+    border: 1px solid #ccd1e0;
+    border-radius: 7px;
+    font-size: 13px;
+    min-width: 180px;
+}
+.filtro-input { flex: 1; min-width: 240px; }
+
+/* Tabla */
+.tabla-wrapper {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid #e0e4ea;
+}
+.tabla-admin {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 900px;
+}
+.tabla-admin thead {
+    background: #2d3748;
+    color: #fff;
+}
+.tabla-admin th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+.tabla-admin tbody tr:nth-child(even) { background: #f8f9fc; }
+.tabla-admin tbody tr:hover { background: #eef2ff; }
+.tabla-admin td {
+    padding: 11px 14px;
+    border-bottom: 1px solid #eff1f5;
+    vertical-align: middle;
+}
+
+/* Badges de estado */
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.badge-no-revisado     { background: #fff3cd; color: #856404; }
+.badge-considerado     { background: #d4edda; color: #155724; }
+.badge-no-considerado  { background: #fde8ea; color: #721c24; }
+
+/* Formulario inline de cambio de estado */
+.form-estado-inline {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+.select-estado-inline {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 12px;
+    width: auto;
+    min-width: 150px;
+    background: #fff;
+}
+.btn-guardar-estado {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 12px;
+    margin: 0;
+    background: #2d3748;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+.btn-guardar-estado:hover { background: #1a202c; }
+
+.admin-vacio {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+    font-size: 16px;
+}
+
+.admin-total {
+    text-align: right;
+    font-size: 13px;
+    color: #666;
+    margin-top: 14px;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    .main-content { padding: 20px 12px; }
+
+    .contenedor { padding: 22px 16px; }
+
+    .grupo-fila { flex-direction: column; }
+
+    .datos-grid { grid-template-columns: 1fr; }
+
+    .navbar { padding: 12px 16px; }
+
+    .admin-filtros { flex-direction: column; align-items: flex-start; }
+
+    .filtro-input { min-width: 100%; }
+}

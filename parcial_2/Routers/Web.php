@@ -1,0 +1,74 @@
+<?php
+declare(strict_types=1);
+
+namespace Root\Program\Routers;
+
+use Root\Program\Controlador\UsuarioController;
+use Root\Program\Controlador\AspiranteController;
+use Root\Program\Controlador\AdminController;
+use Root\Program\Utils\Http;
+use Root\Program\Utils\HttpStatus;
+
+class Web
+{
+    public static function run(): void
+    {
+        switch (parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))
+        {
+            // ── Raíz ───────────────────────────────────────────────────────
+            case '':
+            case '/':
+                UsuarioController::vistaRegistro();
+                exit;
+
+            // ── Registro ───────────────────────────────────────────────────
+            case '/registro':
+                UsuarioController::vistaRegistro();
+                exit;
+            case '/post/usuario/registro':
+                UsuarioController::postRegistro();
+                exit;
+
+            // ── Login / Logout ─────────────────────────────────────────────
+            case '/login':
+                UsuarioController::vistaLogin();
+                exit;
+            case '/post/usuario/login':
+                UsuarioController::postLogin();
+                exit;
+            case '/post/usuario/logout':
+                UsuarioController::postLogout();
+                exit;
+
+            // ── Aspirante ──────────────────────────────────────────────────
+            case '/aspirante':
+                AspiranteController::vistaAspirante();
+                exit;
+            case '/post/aspirante/guardar':
+                AspiranteController::postGuardarAspirante();
+                exit;
+            case '/post/aspirante/update':
+                AspiranteController::postUpdateAspirante();
+                exit;
+
+            // ── Admin ──────────────────────────────────────────────────────
+            case '/admin':
+                AdminController::vistaAdmin();
+                exit;
+            case '/post/admin/update':
+                AdminController::postAdminUpdateAspirante();
+                exit;
+            case '/api/admin/update':
+                AdminController::apiAdminUpdateAspirante();
+                exit;
+
+            // ── 404 ────────────────────────────────────────────────────────
+            default:
+                Http::response(
+                    ["404 - Not Found"],
+                    HttpStatus::NOT_FOUND
+                );
+                exit;
+        }
+    }
+}
