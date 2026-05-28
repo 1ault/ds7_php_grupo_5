@@ -7,5 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'edc58681bb6ee798a4957d728f5073d2' => $baseDir . '/Config/Vault.php',
-    '61dcfb59ba486c056dc41d237b4dbd59' => $baseDir . '/Config/Session.php',
+    '71118af62c1b260a7c0d87da23539da8' => $baseDir . '/Config/Database.php',
 );

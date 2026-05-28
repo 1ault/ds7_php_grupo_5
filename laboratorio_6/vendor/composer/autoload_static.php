@@ -8,7 +8,7 @@ class ComposerStaticInit786866ff27380b9ecbe94533d44fae68
 {
     public static $files = array (
         'edc58681bb6ee798a4957d728f5073d2' => __DIR__ . '/../..' . '/Config/Vault.php',
-        '61dcfb59ba486c056dc41d237b4dbd59' => __DIR__ . '/../..' . '/Config/Session.php',
+        '71118af62c1b260a7c0d87da23539da8' => __DIR__ . '/../..' . '/Config/Database.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -47,12 +47,8 @@ class ComposerStaticInit786866ff27380b9ecbe94533d44fae68
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Root\\Program\\Config\\Database' => __DIR__ . '/../..' . '/Config/Database.php',
-        'Root\\Program\\Controlador\\AdminController' => __DIR__ . '/../..' . '/Controlador/AdminController.php',
-        'Root\\Program\\Controlador\\AspiranteController' => __DIR__ . '/../..' . '/Controlador/AspiranteController.php',
-        'Root\\Program\\Controlador\\UsuarioController' => __DIR__ . '/../..' . '/Controlador/UsuarioController.php',
-        'Root\\Program\\Modelo\\Aspirante' => __DIR__ . '/../..' . '/Modelo/Aspirante.php',
-        'Root\\Program\\Modelo\\Usuario' => __DIR__ . '/../..' . '/Modelo/Usuario.php',
+        'Root\\Program\\Controlador\\FormControlador' => __DIR__ . '/../..' . '/Controlador/FormControlador.php',
+        'Root\\Program\\Modelo\\Producto' => __DIR__ . '/../..' . '/Modelo/Producto.php',
         'Root\\Program\\Routers\\Web' => __DIR__ . '/../..' . '/Routers/Web.php',
         'Root\\Program\\Utils\\BruteForce' => __DIR__ . '/../..' . '/Utils/BruteForce.php',
         'Root\\Program\\Utils\\CryptoVault' => __DIR__ . '/../..' . '/Utils/CryptoVault.php',

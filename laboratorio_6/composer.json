@@ -10,7 +10,7 @@
         },
         "files": [
             "Config/Vault.php",
-            "Config/Session.php"
+            "Config/Database.php"
         ]
     },
     "require": {}
