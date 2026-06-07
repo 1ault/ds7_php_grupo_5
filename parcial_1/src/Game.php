@@ -241,10 +241,6 @@ class Game
     static public function getFondoMain(): Fondo
     {
         http_response_code(HttpStatus::OK->value);
-<<<<<<< HEAD
-        $fondo = new Fondo('main', 'assets/img/fondo.webp');
-        echo json_encode($fondo);
-=======
         $data = new Fondo('main', '/assets/img/fondo.webp');
         echo json_encode($data);
         exit; 
@@ -271,7 +267,6 @@ class Game
         http_response_code(HttpStatus::OK->value);
         $data = new EnemigoHongo();
         echo json_encode($data);
->>>>>>> 324c2646896017040376d9eb086b34de89808e33
         exit; 
     }
 

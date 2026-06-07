@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CalculadoraServicio"
+    targetNamespace="http://localhost/Laboratorio_7/servicio.php"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://localhost/Laboratorio_7/servicio.php"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+    <!-- Mensajes para SUMAR -->
+    <message name="sumarRequest">
+        <part name="a" type="xsd:float"/>
+        <part name="b" type="xsd:float"/>
+    </message>
+    <message name="sumarResponse">
+        <part name="resultado" type="xsd:float"/>
+    </message>
+
+    <!-- Mensajes para RESTAR -->
+    <message name="restarRequest">
+        <part name="a" type="xsd:float"/>
+        <part name="b" type="xsd:float"/>
+    </message>
+    <message name="restarResponse">
+        <part name="resultado" type="xsd:float"/>
+    </message>
+
+    <!-- Mensajes para MULTIPLICAR -->
+    <message name="multiplicarRequest">
+        <part name="a" type="xsd:float"/>
+        <part name="b" type="xsd:float"/>
+    </message>
+    <message name="multiplicarResponse">
+        <part name="resultado" type="xsd:float"/>
+    </message>
+
+    <!-- Mensajes para DIVIDIR -->
+    <message name="dividirRequest">
+        <part name="a" type="xsd:float"/>
+        <part name="b" type="xsd:float"/>
+    </message>
+    <message name="dividirResponse">
+        <part name="resultado" type="xsd:float"/>
+    </message>
+
+    <!-- PortType: Define las operaciones disponibles -->
+    <portType name="CalculadoraPortType">
+        <operation name="sumar">
+            <input message="tns:sumarRequest"/>
+            <output message="tns:sumarResponse"/>
+        </operation>
+        <operation name="restar">
+            <input message="tns:restarRequest"/>
+            <output message="tns:restarResponse"/>
+        </operation>
+        <operation name="multiplicar">
+            <input message="tns:multiplicarRequest"/>
+            <output message="tns:multiplicarResponse"/>
+        </operation>
+        <operation name="dividir">
+            <input message="tns:dividirRequest"/>
+            <output message="tns:dividirResponse"/>
+        </operation>
+    </portType>
+
+    <!-- Binding: Define el protocolo de comunicación (RPC Literal) -->
+    <binding name="CalculadoraBinding" type="tns:CalculadoraPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        
+        <operation name="sumar">
+            <soap:operation soapAction="http://localhost/Laboratorio_7/servicio.php#sumar"/>
+            <input>
+                <soap:body use="literal" namespace="http://localhost/Laboratorio_7/servicio.php"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://localhost/Laboratorio_7/servicio.php"/>
+            </output>
+        </operation>
+
+        <operation name="restar">
+            <soap:operation soapAction="http://localhost/Laboratorio_7/servicio.php#restar"/>
+            <input>
+                <soap:body use="literal" namespace="http://localhost/Laboratorio_7/servicio.php"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://localhost/Laboratorio_7/servicio.php"/>
+            </output>
+        </operation>
+
+        <operation name="multiplicar">
+            <soap:operation soapAction="http://localhost/Laboratorio_7/servicio.php#multiplicar"/>
+            <input>
+                <soap:body use="literal" namespace="http://localhost/Laboratorio_7/servicio.php"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://localhost/Laboratorio_7/servicio.php"/>
+            </output>
+        </operation>
+
+        <operation name="dividir">
+            <soap:operation soapAction="http://localhost/Laboratorio_7/servicio.php#dividir"/>
+            <input>
+                <soap:body use="literal" namespace="http://localhost/Laboratorio_7/servicio.php"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://localhost/Laboratorio_7/servicio.php"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- Servicio: Define la dirección física del servidor -->
+    <service name="CalculadoraServicio">
+        <port name="CalculadoraPort" binding="tns:CalculadoraBinding">
+            <soap:address location="http://localhost/Laboratorio_7/servicio.php"/>
+        </port>
+    </service>
+</definitions>

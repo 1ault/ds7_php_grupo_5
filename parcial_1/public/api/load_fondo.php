@@ -9,9 +9,7 @@ header('Content-Type: application/json');
 
 $raw = file_get_contents("php://input");
 
-$result = Game::getFondoMain(); 
-Game::response(['sprite' => $result]);
-
+Game::getFondoMain();
 
 
 

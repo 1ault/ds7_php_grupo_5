@@ -1,0 +1,65 @@
+[
+    {
+        "id": 1,
+        "titulo": "House of Dragon",
+        "autor": "J.k Martin",
+        "anio_publicacion": 2000,
+        "genero": "ficción"
+    },
+    {
+        "id": 2,
+        "titulo": "El Diario de Ana Frank",
+        "autor": "Ana Frank",
+        "anio_publicacion": 1981,
+        "genero": "Novela"
+    },
+    {
+        "id": 3,
+        "titulo": "Harry potter y la reliquias de la muerte",
+        "autor": "J.K Rollling",
+        "anio_publicacion": 2013,
+        "genero": "ficción"
+    },
+    {
+        "id": 4,
+        "titulo": "El Señor de los Anillos",
+        "autor": "J.R.R Tolkien",
+        "anio_publicacion": 1954,
+        "genero": "fantasía"
+    },
+    {
+        "id": 5,
+        "titulo": "Cien años de soledad",
+        "autor": "Gabriel García Márquez",
+        "anio_publicacion": 1967,
+        "genero": "realismo mágico"
+    },
+    {
+        "id": 6,
+        "titulo": "El Código Da Vinci",
+        "autor": "Dan Brown",
+        "anio_publicacion": 2003,
+        "genero": "misterio"
+    },
+    {
+        "id": 7,
+        "titulo": "Matar a un ruiseñor",
+        "autor": "Harper Lee",
+        "anio_publicacion": 1960,
+        "genero": "novela"
+    },
+    {
+        "id": 8,
+        "titulo": "El Gran Gatsby",
+        "autor": "F. Scott Fitzgerald",
+        "anio_publicacion": 1925,
+        "genero": "novela"
+    },
+    {
+        "id": 9,
+        "titulo": "La casa de alado",
+        "autor": "George Orwell",
+        "anio_publicacion": 1949,
+        "genero": "distopía"
+    }
+]
