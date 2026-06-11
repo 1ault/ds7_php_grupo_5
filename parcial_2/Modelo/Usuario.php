@@ -30,13 +30,13 @@ class Usuario
         $indexing_usuario = CryptoVault::hashMessageAuthentication(data: $usuario);
 
         // Bind
-        $consulta->bindValue(':indexing_usuario', $indexing_usuario); // ✅ fixed name
+        $consulta->bindValue(':indexing_usuario', $indexing_usuario);
 
         // Ejecutar
         $consulta->execute();
 
         // Return true if user exists, false if not
-        return $consulta->fetch(PDO::FETCH_ASSOC) !== false; // ✅ returns bool
+        return $consulta->fetch(PDO::FETCH_ASSOC) !== false;
     }
 
 
