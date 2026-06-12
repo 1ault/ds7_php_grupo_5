@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    peliculas.xml — Fuente de datos XML para CineMatch
+    DS7 Grupo 5 — Universidad Tecnológica de Panamá
+    Usado por: PeliculaController::importarDesdeXML()
+-->
+<catalogo>
+    <pelicula>
+        <titulo>Inception</titulo>
+        <tipo>pelicula</tipo>
+        <anio>2010</anio>
+        <generos>
+            <genero>Ciencia Ficción</genero>
+            <genero>Thriller</genero>
+        </generos>
+        <descripcion>Un ladrón que roba secretos de los sueños recibe la misión inversa: plantar una idea.</descripcion>
+        <poster_url>https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg</poster_url>
+    </pelicula>
+    <pelicula>
+        <titulo>Interstellar</titulo>
+        <tipo>pelicula</tipo>
+        <anio>2014</anio>
+        <generos>
+            <genero>Ciencia Ficción</genero>
+            <genero>Drama</genero>
+            <genero>Aventura</genero>
+        </generos>
+        <descripcion>Un equipo de exploradores viaja a través de un agujero de gusano en busca de un nuevo hogar.</descripcion>
+        <poster_url>https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg</poster_url>
+    </pelicula>
+    <pelicula>
+        <titulo>Breaking Bad</titulo>
+        <tipo>serie</tipo>
+        <anio>2008</anio>
+        <generos>
+            <genero>Crimen</genero>
+            <genero>Drama</genero>
+            <genero>Thriller</genero>
+        </generos>
+        <descripcion>Un profesor de química se convierte en fabricante de metanfetamina tras un diagnóstico terminal.</descripcion>
+        <poster_url>https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg</poster_url>
+    </pelicula>
+    <pelicula>
+        <titulo>Spirited Away</titulo>
+        <tipo>pelicula</tipo>
+        <anio>2001</anio>
+        <generos>
+            <genero>Animación</genero>
+            <genero>Fantasía</genero>
+            <genero>Aventura</genero>
+        </generos>
+        <descripcion>Una niña queda atrapada en un mundo de espíritus y debe trabajar para liberar a sus padres.</descripcion>
+        <poster_url>https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg</poster_url>
+    </pelicula>
+    <pelicula>
+        <titulo>Stranger Things</titulo>
+        <tipo>serie</tipo>
+        <anio>2016</anio>
+        <generos>
+            <genero>Ciencia Ficción</genero>
+            <genero>Thriller</genero>
+            <genero>Fantasía</genero>
+        </generos>
+        <descripcion>Un grupo de niños enfrenta fuerzas sobrenaturales en su pequeño pueblo.</descripcion>
+        <poster_url>https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg</poster_url>
+    </pelicula>
+</catalogo>

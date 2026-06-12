@@ -1,0 +1,66 @@
+[
+  {
+    "titulo": "The Dark Knight",
+    "tipo": "pelicula",
+    "anio": 2008,
+    "generos": ["Acción", "Crimen", "Thriller"],
+    "descripcion": "Batman enfrenta al Joker, un criminal que quiere sumir Gotham en el caos.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+  },
+  {
+    "titulo": "Parasite",
+    "tipo": "pelicula",
+    "anio": 2019,
+    "generos": ["Drama", "Crimen", "Thriller"],
+    "descripcion": "Una familia pobre se infiltra en la vida de una familia adinerada con consecuencias inesperadas.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg"
+  },
+  {
+    "titulo": "The Matrix",
+    "tipo": "pelicula",
+    "anio": 1999,
+    "generos": ["Ciencia Ficción", "Acción", "Thriller"],
+    "descripcion": "Un programador descubre que la realidad es una simulación controlada por máquinas.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg"
+  },
+  {
+    "titulo": "The Godfather",
+    "tipo": "pelicula",
+    "anio": 1972,
+    "generos": ["Drama", "Crimen", "Thriller"],
+    "descripcion": "La historia del poderoso clan criminal Corleone y su heredero involuntario.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsLeBHka9Xq0.jpg"
+  },
+  {
+    "titulo": "Dark",
+    "tipo": "serie",
+    "anio": 2017,
+    "generos": ["Ciencia Ficción", "Drama", "Thriller", "Misterio"],
+    "descripcion": "Una historia de viajes en el tiempo que conecta a cuatro familias alemanas.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/apbrbWs8M9lyOpJYU5WXrpFbk1Z.jpg"
+  },
+  {
+    "titulo": "Avatar",
+    "tipo": "pelicula",
+    "anio": 2009,
+    "generos": ["Ciencia Ficción", "Acción", "Aventura"],
+    "descripcion": "Un marine paralítico viaja a Pandora y se une a los Na'vi en su lucha por sobrevivir.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/jRXYjXNq0Cs2TcJjLkki24MLp7u.jpg"
+  },
+  {
+    "titulo": "Forrest Gump",
+    "tipo": "pelicula",
+    "anio": 1994,
+    "generos": ["Drama", "Comedia", "Romance"],
+    "descripcion": "La extraordinaria vida de un hombre con baja inteligencia que logra grandes cosas.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg"
+  },
+  {
+    "titulo": "The Witcher",
+    "tipo": "serie",
+    "anio": 2019,
+    "generos": ["Fantasía", "Acción", "Aventura"],
+    "descripcion": "Un cazador de monstruos lucha para encontrar su lugar en un mundo corrupto.",
+    "poster_url": "https://image.tmdb.org/t/p/w500/7VS3sJpnElnWnOmsCzEPTFR3Noe.jpg"
+  }
+]

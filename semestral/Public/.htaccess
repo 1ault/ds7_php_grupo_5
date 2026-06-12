@@ -1,2 +1,4 @@
 RewriteEngine On
+
+# Todo lo demás → index.php
 RewriteRule ^ index.php [L]

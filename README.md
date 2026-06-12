@@ -134,3 +134,21 @@ http://localhost:8081/
 http://localhost:8082/
 http://localhost:8082/
 ```
+
+## PHP CLI
+
+
+**VS17 x64 Non Thread Safe => zip**
+
+[php cli](https://www.php.net/downloads.php?os=windows)
+
+## Composer config
+
+### Download
+
+
+[composer page](https://getcomposer.org/)
+
+[composer github](https://github.com/composer/composer)
+
+### 

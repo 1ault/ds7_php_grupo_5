@@ -1,0 +1,18 @@
+**/.env
+**/*.env
+**/.env.*
+**/.env.local
+**/.env.production
+**/.env.staging
+
+/vendor/
+/tmp/
+
+# Not
+!**/.env.example
+!**/.env.copy
+
+# Core dumps
+*.core
+core
+yazi.core
