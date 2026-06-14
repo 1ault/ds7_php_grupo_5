@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+    name="InventarioService"
+    targetNamespace="http://localhost/Laboratorios/Laboratorio9/veterinaria_soap"
+    xmlns:tns="http://localhost/Laboratorios/Laboratorio9/veterinaria_soap"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <types>
+        <xsd:schema targetNamespace="http://localhost/Laboratorios/Laboratorio9/veterinaria_soap">
+
+            <xsd:complexType name="Producto">
+                <xsd:sequence>
+                    <xsd:element name="id" type="xsd:int"/>
+                    <xsd:element name="nombre" type="xsd:string"/>
+                    <xsd:element name="precio" type="xsd:float"/>
+                    <xsd:element name="stock" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ArrayProductos">
+                 <xsd:complexContent>
+                    <xsd:restriction base="soapenc:Array" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+                      <xsd:attribute ref="soapenc:arrayType" wsdl:arrayType="tns:Producto[]" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"/>
+                   </xsd:restriction>
+               </xsd:complexContent>
+             </xsd:complexType>
+
+        </xsd:schema>
+    </types>
+
+    <!-- obtenerProducto -->
+
+    <message name="obtenerProductoRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+
+    <message name="obtenerProductoResponse">
+        <part name="producto" type="tns:Producto"/>
+    </message>
+
+    <!-- actualizarStock -->
+
+    <message name="actualizarStockRequest">
+        <part name="id" type="xsd:int"/>
+        <part name="cantidad" type="xsd:int"/>
+    </message>
+
+    <message name="actualizarStockResponse">
+        <part name="producto" type="tns:Producto"/>
+    </message>
+
+    <!-- listarProductos -->
+
+    <message name="listarProductosRequest"/>
+
+<message name="listarProductosResponse">
+    <part name="productos" type="tns:ArrayProductos"/>
+</message>
+
+    <portType name="InventarioPortType">
+
+        <operation name="obtenerProducto">
+            <input message="tns:obtenerProductoRequest"/>
+            <output message="tns:obtenerProductoResponse"/>
+        </operation>
+
+        <operation name="actualizarStock">
+            <input message="tns:actualizarStockRequest"/>
+            <output message="tns:actualizarStockResponse"/>
+        </operation>
+
+        <operation name="listarProductos">
+            <input message="tns:listarProductosRequest"/>
+            <output message="tns:listarProductosResponse"/>
+        </operation>
+
+    </portType>
+
+    <binding name="InventarioBinding" type="tns:InventarioPortType">
+        <soap:binding style="rpc"
+            transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <operation name="obtenerProducto">
+            <soap:operation soapAction="obtenerProducto"/>
+            <input><soap:body use="encoded"
+                namespace="urn:inventario"
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output><soap:body use="encoded"
+                namespace="urn:inventario"
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+
+        <operation name="actualizarStock">
+            <soap:operation soapAction="actualizarStock"/>
+            <input><soap:body use="encoded"
+                namespace="urn:inventario"
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output><soap:body use="encoded"
+                namespace="urn:inventario"
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+
+        <operation name="listarProductos">
+            <soap:operation soapAction="listarProductos"/>
+            <input><soap:body use="encoded"
+                namespace="urn:inventario"
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output><soap:body use="encoded"
+                namespace="urn:inventario"
+                encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+
+    </binding>
+
+    <service name="InventarioService">
+        <port name="InventarioPort"
+            binding="tns:InventarioBinding">
+
+            <soap:address location="http://localhost/Laboratorios/Laboratorio9/veterinaria_soap/soap_server.php"/>
+
+        </port>
+    </service>
+
+</definitions>

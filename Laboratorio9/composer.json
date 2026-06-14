@@ -1,0 +1,9 @@
+{
+    "name": "root/program",
+    "autoload": {
+        "psr-4": {
+         "Root\\Program\\":"veterinaria_rest/"
+        }
+    },
+    "require": {}
+}
