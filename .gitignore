@@ -16,3 +16,4 @@
 *.core
 core
 yazi.core
+.aider*
