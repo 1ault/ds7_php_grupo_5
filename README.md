@@ -151,4 +151,96 @@ http://localhost:8082/
 
 [composer github](https://github.com/composer/composer)
 
-### 
+
+```
+composer dump-autoload -o
+```
+
+## Make
+
+[make](https://gnuwin32.sourceforge.net/packages/make.htm)
+
+```
+https://sourceforge.net/projects/gnuwin32/
+
+C:\Program Files (x86)\GnuWin32\bin
+```
+
+### MySql
+
+```
+C:\xampp\mysql\bin\mysql.exe
+C:\xampp\mysql\bin\mysql.exe -u root -p
+$env:Path += ";C:\xampp\mysql\bin"
+mysql -u root -p
+
+cmd: 
+  mysql -u root -p < db.sql
+powershell: 
+  Get-Content db.sql | mysql -u root -p
+mysql -u root -p -D empresa -e "SELECT * FROM usuarios;"
+
+cmd: (Correct)
+cmd /c "mysql -u root -p --default-character-set=utf8mb4 < db.sql"
+```
+
+
+#### sql debug config
+
+```shell
+doas nvim ~/.my.cnf
+chmod 600 ~/.my.cnf
+
+[client]
+user=root
+password=password123
+host=localhost
+
+mysql < db.sql
+mysql -D empresa -e "SELECT * FROM usuario;"
+
+mysql < db.sql
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'NewPassword123!';
+FLUSH PRIVILEGES;
+exit
+
+mysql -D movies_db -e "SELECT * FROM usuarios;"
+```
+
+
+#### sql debug inser
+```
+admin
+#@A1234567890a#
+```
+
+
+
+
+### Env Example
+
+```env
+DB_USUARIO="root"
+# DB_CONTRASENA=""
+DB_CONTRASENA="password123"
+# Data Source Name
+# Windows
+DB_DSN_WINDOWS="mysql:host=localhost;dbname=rh_system;charset=utf8"
+
+# FreeBSD
+DB_DSN_BSD="mysql:unix_socket=/var/run/mysql/mysql.sock;dbname=rh_system;charset=utf8"
+
+# OpenSSL
+# openssl rand -base64 32
+# openssl rand -base64 64
+# {
+#  echo "SECRET_KEY_1=\"$(openssl rand 32 | base64 -w 0)\""
+#  echo "SECRET_KEY_2=\"$(openssl rand 64 | base64 -w 0)\""
+#  echo "SECRET_KEY_3=\"$(openssl rand 32 | base64 -w 0)\""
+# } > keys.txt
+# cat keys.txt
+SECRET_KEY_1="rKlRSc7yejxUK2qNSn5qIzP+JyHxS/Nybh1l65yzwRk="
+SECRET_KEY_2="+jt4umoG04x7FXsgEYKZN0pj8P1z4kQoZ88J9gDxV+L0uiDCGDUgNrmAzEohm7Mx86HxQCQBWz5n+aq3SykQbw=="
+SECRET_KEY_3="AAQadjSBqHxWK5L9gwzINOT7DDW3IS2e5K9VmFiaB+I="
+```

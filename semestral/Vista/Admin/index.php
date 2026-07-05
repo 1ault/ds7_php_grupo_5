@@ -172,12 +172,12 @@
                         <td>
                             <button class="btn-editar" onclick="editarPelicula(
                                 <?= (int)$p['id'] ?>,
-                                <?= json_encode($p['titulo']) ?>,
+                                <?= htmlspecialchars(json_encode($p['titulo']), ENT_QUOTES, 'UTF-8') ?>,
                                 '<?= htmlspecialchars($p['tipo'], ENT_QUOTES, 'UTF-8') ?>',
                                 <?= (int)$p['anio'] ?>,
-                                <?= json_encode($p['poster_url'] ?? '') ?>,
-                                <?= json_encode($p['descripcion'] ?? '') ?>,
-                                <?= json_encode($p['genero_ids'] ?? '') ?>
+                                <?= htmlspecialchars(json_encode($p['poster_url'] ?? ''), ENT_QUOTES, 'UTF-8') ?>,
+                                <?= htmlspecialchars(json_encode($p['descripcion'] ?? ''), ENT_QUOTES, 'UTF-8') ?>,
+                                <?= htmlspecialchars(json_encode($p['genero_ids'] ?? ''), ENT_QUOTES, 'UTF-8') ?>
                             )">✏ Editar</button>
 
                             <form action="/post/admin/pelicula/eliminar"
@@ -205,7 +205,6 @@
 
 <script>
 // BASE_URL disponible para el JS del admin
-const BASE_URL = '';
 </script>
 <script src="/Assets/js/admin.js"></script>
 </body>

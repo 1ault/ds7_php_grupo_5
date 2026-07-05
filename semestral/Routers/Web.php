@@ -7,8 +7,6 @@ use Root\Program\Controlador\UsuarioController;
 use Root\Program\Controlador\PeliculaController;
 use Root\Program\Controlador\PreferenciaController;
 use Root\Program\Controlador\AdminController;
-use Root\Program\Utils\Http;
-use Root\Program\Utils\HttpStatus;
 
 class Web
 {
@@ -40,80 +38,79 @@ class Web
         //$uri = rtrim($uri, '/');
         //if ($uri === '') $uri = '/';
 
-        switch ($uri)
-        {
+        switch ($uri) {
             // ── Raíz ──────────────────────────────────────────────────────
-            case '':
-            case '/':
-                if (!empty($_SESSION['usuario_id'])) {
-                    header('Location: /home'); 
-                    exit;
+            case "":
+            case "/":
+                if (!empty($_SESSION["usuario_id"])) {
+                    header("Location: /home");
+                    exit();
                 }
                 UsuarioController::vistaLogin();
-                exit;
+                exit();
 
             // ── Registro ──────────────────────────────────────────────────
-            case '/registro':
+            case "/registro":
                 UsuarioController::vistaRegistro();
-                exit;
+                exit();
 
-            case '/post/usuario/registro':
+            case "/post/usuario/registro":
                 UsuarioController::postRegistro();
-                exit;
+                exit();
 
             // ── Login / Logout ─────────────────────────────────────────────
-            case '/login':
+            case "/login":
                 UsuarioController::vistaLogin();
-                exit;
+                exit();
 
-            case '/post/usuario/login':
+            case "/post/usuario/login":
                 UsuarioController::postLogin();
-                exit;
+                exit();
 
-            case '/post/usuario/logout':
+            case "/post/usuario/logout":
                 UsuarioController::postLogout();
-                exit;
+                exit();
 
             // ── Home / Catálogo ────────────────────────────────────────────
-            case '/home':
+            case "/home":
                 PeliculaController::vistaHome();
-                exit;
+                exit();
 
             // ── Detalle de película ────────────────────────────────────────
-            case '/pelicula/detalle':
+            case "/pelicula/detalle":
                 PeliculaController::vistaDetalle();
-                exit;
+                exit();
 
             // ── Calificar ──────────────────────────────────────────────────
-            case '/post/pelicula/calificar':
+            case "/post/pelicula/calificar":
                 PeliculaController::postCalificar();
-                exit;
+                exit();
 
             // ── Perfil / Preferencias ──────────────────────────────────────
-            case '/perfil':
+            case "/perfil":
                 PreferenciaController::vistaPerfil();
-                exit;
+                exit();
 
-            case '/post/preferencias/guardar':
+            case "/post/preferencias/guardar":
                 PreferenciaController::postGuardar();
-                exit;
+                exit();
 
             // ── Admin ──────────────────────────────────────────────────────
-            case '/admin':
+            case "/admin":
                 AdminController::vistaAdmin();
-                exit;
+                exit();
 
-            case '/post/admin/pelicula/crear':
+            case "/post/admin/pelicula/crear":
                 AdminController::postCrearPelicula();
-                exit;
+                exit();
 
-            case '/post/admin/pelicula/actualizar':
+            case "/post/admin/pelicula/actualizar":
                 AdminController::postActualizarPelicula();
-                exit;
+                exit();
 
-            case '/post/admin/pelicula/eliminar':
+            case "/post/admin/pelicula/eliminar":
                 AdminController::postEliminarPelicula();
-                exit;
+                exit();
 
             // ── 404 ────────────────────────────────────────────────────────
             default:
@@ -123,51 +120,49 @@ class Web
 
     public static function post(string $uri): void
     {
-
-        switch ($uri)
-        {
+        switch ($uri) {
             // ── Registro ──────────────────────────────────────────────────
 
-            case '/post/usuario/registro':
+            case "/post/usuario/registro":
                 UsuarioController::postRegistro();
-                exit;
+                exit();
 
             // ── Login / Logout ─────────────────────────────────────────────
-            case '/post/usuario/login':
+            case "/post/usuario/login":
                 UsuarioController::postLogin();
-                exit;
+                exit();
 
-            case '/post/usuario/logout':
+            case "/post/usuario/logout":
                 UsuarioController::postLogout();
-                exit;
+                exit();
 
             // ── Calificar ──────────────────────────────────────────────────
-            case '/post/pelicula/calificar':
+            case "/post/pelicula/calificar":
                 PeliculaController::postCalificar();
-                exit;
+                exit();
 
             // ── Perfil / Preferencias ──────────────────────────────────────
 
-            case '/post/preferencias/guardar':
+            case "/post/preferencias/guardar":
                 PreferenciaController::postGuardar();
-                exit;
+                exit();
 
             // ── Admin ──────────────────────────────────────────────────────
-            case '/admin':
+            case "/admin":
                 AdminController::vistaAdmin();
-                exit;
+                exit();
 
-            case '/post/admin/pelicula/crear':
+            case "/post/admin/pelicula/crear":
                 AdminController::postCrearPelicula();
-                exit;
+                exit();
 
-            case '/post/admin/pelicula/actualizar':
+            case "/post/admin/pelicula/actualizar":
                 AdminController::postActualizarPelicula();
-                exit;
+                exit();
 
-            case '/post/admin/pelicula/eliminar':
+            case "/post/admin/pelicula/eliminar":
                 AdminController::postEliminarPelicula();
-                exit;
+                exit();
 
             // ── 404 ────────────────────────────────────────────────────────
             default:

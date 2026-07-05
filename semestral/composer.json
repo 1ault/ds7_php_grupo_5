@@ -1,17 +1,18 @@
 {
-    "name": "root/program",
-    "autoload": {
-        "psr-4": {
-            "Root\\Program\\Controlador\\": "Controlador/",
-            "Root\\Program\\Modelo\\": "Modelo/",
-            "Root\\Program\\Routers\\": "Routers/",
-            "Root\\Program\\Config\\": "Config/",
-            "Root\\Program\\Utils\\": "Utils/"
-        },
-        "files": [
-            "Config/Vault.php",
-            "Config/Session.php"
-        ]
+  "name": "root/program",
+  "autoload": {
+    "psr-4": {
+      "Root\\Program\\Controlador\\": "Controlador/",
+      "Root\\Program\\Modelo\\": "Modelo/",
+      "Root\\Program\\Routers\\": "Routers/",
+      "Root\\Program\\Config\\": "Config/",
+      "Root\\Program\\Utils\\": "Utils/"
     },
-    "require": {}
+    "files": [
+      "Config/Wrap.php",
+      "Config/Vault.php",
+      "Config/Session.php"
+    ]
+  },
+  "require": {}
 }

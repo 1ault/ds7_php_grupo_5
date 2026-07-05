@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    '5129bc01ad91f8aaf3d9b864408db522' => $baseDir . '/Config/Wrap.php',
     'edc58681bb6ee798a4957d728f5073d2' => $baseDir . '/Config/Vault.php',
     '61dcfb59ba486c056dc41d237b4dbd59' => $baseDir . '/Config/Session.php',
 );

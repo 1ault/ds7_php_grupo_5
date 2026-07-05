@@ -2,9 +2,14 @@
 --  CineMatch — Plataforma de Recomendación de Películas/Series
 --  DS7 Grupo 5 — Universidad Tecnológica de Panamá
 -- ═══════════════════════════════════════════════════════════════
+SET NAMES 'utf8mb4';
 
 DROP DATABASE IF EXISTS movies_db;
-CREATE DATABASE movies_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE DATABASE movies_db CHARACTER
+SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
+
 USE movies_db;
 
 -- ── Usuarios ─────────────────────────────────────────────────────────────────

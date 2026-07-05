@@ -38,7 +38,7 @@ if (!empty($_SESSION['usuario_id']) && isset($_SESSION['session_expired'])) {
         session_destroy();
         session_start();
         session_regenerate_id(true);
-        header('Location: ' . BASE_URL . '/login');
+        header('Location: /login');
         exit;
     }
 }

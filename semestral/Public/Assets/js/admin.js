@@ -11,7 +11,7 @@ function editarPelicula(id, titulo, tipo, anio, poster, descripcion, generoIds) 
     const form = document.getElementById('form-pelicula');
     if (!form) return;
 
-    form.action = BASE_URL + '/post/admin/pelicula/actualizar';
+    form.action = '/post/admin/pelicula/actualizar';
 
     document.getElementById('form-id').value          = id;
     document.getElementById('form-titulo').value      = titulo      || '';
@@ -37,7 +37,7 @@ function cancelarEdicion() {
     const form = document.getElementById('form-pelicula');
     if (!form) return;
 
-    form.action = BASE_URL + '/post/admin/pelicula/crear';
+    form.action = '/post/admin/pelicula/crear';
     form.reset();
 
     document.querySelectorAll('.chk-genero-form').forEach(chk => {
@@ -64,7 +64,7 @@ document.querySelectorAll('.chk-genero-form').forEach(chk => {
 async function importar(formato) {
     const resultDiv = document.getElementById('importar-resultado');
     const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
-    const url  = BASE_URL + (formato === 'xml' ? '/api/admin/importar/xml' : '/api/admin/importar/json');
+    const url  = (formato === 'xml' ? '/api/admin/importar/xml' : '/api/admin/importar/json');
 
     resultDiv.style.display = 'none';
 

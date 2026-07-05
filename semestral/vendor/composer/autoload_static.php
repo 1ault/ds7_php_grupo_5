@@ -7,6 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit221702457b68f9f17923b065ae4bf496
 {
     public static $files = array (
+        '5129bc01ad91f8aaf3d9b864408db522' => __DIR__ . '/../..' . '/Config/Wrap.php',
         'edc58681bb6ee798a4957d728f5073d2' => __DIR__ . '/../..' . '/Config/Vault.php',
         '61dcfb59ba486c056dc41d237b4dbd59' => __DIR__ . '/../..' . '/Config/Session.php',
     );
@@ -47,7 +48,7 @@ class ComposerStaticInit221702457b68f9f17923b065ae4bf496
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Root\\Program\\Config\\Database' => __DIR__ . '/../..' . '/Config/Database.php',
+        'Root\\Program\\Config\\Layer8' => __DIR__ . '/../..' . '/Config/Layer8.php',
         'Root\\Program\\Controlador\\AdminController' => __DIR__ . '/../..' . '/Controlador/AdminController.php',
         'Root\\Program\\Controlador\\PeliculaController' => __DIR__ . '/../..' . '/Controlador/PeliculaController.php',
         'Root\\Program\\Controlador\\PreferenciaController' => __DIR__ . '/../..' . '/Controlador/PreferenciaController.php',

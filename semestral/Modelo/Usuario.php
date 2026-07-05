@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Root\Program\Modelo;
 
-use Root\Program\Config\Database;
+use Root\Program\Config\Layer8;
 use Root\Program\Utils\CryptoVault;
 use PDO;
 
@@ -13,7 +13,7 @@ class Usuario
 
     public function __construct()
     {
-        $this->conexion = Database::conectar();
+        $this->conexion = Layer8::get();
     }
 
     public function existeUsuario(string $usuario): bool

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Root\Program\Modelo;
 
-use Root\Program\Config\Database;
+use Root\Program\Config\Layer8;
 use PDO;
 
 class Pelicula
@@ -12,7 +12,7 @@ class Pelicula
 
     public function __construct()
     {
-        $this->conexion = Database::conectar();
+        $this->conexion = Layer8::get();
     }
 
     /** Todas las películas con sus géneros concatenados */

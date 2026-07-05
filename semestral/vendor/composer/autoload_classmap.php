@@ -7,7 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-    'Root\\Program\\Config\\Database' => $baseDir . '/Config/Database.php',
+    'Root\\Program\\Config\\Layer8' => $baseDir . '/Config/Layer8.php',
     'Root\\Program\\Controlador\\AdminController' => $baseDir . '/Controlador/AdminController.php',
     'Root\\Program\\Controlador\\PeliculaController' => $baseDir . '/Controlador/PeliculaController.php',
     'Root\\Program\\Controlador\\PreferenciaController' => $baseDir . '/Controlador/PreferenciaController.php',

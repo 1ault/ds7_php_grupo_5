@@ -7,6 +7,10 @@ all:
 	@echo "make debug input=parcial_1"
 	@echo "Diagram: make debug <input>=<dir>"
 
+load:
+	@cd ./project/ && composer dump-autoload -o
+
+
 own:
 	su tuzz -c "chown -R tuzz:tuzz $(PWD) && git push origin main"
 
